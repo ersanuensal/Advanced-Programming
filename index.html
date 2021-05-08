@@ -2,16 +2,56 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Application Landscape</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="./node_modules/gojs/release/go-debug.js"></script>
+
+    <script>
+      function init() {
+        var $ = go.GraphObject.make;
+        var myDiagram = $(go.Diagram, "myDiagramDiv",
+        { // enable Ctrl-Z to undo and Ctrl-Y to redo
+          "undoManager.isEnabled": true,
+          layout: $(go.TreeLayout, // specify a Diagram.layout that arranges trees
+                { angle: 90, layerSpacing: 35 })
+        });
+
+        // the template we defined earlier
+        myDiagram.nodeTemplate = $(go.Node, "Horizontal",
+          { background: "#44CCFF" },
+            $(go.Picture,
+            { margin: 10, width: 50, height: 50, background: "red" },
+            new go.Binding("source")),
+            $(go.TextBlock, "Default Text",
+            { margin: 12, stroke: "white", font: "bold 16px sans-serif" },
+            new go.Binding("text", "name"))
+  );
+
+        var model = $(go.TreeModel);
+        model.nodeDataArray =
+        [
+          { key: "1",              name: "Don Meow",   source: "cat1.png" },
+          { key: "2", parent: "1", name: "Demeter",    source: "cat2.png" },
+          { key: "3", parent: "1", name: "Copricat",   source: "cat3.png" },
+          { key: "4", parent: "3", name: "Jellylorum", source: "cat4.png" },
+          { key: "5", parent: "3", name: "Alonzo",     source: "cat5.png" },
+          { key: "6", parent: "2", name: "Munkustrap", source: "cat6.png" }
+        ];
+        myDiagram.model = model;
+      }
+    </script>
+
+    <script>if (window.module) module = window.module;</script>
 </head>
-<body style="background: white;">
+<body style="background: white;" onload="init()">
     <h1>Hello World!</h1>
     <p>
         We are using Node.js <span id="node-version"></span>,
         Chromium <span id="chrome-version"></span>,
         and Electron <span id="electron-version"></span>.
     </p>
+    <div id="myDiagramDiv" style="width:800px; height:400px; background-color: #DAE4E4;"></div>
 </body>
 </html>
-Kopieren
