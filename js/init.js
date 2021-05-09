@@ -1,5 +1,4 @@
 function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
@@ -9,18 +8,6 @@ function init() {
           "LinkRelinked": showLinkLabel,
           "undoManager.isEnabled": true  // enable undo & redo
         });
-
-    // when the document is modified, add a "*" to the title and enable the "Save" button
-    myDiagram.addDiagramListener("Modified", function(e) {
-      var button = document.getElementById("SaveButton");
-      if (button) button.disabled = !myDiagram.isModified;
-      var idx = document.title.indexOf("*");
-      if (myDiagram.isModified) {
-        if (idx < 0) document.title += "*";
-      } else {
-        if (idx >= 0) document.title = document.title.substr(0, idx);
-      }
-    });
 
     // helper definitions for node templates
 
@@ -101,57 +88,6 @@ function init() {
         makePort("L", go.Spot.Left, go.Spot.LeftSide, true, true),
         makePort("R", go.Spot.Right, go.Spot.RightSide, true, true),
         makePort("B", go.Spot.Bottom, go.Spot.BottomSide, true, false)
-      ));
-
-    myDiagram.nodeTemplateMap.add("Conditional",
-      $(go.Node, "Table", nodeStyle(),
-        // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-        $(go.Panel, "Auto",
-          $(go.Shape, "Diamond",
-            { fill: "#282c34", stroke: "#00A9C9", strokeWidth: 3.5 },
-            new go.Binding("figure", "figure")),
-          $(go.TextBlock, textStyle(),
-            {
-              margin: 8,
-              maxSize: new go.Size(160, NaN),
-              wrap: go.TextBlock.WrapFit,
-              editable: true
-            },
-            new go.Binding("text").makeTwoWay())
-        ),
-        // four named ports, one on each side:
-        makePort("T", go.Spot.Top, go.Spot.Top, false, true),
-        makePort("L", go.Spot.Left, go.Spot.Left, true, true),
-        makePort("R", go.Spot.Right, go.Spot.Right, true, true),
-        makePort("B", go.Spot.Bottom, go.Spot.Bottom, true, false)
-      ));
-
-    myDiagram.nodeTemplateMap.add("Start",
-      $(go.Node, "Table", nodeStyle(),
-        $(go.Panel, "Spot",
-          $(go.Shape, "Circle",
-            { desiredSize: new go.Size(70, 70), fill: "#282c34", stroke: "#09d3ac", strokeWidth: 3.5 }),
-          $(go.TextBlock, "Start", textStyle(),
-            new go.Binding("text"))
-        ),
-        // three named ports, one on each side except the top, all output only:
-        makePort("L", go.Spot.Left, go.Spot.Left, true, false),
-        makePort("R", go.Spot.Right, go.Spot.Right, true, false),
-        makePort("B", go.Spot.Bottom, go.Spot.Bottom, true, false)
-      ));
-
-    myDiagram.nodeTemplateMap.add("End",
-      $(go.Node, "Table", nodeStyle(),
-        $(go.Panel, "Spot",
-          $(go.Shape, "Circle",
-            { desiredSize: new go.Size(60, 60), fill: "#282c34", stroke: "#DC3C00", strokeWidth: 3.5 }),
-          $(go.TextBlock, "End", textStyle(),
-            new go.Binding("text"))
-        ),
-        // three named ports, one on each side except the bottom, all input only:
-        makePort("T", go.Spot.Top, go.Spot.Top, false, true),
-        makePort("L", go.Spot.Left, go.Spot.Left, false, true),
-        makePort("R", go.Spot.Right, go.Spot.Right, false, true)
       ));
 
     // taken from ../extensions/Figures.js:
@@ -277,10 +213,6 @@ function init() {
 
 
   // Show the diagram's model in JSON format that the user may edit
-  function save() {
-    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-  }
   function load() {
     myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
   }
