@@ -16,9 +16,11 @@ function init() {
   myDiagram.nodeTemplate =
     $(go.Node, "Horizontal",
       { background: "#44CCFF" },
+
+
       $(go.TextBlock,
         "Default Text",
-        { margin: 12, stroke: "white", font: "bold 16px sans-serif"},
+        { margin: 12, stroke: "white", font: "bold 16px sans-serif", editable: true},
         new go.Binding("text", "name")),
 
     );
