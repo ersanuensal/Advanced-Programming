@@ -14,16 +14,8 @@ function init() {
 
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
-    $(go.Node, "Horizontal",
+    $(go.Node, "Auto",
       { background: "#44CCFF" },
-
-
-      $(go.TextBlock,
-        "Default Text",
-        { margin: 12, stroke: "white", font: "bold 16px sans-serif", editable: true },
-        new go.Binding("text", "name")
-      ),
-
 
       $(go.Shape, "RoundedRectangle",
         {
@@ -36,15 +28,53 @@ function init() {
         new go.Binding("fill", "color")
       ),
 
+
+
+      $(go.TextBlock,
+        "Default Text",
+        { margin: 12, stroke: "white", font: "bold 16px sans-serif", editable: true },
+        new go.Binding("text", "name")
+      ),
+
+
     );
+    // initialize Overview
+     myOverview =
+       $(go.Overview, "myOverviewDiv",
+         {
+           observed: myDiagram,
+           contentAlignment: go.Spot.Center
+         });
+
+         // initialize Palette
+     myPalette =
+       $(go.Palette, "myPaletteDiv",
+         {
+           nodeTemplate: myDiagram.nodeTemplate,
+           contentAlignment: go.Spot.Center,
+           layout:
+             $(go.GridLayout,
+               { wrappingColumn: 1, cellSize: new go.Size(2, 2) }),
+         });
+
+     // now add the initial contents of the Palette
+     myPalette.model.nodeDataArray = [
+       { text: "Circle", color: "blue", figure: "Circle" },
+       { text: "Square", color: "purple", figure: "Square" },
+       { text: "Ellipse", color: "orange", figure: "Ellipse" },
+       { text: "Rectangle", color: "red", figure: "Rectangle" },
+       { text: "Rounded\nRectangle", color: "green", figure: "RoundedRectangle" },
+       { text: "Triangle", color: "purple", figure: "Triangle" },
+     ];
+
 
 
   var model = $(go.GraphLinksModel);
   // for each object in this Array, the Diagram creates a Node to represent it
   model.nodeDataArray = [
-    { key: 1, name: "Test1" },
-    { key: 2, name: "Test2" },
-    { key: 3, name: "Test3" }
+    { key: 1, name: "Langer Text Beispiel" },
+    { key: 2, name: "Test" },
+    { key: 3, name: "A" }
   ];
 
   model.linkDataArray =
