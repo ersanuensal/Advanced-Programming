@@ -14,30 +14,27 @@ function init() {
 
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
-    $(go.Node, "Auto",
-      { background: "#44CCFF" },
+  $(go.Node, "Auto",
+        { locationSpot: go.Spot.Center },
+        new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
+        $(go.Shape, "Circle",
+          {
+            fill: "white", stroke: "gray", strokeWidth: 2,
+            portId: "", fromLinkable: true, toLinkable: true,
+            fromLinkableDuplicates: true, toLinkableDuplicates: true,
+            fromLinkableSelfNode: true, toLinkableSelfNode: true
+          },
+          new go.Binding("stroke", "color"),
+          new go.Binding("figure")),
+        $(go.TextBlock,
+          {
+            margin: new go.Margin(5, 5, 3, 5), font: "10pt sans-serif",
+            minSize: new go.Size(16, 16), maxSize: new go.Size(120, NaN),
+            textAlign: "center", editable: true
+          },
+          new go.Binding("text").makeTwoWay())
+      );
 
-      $(go.Shape, "RoundedRectangle",
-        {
-          portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
-          // allow all kinds of links from and to this port
-          // An link can only be between two different Nodes
-          fromLinkable: true, fromLinkableSelfNode: false, fromLinkableDuplicates: true,
-          toLinkable: true, toLinkableSelfNode: false, toLinkableDuplicates: true
-        },
-        new go.Binding("fill", "color")
-      ),
-
-
-
-      $(go.TextBlock,
-        "Default Text",
-        { margin: 12, stroke: "white", font: "bold 16px sans-serif", editable: true },
-        new go.Binding("text", "name")
-      ),
-
-
-    );
     // initialize Overview
      myOverview =
        $(go.Overview, "myOverviewDiv",
