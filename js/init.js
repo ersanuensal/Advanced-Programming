@@ -26,6 +26,7 @@ function init() {
           },
           new go.Binding("stroke", "color"),
           new go.Binding("figure")),
+      //    new go.Binding("fill", "color")),
         $(go.TextBlock,
           {
             margin: new go.Margin(5, 5, 3, 5), font: "10pt sans-serif",
@@ -56,29 +57,25 @@ function init() {
 
      // now add the initial contents of the Palette
      myPalette.model.nodeDataArray = [
-       { text: "Circle", color: "blue", figure: "Circle" },
        { text: "Square", color: "purple", figure: "Square" },
-       { text: "Ellipse", color: "orange", figure: "Ellipse" },
        { text: "Rectangle", color: "red", figure: "Rectangle" },
        { text: "Rounded\nRectangle", color: "green", figure: "RoundedRectangle" },
        { text: "Triangle", color: "purple", figure: "Triangle" },
      ];
 
+     var inspector = new Inspector('myInspectorDiv', myDiagram,
+       {
+         // uncomment this line to only inspect the named properties below instead of all properties on each object:
+         // includesOwnProperties: false,
+         properties: {
+           "Name": {},
+           // key would be automatically added for nodes, but we want to declare it read-only also:
+           "key": { readOnly: true, show: Inspector.showIfPresent },
+           // color would be automatically added for nodes, but we want to declare it a color also:
+           "color": { type: 'color' },
+           "figure": {}
+         }
+       });
 
-
-  var model = $(go.GraphLinksModel);
-  // for each object in this Array, the Diagram creates a Node to represent it
-  model.nodeDataArray = [
-    { key: 1, name: "Langer Text Beispiel" },
-    { key: 2, name: "Test" },
-    { key: 3, name: "A" }
-  ];
-
-  model.linkDataArray =
-    [
-      { from: 1, to: 2 },
-      { from: 2, to: 3 }
-    ];
-  myDiagram.model = model;
 
 }
