@@ -1,7 +1,17 @@
 # Application Name
 
+## Application Description
+-
+ 
+
+## Applicaion Requirements
+-
+
+## Application Version
+-
+
+
 ## Quick Start Guide
-- Prerequisites
 - Create a basic diagram
-- Run your application
-- Package and distribute the application
+- Save your Diagram
+- Restore your Diagram
