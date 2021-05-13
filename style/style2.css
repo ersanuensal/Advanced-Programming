@@ -7,10 +7,20 @@
 .body {
 
   background: linear-gradient(to left bottom, #BCBCBC, #CDCDCD);
+  background-repeat: no-repeat;
   display: fixed;
   align-items: center;
   justify-content: center;
 
+}
+
+.centercontainer {
+  margin-top: 60px;
+  margin-bottom: auto;
+  margin-left: 60px;
+  margin-right: auto;
+  height: 93.89vh;
+  width: 100vh;
 }
 
 .palette {
@@ -18,11 +28,11 @@
   background: linear-gradient(to right bottom, #BCBCBC, #CDCDCD);
   border: solid 2px black;
   border-top-left-radius: 2rem;
-  height: 650px;
-  width: 150px;
+  height: 70vh;
+  width: 8vw;
+  min-width: 230px;
   position: absolute;
-  top: 10%;
-  left:25%;
+
 
 }
 
@@ -31,11 +41,11 @@
   background: linear-gradient(to right top, #BCBCBC, #CDCDCD);
   border: solid 2px black;
   border-bottom-left-radius: 2rem;
-  height: 150px;
-  width: 150px;
-  position: fixed;
-  top: 75.3%;
-  left: 25%;
+  height: 20vh;
+  width: 8vw;
+  min-width: 230px;
+  position: absolute;
+  margin-top: 70vh;
 
 }
 
@@ -44,18 +54,19 @@
   border: solid 2px black;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
-  height: 800px;
-  width: 800px;
+  height: 90%;
+  width: 80vw;
   position: absolute;
-  top: 10%;
-  left: 32.88%;
+  margin-left: 230px;
+
 
 }
 
 .inspector {
 
   position: absolute;
-  top: 10%;
-  left: 75%;
+  margin-top: 3vh;
+  margin-left: 78vw;
+  z-index: 2;
 
 }
