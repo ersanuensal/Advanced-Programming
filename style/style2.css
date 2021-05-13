@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  min-height: 100vh;
+  background: linear-gradient(to right top,#65dfc9, #6cdbeb)
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass {
+  background: white;
+  min-height: 80vh;
+  width: 60%;
+  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)
+  );
+  border-radius: 2rem;
+
+  /* add z-index to push circles into background*/
+  z-index: 2;
+  /*blur effect*/
+  backdrop-filter: blur(100rem):
+}
+  .circle1, .circle2 {
+      background: white;
+      background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.1)
+      );
+      height: 20rem;
+      width: 20rem;
+      /*to move around the circles*/
+      position: absolute;
+  }
+  .circle1 {
+    top: 5%;
+    left: 15%;
+  }
+  .circle2 {
+    top: 5%;
+    right: 15%;
+  }
+
+  .myPaletteDiv {
+    background-color: whitesmoke;
+    border: solid 1px black;
+    height: 400px;
+
+  }
+
+
+
+}
