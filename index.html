@@ -12,21 +12,23 @@
 
     <script src="./js/init.js"></script>
 </head>
-<body style="background: white;" onload="init()">
-    <h1>Hello World!</h1>
+
+<body style="background: linear-gradient(to left bottom, black, white);display: flex;
+align-items: center;
+justify-content: center" onload="init()">
+
     <p>
         We are using Node.js <span id="node-version"></span>,
         Chromium <span id="chrome-version"></span>,
         and Electron <span id="electron-version"></span>.
     </p>
-
-    <div style="width:100%; white-space:nowrap;">
+    <div style="min-height: 100vh; white-space:nowrap;">
       <span style="display: inline-block; vertical-align: top; padding: 2px; width:140px">
-        <div id="myPaletteDiv" style="background-color: whitesmoke; border: solid 1px black; height: 400px"></div>
-        <div id="myOverviewDiv" style="border: solid 1px black; height: 100px"></div>
+        <div id="myPaletteDiv" style="background: linear-gradient(to right bottom, black, white); border: solid 1px black; height: 400px"></div>
+        <div id="myOverviewDiv" style="background: linear-gradient(to right top, black, white);border: solid 1px black; height: 100px"></div>
       </span>
       <span style="display: inline-block; vertical-align: top; padding: 2px; width:500px">
-        <div id="myDiagramDiv" style="border: solid 1px black; height: 500px"></div>
+        <div id="myDiagramDiv" style="border: solid 1px black; min-height: 80vh; width: 60%"></div>
       </span>
       <span style="display: inline-block; vertical-align: top; padding: 2px; width:200px">
         <div id="myInspectorDiv" class="inspector"></div>
