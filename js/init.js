@@ -43,7 +43,7 @@ function init() {
       { routing: go.Link.Orthogonal, corner: 5 },
       // the link path, a Shape
       $(go.Shape, { strokeWidth: 3, stroke: "black" }),
-      //an arrowhead 
+      //an arrowhead
       $(go.Shape, { toArrow: "Standard", stroke: null }
       )
     );
@@ -91,3 +91,5 @@ function init() {
 
 
 }
+
+window.addEventListener('DOMContentLoaded', init);
