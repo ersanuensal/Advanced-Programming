@@ -4,52 +4,58 @@
   box-sizing: border-box;
 }
 
-main {
-  min-height: 100vh;
-  background: linear-gradient(to right top,#65dfc9, #6cdbeb)
-  display: flex;
+.body {
+
+  background: linear-gradient(to left bottom, #BCBCBC, #CDCDCD);
+  display: fixed;
   align-items: center;
   justify-content: center;
+
 }
 
-.glass {
-  background: white;
-  min-height: 80vh;
-  width: 60%;
-  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)
-  );
-  border-radius: 2rem;
+.palette {
 
-  /* add z-index to push circles into background*/
-  z-index: 2;
-  /*blur effect*/
-  backdrop-filter: blur(100rem):
+  background: linear-gradient(to right bottom, #BCBCBC, #CDCDCD);
+  border: solid 2px black;
+  border-top-left-radius: 2rem;
+  height: 650px;
+  width: 150px;
+  position: absolute;
+  top: 10%;
+  left:25%;
+
 }
-  .circle1, .circle2 {
-      background: white;
-      background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.1)
-      );
-      height: 20rem;
-      width: 20rem;
-      /*to move around the circles*/
-      position: absolute;
-  }
-  .circle1 {
-    top: 5%;
-    left: 15%;
-  }
-  .circle2 {
-    top: 5%;
-    right: 15%;
-  }
 
-  .myPaletteDiv {
-    background-color: whitesmoke;
-    border: solid 1px black;
-    height: 400px;
+.overview {
 
-  }
+  background: linear-gradient(to right top, #BCBCBC, #CDCDCD);
+  border: solid 2px black;
+  border-bottom-left-radius: 2rem;
+  height: 150px;
+  width: 150px;
+  position: fixed;
+  top: 75.3%;
+  left: 25%;
 
+}
 
+.diagram {
+
+  border: solid 2px black;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  height: 800px;
+  width: 800px;
+  position: absolute;
+  top: 10%;
+  left: 32.88%;
+
+}
+
+.inspector {
+
+  position: absolute;
+  top: 10%;
+  left: 75%;
 
 }
