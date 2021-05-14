@@ -29,9 +29,9 @@ function init() {
       //    new go.Binding("fill", "color")),
       $(go.TextBlock,
         {
-          margin: new go.Margin(5, 5, 3, 5), font: "10pt sans-serif",
-          minSize: new go.Size(16, 16), maxSize: new go.Size(120, NaN),
-          textAlign: "center", editable: true
+          margin: new go.Margin(5, 5, 3, 5), font: "bold 16pt sans-serif",
+          minSize: new go.Size(32, 32), maxSize: new go.Size(120, NaN),
+          textAlign: "center", editable: true, verticalAlignment: go.Spot.Center, margin: 10
         },
         new go.Binding("text").makeTwoWay())
     );
@@ -67,7 +67,7 @@ function init() {
       ),
 
       $(go.Shape,
-        {   // the real drwan path default 
+        {   // the real drwan path default
           isPanelMain: true,
           stroke: "black",
           strokeWidth: 3
@@ -127,23 +127,24 @@ function init() {
 
   // now add the initial contents of the Palette
   myPalette.model.nodeDataArray = [
-    { text: "Square", color: "purple", figure: "Square" },
-    { text: "Rectangle", color: "red", figure: "Rectangle" },
+    // { text: "Square", color: "purple", figure: "Square" },
+    // { text: "Rectangle", color: "red", figure: "Rectangle" },
     { text: "Rounded\nRectangle", color: "green", figure: "RoundedRectangle" },
-    { text: "Triangle", color: "purple", figure: "Triangle" },
+    // { text: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
   var inspector = new Inspector('myInspectorDiv', myDiagram,
     {
-      // uncomment this line to only inspect the named properties below instead of all properties on each object:
-      // includesOwnProperties: false,
+      includesOwnProperties: false,
       properties: {
+        // Application properties - properties window
         "Name": {},
-        // key would be automatically added for nodes, but we want to declare it read-only also:
-        "key": { readOnly: true, show: Inspector.showIfPresent },
-        // color would be automatically added for nodes, but we want to declare it a color also:
+        "Version": {},
+        "Description":{},
+        "COTS":{},
+        "Release date":{},
+        "Shutdown date":{},
         "color": { type: 'color' },
-        "figure": {}
       }
     });
 
