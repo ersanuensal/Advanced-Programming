@@ -86,7 +86,7 @@ function init() {
       }),
 
       // Link arrowhead
-      $(go.Shape, { // make the arrowhead mor visibile and clear by scaling it
+      $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
         toArrow: "Standard",
         scale: 1.5
       }),
