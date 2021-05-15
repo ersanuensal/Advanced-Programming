@@ -7,7 +7,7 @@ function init() {
     $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
       {
         // create new node with doube click
-        "clickCreatingTool.archetypeNodeData": { text: "Node", color: "white" },
+        "clickCreatingTool.archetypeNodeData": { Name: "Programm", color: "green", figure: "RoundedRectangle" },
         // function redo and undo
         "undoManager.isEnabled": true
       });
@@ -33,7 +33,7 @@ function init() {
           minSize: new go.Size(32, 32), maxSize: new go.Size(120, NaN),
           textAlign: "center", editable: true, verticalAlignment: go.Spot.Center, margin: 10
         },
-        new go.Binding("text").makeTwoWay())
+        new go.Binding("text", "Name").makeTwoWay())
     );
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
@@ -129,7 +129,7 @@ function init() {
   myPalette.model.nodeDataArray = [
     // { text: "Square", color: "purple", figure: "Square" },
     // { text: "Rectangle", color: "red", figure: "Rectangle" },
-    { text: "Rounded\nRectangle", color: "green", figure: "RoundedRectangle" },
+    { Name: "Programm", color: "green", figure: "RoundedRectangle" },
     // { text: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
