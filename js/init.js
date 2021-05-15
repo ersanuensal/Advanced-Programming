@@ -29,24 +29,82 @@ function init() {
       //    new go.Binding("fill", "color")),
       $(go.TextBlock,
         {
-          margin: new go.Margin(5, 5, 3, 5), font: "10pt sans-serif",
-          minSize: new go.Size(16, 16), maxSize: new go.Size(120, NaN),
-          textAlign: "center", editable: true
+          margin: new go.Margin(5, 5, 3, 5), font: "bold 16pt sans-serif",
+          minSize: new go.Size(32, 32), maxSize: new go.Size(120, NaN),
+          textAlign: "center", editable: true, verticalAlignment: go.Spot.Center, margin: 10
         },
         new go.Binding("text").makeTwoWay())
     );
 
+  // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
     $(go.Link,
-      // Our link is going to be little thicker than normal
-      // Link is goin to be Orthogonal on the Node, the turns are going to be right.angled and rounded.
-      { routing: go.Link.Orthogonal, corner: 5 },
-      // the link path, a Shape
-      $(go.Shape, { strokeWidth: 3, stroke: "black" }),
-      //an arrowhead
-      $(go.Shape, { toArrow: "Standard", stroke: null }
-      )
+      {
+        // routing: go.Link.AvoidsNodes,// link is going to try its best to avoid crossing other nodes
+        // on its way from Node A to Node B
+
+        // curve: go.Link.JumpOver,
+        // corner: 5,
+        toShortLength: 4 // avoid interfering with arrowhead or ovverreiding the arrowhead
+      },
+
+      { curve: go.Link.Bezier },
+
+      {
+        relinkableFrom: true,
+        relinkableTo: true,
+        reshapable: true
+      },
+
+      // Link shape
+
+      $(go.Shape,
+        {   // thick undrawn path make it easier the click the link
+          isPanelMain: true,
+          stroke: "transparent",
+          strokeWidth: 10
+        }
+      ),
+
+      $(go.Shape,
+        {   // the real drwan path default
+          isPanelMain: true,
+          stroke: "black",
+          strokeWidth: 3
+        }
+      ),
+
+      // Link arrowhead
+      $(go.Shape,
+        {   // make the arrowhead mor visibile and clear by scaling it
+          toArrow: "Standard",
+          scale: 1.5
+        }
+      ),
+
+
+      // Link Label
+      $(go.TextBlock,
+        {
+          text: 'Label',
+          editable: true,
+          textAlign: 'center',
+          font: '14px Roboto',
+          segmentOffset: new go.Point(0, -10),
+          segmentOrientation: go.Link.OrientUpright,
+        },
+      ),
+
+      /**
+       * Handling mmouse events (mouse over the Link)
+       */
+      {
+        // a mouse-over highlights the link by changing the first main path shape's stroke:
+        mouseEnter: function (e, link) { link.elt(0).stroke = "rgba(152, 193, 217, 1)"; },
+        mouseLeave: function (e, link) { link.elt(0).stroke = "transparent"; }
+      }
     );
+
 
   // initialize Overview
   myOverview =
@@ -69,23 +127,24 @@ function init() {
 
   // now add the initial contents of the Palette
   myPalette.model.nodeDataArray = [
-    { text: "Square", color: "purple", figure: "Square" },
-    { text: "Rectangle", color: "red", figure: "Rectangle" },
+    // { text: "Square", color: "purple", figure: "Square" },
+    // { text: "Rectangle", color: "red", figure: "Rectangle" },
     { text: "Rounded\nRectangle", color: "green", figure: "RoundedRectangle" },
-    { text: "Triangle", color: "purple", figure: "Triangle" },
+    // { text: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
   var inspector = new Inspector('myInspectorDiv', myDiagram,
     {
-      // uncomment this line to only inspect the named properties below instead of all properties on each object:
-      // includesOwnProperties: false,
+      includesOwnProperties: false,
       properties: {
+        // Application properties - properties window
         "Name": {},
-        // key would be automatically added for nodes, but we want to declare it read-only also:
-        "key": { readOnly: true, show: Inspector.showIfPresent },
-        // color would be automatically added for nodes, but we want to declare it a color also:
+        "Version": {},
+        "Description":{},
+        "COTS":{},
+        "Release date":{},
+        "Shutdown date":{},
         "color": { type: 'color' },
-        "figure": {}
       }
     });
 
