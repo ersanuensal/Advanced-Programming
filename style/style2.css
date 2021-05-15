@@ -6,8 +6,8 @@
 
 .body {
 
-  background: rgb(65,151,224);
-  background: linear-gradient(90deg, rgba(65,151,224,0.7819502801120448) 0%, rgba(181,209,233,0.32816876750700286) 30%, rgba(218,245,251,0.6979166666666667) 57%, rgba(226,234,241,1) 74%);
+  background: rgb(232,237,219);
+  background: radial-gradient(circle, rgba(232,237,219,0.7819502801120448) 36%, rgba(0,0,0,0.32816876750700286) 66%);
   background-repeat: no-repeat;
   display: fixed;
   align-items: center;
@@ -26,8 +26,8 @@
 
 .palette {
 
-  background: rgb(254,254,254);
-  background: radial-gradient(circle, rgba(254,254,254,0.32816876750700286) 44%, rgba(65,151,224,0.7819502801120448) 94%);
+  background: rgb(232,237,219);
+  background: radial-gradient(circle, rgba(232,237,219,0.7819502801120448) 36%, rgba(0,0,0,0.32816876750700286) 66%);
   border: solid 2px black;
   border-top-left-radius: 2rem;
   height: 70vh;
@@ -40,8 +40,8 @@
 
 .overview {
 
-  background: rgb(254,254,254);
-  background: radial-gradient(circle, rgba(254,254,254,0.32816876750700286) 85%, rgba(65,151,224,0.7819502801120448) 94%);
+  background: rgb(232,237,219);
+  background: linear-gradient(350deg, rgba(232,237,219,0.7819502801120448) 27%, rgba(0,0,0,0.32816876750700286) 91%);
   border: solid 2px black;
   border-bottom-left-radius: 2rem;
   height: 20vh;
