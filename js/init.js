@@ -19,47 +19,48 @@ function init() {
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
     $(go.Node, "Auto", {
-        locationSpot: go.Spot.Center
-      },
+      locationSpot: go.Spot.Center
+    },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Circle", {
-          fill: "white",
-          stroke: "gray",
-          strokeWidth: 2,
-          portId: "",
-          fromLinkable: true,
-          toLinkable: true,
-          fromLinkableDuplicates: false,
-          toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
-          fromLinkableSelfNode: false,
-          toLinkableSelfNode: false //disabling links from a node to it self
-        },
+        fill: "white",
+        stroke: "gray",
+        strokeWidth: 2,
+        portId: "",
+        fromLinkable: true,
+        toLinkable: true,
+        fromLinkableDuplicates: false,
+        toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
+        fromLinkableSelfNode: false,
+        toLinkableSelfNode: false //disabling links from a node to it self
+      },
         new go.Binding("stroke", "color"),
         new go.Binding("figure")),
       //    new go.Binding("fill", "color")),
       $(go.TextBlock, {
-          margin: new go.Margin(5, 5, 3, 5),
-          font: "bold 16pt sans-serif",
-          minSize: new go.Size(32, 32),
-          maxSize: new go.Size(120, NaN),
-          textAlign: "center",
-          editable: true,
-          verticalAlignment: go.Spot.Center,
-          margin: 10
-        },
+        margin: new go.Margin(5, 5, 3, 5),
+        font: "bold 16pt sans-serif",
+        minSize: new go.Size(32, 32),
+        maxSize: new go.Size(120, NaN),
+        textAlign: "center",
+        editable: true,
+        verticalAlignment: go.Spot.Center,
+        margin: 10
+      },
         new go.Binding("text", "Name").makeTwoWay())
     );
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
     $(go.Link, {
-        // routing: go.Link.AvoidsNodes,// link is going to try its best to avoid crossing other nodes
-        // on its way from Node A to Node B
+      // routing: go.Link.AvoidsNodes,// link is going to try its best to avoid crossing other nodes
+      // on its way from Node A to Node B
 
-        // curve: go.Link.JumpOver,
-        // corner: 5,
-        toShortLength: 4 // avoid interfering with arrowhead or ovverreiding the arrowhead
-      },
+      // curve: go.Link.JumpOver,
+      // corner: 5,
+      toShortLength: 4 // avoid interfering with arrowhead or ovverreiding the arrowhead,
+
+    },
 
       {
         curve: go.Link.Bezier
@@ -81,15 +82,20 @@ function init() {
 
       $(go.Shape, { // the real drwan path default
         isPanelMain: true,
-        stroke: "black",
         strokeWidth: 3
-      }),
+      },
+        new go.Binding("stroke", "color")
+      ),
+
 
       // Link arrowhead
       $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
         toArrow: "Standard",
-        scale: 1.5
-      }),
+        scale: 1.5,
+      },
+        new go.Binding("stroke", "color"),
+        new go.Binding("fill", "color")
+      ),
 
 
       // Link Label
@@ -100,17 +106,19 @@ function init() {
         font: '14px Roboto',
         segmentOffset: new go.Point(0, -10),
         segmentOrientation: go.Link.OrientUpright,
-      }, ),
+      },
+        new go.Binding("stroke", "color")
+      ),
 
       /**
        * Handling mmouse events (mouse over the Link)
        */
       {
         // a mouse-over highlights the link by changing the first main path shape's stroke:
-        mouseEnter: function(e, link) {
+        mouseEnter: function (e, link) {
           link.elt(0).stroke = "rgba(152, 193, 217, 1)";
         },
-        mouseLeave: function(e, link) {
+        mouseLeave: function (e, link) {
           link.elt(0).stroke = "transparent";
         }
       }
