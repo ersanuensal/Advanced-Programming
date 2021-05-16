@@ -1,7 +1,7 @@
 # Application Name
 
 ## Application Description
-This Application is a Tool to plan a Application Landscape... 
+This Application is a Tool to create a diagram for an Application Landscape... 
  
 ## Quick Start Guide
 - Create a basic diagram
