@@ -75,7 +75,8 @@ function init() {
       $(go.Shape, { // thick undrawn path make it easier the click the link
         isPanelMain: true,
         stroke: "transparent",
-        strokeWidth: 10
+        strokeWidth: 7,
+        toShortLength: 8
       }),
 
       $(go.Shape, { // the real drawn path default
