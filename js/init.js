@@ -83,6 +83,7 @@ function init() {
 
       $(go.Shape, { // the real drwan path default
         isPanelMain: true,
+        stroke: "blue",
         strokeWidth: 3
       },
         new go.Binding("stroke", "color")
@@ -93,6 +94,8 @@ function init() {
       $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
         toArrow: "Standard",
         scale: 1.5,
+        stroke: "blue",
+        fill: "blue"
       },
         new go.Binding("stroke", "color"),
         new go.Binding("fill", "color")
@@ -104,7 +107,8 @@ function init() {
         text: 'Label',
         editable: true,
         textAlign: 'center',
-        font: '14px Roboto',
+        font: 'bold 16px Arial Rounded MT',
+        stroke: "blue",
         segmentOffset: new go.Point(0, -10),
         segmentOrientation: go.Link.OrientUpright,
       },
