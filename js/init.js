@@ -23,7 +23,7 @@ function init() {
     },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Circle", {
-        fill: "white",
+        fill: "#29292a",
         stroke: "gray",
         strokeWidth: 2,
         portId: "",
@@ -40,6 +40,7 @@ function init() {
       $(go.TextBlock, {
         margin: new go.Margin(5, 5, 3, 5),
         font: "bold 16pt sans-serif",
+        stroke: 'ghostwhite',
         minSize: new go.Size(32, 32),
         maxSize: new go.Size(120, NaN),
         textAlign: "center",
