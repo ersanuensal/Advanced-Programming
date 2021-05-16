@@ -8,8 +8,8 @@ function init() {
       {
         // create new node with doube click
         "clickCreatingTool.archetypeNodeData": {
-          Name: "Programm",
-          color: "green",
+          Name: "Program",
+          color: "blue",
           figure: "RoundedRectangle"
         },
         // function redo and undo
@@ -25,7 +25,7 @@ function init() {
       $(go.Shape, "Circle", {
         fill: "#29292a",
         stroke: "gray",
-        strokeWidth: 2,
+        strokeWidth: 4,
         portId: "",
         fromLinkable: true,
         toLinkable: true,
@@ -153,8 +153,8 @@ function init() {
     // { text: "Square", color: "purple", figure: "Square" },
     // { text: "Rectangle", color: "red", figure: "Rectangle" },
     {
-      Name: "Programm",
-      color: "green",
+      Name: "Program",
+      color: "blue",
       figure: "RoundedRectangle"
     },
     // { text: "Triangle", color: "purple", figure: "Triangle" },
