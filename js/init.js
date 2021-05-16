@@ -55,7 +55,7 @@ function init() {
   myDiagram.linkTemplate =
     $(go.Link,
       {
-        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead
+        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
         curve: go.Link.Bezier,
         relinkableFrom: true,
         relinkableTo: true,
@@ -111,12 +111,12 @@ function init() {
       ),
 
       /**
-       * Handling mmouse events (mouse over the Link)
+       * Handling mouse events (mouseover the Link)
        */
       {
-        // a mouse-over highlights the link by changing the first main path shape's stroke:
+        // a mouseover highlights the link by changing the first main path shape's stroke:
         mouseEnter: function (e, link) {
-          link.elt(0).stroke = "rgba(152, 193, 217, 1)";
+          link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
         },
         mouseLeave: function (e, link) {
           link.elt(0).stroke = "transparent";
@@ -145,14 +145,14 @@ function init() {
 
   // now add the initial contents of the Palette
   myPalette.model.nodeDataArray = [
-    // { text: "Square", color: "purple", figure: "Square" },
-    // { text: "Rectangle", color: "red", figure: "Rectangle" },
+    // { Name: "Square", color: "purple", figure: "Square" },
+    // { Name: "Rectangle", color: "red", figure: "Rectangle" },
     {
       Name: "Program",
       color: "blue",
       figure: "RoundedRectangle"
     },
-    // { text: "Triangle", color: "purple", figure: "Triangle" },
+    // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
   var inspector = new Inspector('myInspectorDiv', myDiagram, {
