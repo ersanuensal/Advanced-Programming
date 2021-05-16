@@ -7,7 +7,7 @@
 .body {
 
 
-  background: #2f2c2c;
+  background: ghostwhite;
   background-repeat: no-repeat;
   display: fixed;
   align-items: center;
@@ -26,9 +26,8 @@
 
 .palette {
 
-  background: rgb(232,237,219);
-  background: radial-gradient(circle, rgba(232,237,219,0.7819502801120448) 36%, rgba(0,0,0,0.32816876750700286) 66%);
-  border: solid 2px whitesmoke;
+  background: ghostwhite;
+  border: solid 2px darkgrey;
   border-top-left-radius: 2rem;
   height: 70vh;
   width: 8vw;
@@ -40,9 +39,8 @@
 
 .overview {
 
-  background: rgb(232,237,219);
-  background: linear-gradient(3deg, rgba(232,237,219,0.7819502801120448) 27%, rgba(0,0,0,0.32816876750700286) 91%);
-  border: solid 2px whitesmoke;
+  background: ghostwhite;
+  border: solid 2px darkgrey;
   border-bottom-left-radius: 2rem;
   height: 20vh;
   width: 8vw;
@@ -54,7 +52,7 @@
 
 .diagram {
 
-  border: solid 2px white;
+  border: solid 2px darkgrey;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
   height: 90%;
