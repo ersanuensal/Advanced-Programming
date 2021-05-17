@@ -53,17 +53,9 @@ function init() {
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
-    $(go.Link, {
-      // routing: go.Link.AvoidsNodes,// link is going to try its best to avoid crossing other nodes
-      // on its way from Node A to Node B
-
-      // curve: go.Link.JumpOver,
-      // corner: 5,
-      toShortLength: 4 // avoid interfering with arrowhead or ovverreiding the arrowhead,
-
-    },
-
+    $(go.Link,
       {
+        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
         curve: go.Link.Bezier,
         relinkableFrom: true,
         relinkableTo: true,
@@ -72,44 +64,49 @@ function init() {
 
       // Link shape
 
-      $(go.Shape, { // thick undrawn path make it easier the click the link
-        isPanelMain: true,
-        stroke: "transparent",
-        strokeWidth: 7,
-        toShortLength: 8
-      }),
+      $(go.Shape,
+        { // thick undrawn path make it easier the click the link
+          isPanelMain: true,
+          stroke: "transparent",
+          strokeWidth: 8,
+          toShortLength: 8
+        }
+      ),
 
-      $(go.Shape, { // the real drawn path default
-        isPanelMain: true,
-        stroke: "blue",
-        strokeWidth: 3
-      },
+      $(go.Shape,
+        { // the real drwan path default
+          isPanelMain: true,
+          stroke: "blue",
+          strokeWidth: 4
+        },
         new go.Binding("stroke", "color")
       ),
 
-
       // Link arrowhead
-      $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
-        toArrow: "Standard",
-        scale: 1.5,
-        stroke: "blue",
-        fill: "blue"
-      },
+
+      $(go.Shape,
+        { // make the arrowhead more visibile and clear by scaling it
+          toArrow: "Standard",
+          scale: 1.5,
+          stroke: "blue",
+          fill: "blue"
+        },
         new go.Binding("stroke", "color"),
         new go.Binding("fill", "color")
       ),
 
-
       // Link Label
-      $(go.TextBlock, {
-        text: 'Label',
-        editable: true,
-        textAlign: 'center',
-        font: 'bold 16px Arial Rounded MT',
-        stroke: "blue",
-        segmentOffset: new go.Point(0, -10),
-        segmentOrientation: go.Link.OrientUpright,
-      },
+
+      $(go.TextBlock,
+        {
+          text: 'Label',
+          editable: true,
+          textAlign: 'center',
+          font: 'bold 16px Arial Rounded MT',
+          stroke: "blue",
+          segmentOffset: new go.Point(0, -10),
+          segmentOrientation: go.Link.OrientUpright,
+        },
         new go.Binding("stroke", "color")
       ),
 
