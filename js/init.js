@@ -8,7 +8,7 @@ function init() {
       {
         // create new node with doube click
         "clickCreatingTool.archetypeNodeData": {
-          Name: "Program",
+          Name: "Application",
           color: "blue",
           figure: "RoundedRectangle"
         },
@@ -151,7 +151,7 @@ function init() {
     // { Name: "Square", color: "purple", figure: "Square" },
     // { Name: "Rectangle", color: "red", figure: "Rectangle" },
     {
-      Name: "Program",
+      Name: "Application",
       color: "blue",
       figure: "RoundedRectangle"
     },
