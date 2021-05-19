@@ -155,7 +155,7 @@ function init() {
       // Application properties - properties window
       "Name": {},
       "Version": {},
-      "Description": {},
+      "Description": { show: Inspector.showIfNode},
       "COTS": {},
       "Release date": {},
       "Shutdown date": {},
@@ -166,10 +166,10 @@ function init() {
   });
 // This function is for to show or hide the inspector
   myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
-    var hh = myDiagram.selection.first();
-    if (hh == null) {
+    var sh = myDiagram.selection.first();
+    if (sh == null) {
       document.getElementById("myInspectorDiv").style.display = "none";
-    } else if (hh != null) {
+    } else if (sh != null) {
       document.getElementById("myInspectorDiv").style.display = "initial";
     }
   });
