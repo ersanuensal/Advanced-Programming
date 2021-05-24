@@ -7,20 +7,23 @@ function init() {
     $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
       {
         // create new node with doube click
-        "clickCreatingTool.archetypeNodeData": {
+        "clickCreatingTool.archetypeNodeData":
+        {
           Name: "Application",
           color: "blue",
           figure: "RoundedRectangle"
         },
         // function redo and undo
         "undoManager.isEnabled": true
-      });
+      }
+    );
 
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
-    $(go.Node, "Auto", {
-      locationSpot: go.Spot.Center
-    },
+    $(go.Node, "Auto",
+      {
+        locationSpot: go.Spot.Center
+      },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Circle", {
         fill: "#29292a",
@@ -61,22 +64,19 @@ function init() {
         relinkableTo: true,
         reshapable: true
       },
-
+      new go.Binding("stroke", "color"),
       // Link shape
 
-      $(go.Shape,
-        { // thick undrawn path make it easier the click the link
-          isPanelMain: true,
-          stroke: "transparent",
-          strokeWidth: 8,
-          toShortLength: 8
-        }
-      ),
+      $(go.Shape, { // thick undrawn path make it easier the click the link
+        isPanelMain: true,
+        stroke: "transparent",
+        strokeWidth: 8,
+        toShortLength: 8
+      }),
 
       $(go.Shape,
         { // the real drwan path default
           isPanelMain: true,
-          stroke: "blue",
           strokeWidth: 4
         },
         new go.Binding("stroke", "color")
@@ -84,13 +84,10 @@ function init() {
 
       // Link arrowhead
 
-      $(go.Shape,
-        { // make the arrowhead more visibile and clear by scaling it
-          toArrow: "Standard",
-          scale: 1.5,
-          stroke: "blue",
-          fill: "blue"
-        },
+      $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
+        toArrow: "Standard",
+        scale: 1.5
+      },
         new go.Binding("stroke", "color"),
         new go.Binding("fill", "color")
       ),
@@ -99,15 +96,14 @@ function init() {
 
       $(go.TextBlock,
         {
-          text: 'Label',
           editable: true,
           textAlign: 'center',
           font: 'bold 16px Arial Rounded MT',
-          stroke: "blue",
           segmentOffset: new go.Point(0, -10),
           segmentOrientation: go.Link.OrientUpright,
         },
-        new go.Binding("stroke", "color")
+        new go.Binding("stroke", "color"),
+        new go.Binding("text", "Name").makeTwoWay()
       ),
 
       /**
@@ -160,17 +156,27 @@ function init() {
     properties: {
       // Application properties - properties window
       "Name": {},
-      "Version": {},
-      "Description": {},
-      "COTS": {},
-      "Release date": {},
-      "Shutdown date": {},
+      "Version": { show: Inspector.showIfNode },
+      "Description": { show: Inspector.showIfNode },
+      "COTS": { show: Inspector.showIfNode },
+      "Release date": { show: Inspector.showIfNode },
+      "Shutdown date": { show: Inspector.showIfNode },
       "color": {
         type: 'color'
       },
     }
   });
 
+  // This function is for to show or hide the inspector
+  myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
+    let selectedPart = myDiagram.selection.first();
+
+    if (selectedPart == null) {
+      document.getElementById("myInspectorDiv").style.display = "none";
+    } else {
+      document.getElementById("myInspectorDiv").style.display = "initial";
+    }
+  });
 
 }
 
