@@ -2,16 +2,21 @@ function init() {
 
   // short form for defining templates
   var $ = go.GraphObject.make;
+  const today = new Date();
+  var today2 = today.toLocaleDateString();
+
 
   var myDiagram =
     $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
       {
         // create new node with doube click
-        "clickCreatingTool.archetypeNodeData":
-        {
+        "clickCreatingTool.archetypeNodeData": {
           Name: "Application",
           color: "blue",
-          figure: "RoundedRectangle"
+          figure: "RoundedRectangle",
+          dateToday: today2
+
+
         },
         // function redo and undo
         "undoManager.isEnabled": true
@@ -20,44 +25,45 @@ function init() {
 
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
-    $(go.Node, "Auto",
-      {
+    $(go.Node, "Auto", {
         locationSpot: go.Spot.Center
       },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Circle", {
-        fill: "#29292a",
-        stroke: "gray",
-        strokeWidth: 4,
-        portId: "",
-        fromLinkable: true,
-        toLinkable: true,
-        fromLinkableDuplicates: false,
-        toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
-        fromLinkableSelfNode: false,
-        toLinkableSelfNode: false //disabling links from a node to it self
-      },
+          fill: "#29292a",
+          stroke: "gray",
+          strokeWidth: 4,
+          portId: "",
+          fromLinkable: true,
+          toLinkable: true,
+          fromLinkableDuplicates: false,
+          toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
+          fromLinkableSelfNode: false,
+          toLinkableSelfNode: false //disabling links from a node to it self
+        },
         new go.Binding("stroke", "color"),
         new go.Binding("figure")),
       //    new go.Binding("fill", "color")),
       $(go.TextBlock, {
-        margin: new go.Margin(5, 5, 3, 5),
-        font: "bold 16pt sans-serif",
-        stroke: 'ghostwhite',
-        minSize: new go.Size(32, 32),
-        maxSize: new go.Size(120, NaN),
-        textAlign: "center",
-        editable: true,
-        verticalAlignment: go.Spot.Center,
-        margin: 10
-      },
-        new go.Binding("text", "Name").makeTwoWay())
+          margin: new go.Margin(5, 5, 3, 5),
+          font: "bold 16pt sans-serif",
+          stroke: 'ghostwhite',
+          minSize: new go.Size(32, 32),
+          maxSize: new go.Size(120, NaN),
+          textAlign: "center",
+          editable: true,
+          verticalAlignment: go.Spot.Center,
+          margin: 10
+        },
+        new go.Binding("text", "Name").makeTwoWay()
+      )
+
+
     );
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
-    $(go.Link,
-      {
+    $(go.Link, {
         toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
         curve: go.Link.Bezier,
         relinkableFrom: true,
@@ -74,8 +80,7 @@ function init() {
         toShortLength: 8
       }),
 
-      $(go.Shape,
-        { // the real drwan path default
+      $(go.Shape, { // the real drwan path default
           isPanelMain: true,
           strokeWidth: 4
         },
@@ -85,17 +90,17 @@ function init() {
       // Link arrowhead
 
       $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
-        toArrow: "Standard",
-        scale: 1.5
-      },
+          toArrow: "Standard",
+          scale: 1.5
+        },
         new go.Binding("stroke", "color"),
         new go.Binding("fill", "color")
+
       ),
 
       // Link Label
 
-      $(go.TextBlock,
-        {
+      $(go.TextBlock, {
           editable: true,
           textAlign: 'center',
           font: 'bold 16px Arial Rounded MT',
@@ -111,10 +116,10 @@ function init() {
        */
       {
         // a mouseover highlights the link by changing the first main path shape's stroke:
-        mouseEnter: function (e, link) {
+        mouseEnter: function(e, link) {
           link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
         },
-        mouseLeave: function (e, link) {
+        mouseLeave: function(e, link) {
           link.elt(0).stroke = "transparent";
         }
       }
@@ -146,7 +151,8 @@ function init() {
     {
       Name: "Application",
       color: "blue",
-      figure: "RoundedRectangle"
+      figure: "RoundedRectangle",
+      dateToday: today2
     },
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
@@ -156,19 +162,37 @@ function init() {
     properties: {
       // Application properties - properties window
       "Name": {},
-      "Version": { show: Inspector.showIfNode },
-      "Description": { show: Inspector.showIfNode },
-      "COTS": { show: Inspector.showIfNode },
-      "Release date": { show: Inspector.showIfNode },
-      "Shutdown date": { show: Inspector.showIfNode },
+      "Version": {
+        show: Inspector.showIfNode
+      },
+      "Description": {
+        show: Inspector.showIfNode
+      },
+      "State": {
+        show: Inspector.showIfNode,
+        type: "select",
+        choices: function(node, propName) {
+          if (Array.isArray(node.data.choices)) return node.data.choices;
+          return ["COTS", "Propietary", "Undefined"];
+        }
+      },
+      "Release date": {
+        show: Inspector.showIfNode,
+        type: "date"
+      },
+      "Shutdown date": {
+        show: Inspector.showIfNode,
+        type: "date"
+      },
       "color": {
         type: 'color'
       },
+      "dateToday": {}
     }
   });
 
   // This function is for to show or hide the inspector
-  myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
+  myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
     let selectedPart = myDiagram.selection.first();
 
     if (selectedPart == null) {
