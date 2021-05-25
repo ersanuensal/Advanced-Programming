@@ -154,12 +154,8 @@ function init() {
     {
       Name: "Application",
       color: "blue",
-<<<<<<< Updated upstream
       figure: "Subroutine",
       dateToday: today2
-=======
-      figure: "Subroutine"
->>>>>>> Stashed changes
     },
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
