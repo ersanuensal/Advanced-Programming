@@ -13,7 +13,7 @@ function init() {
         "clickCreatingTool.archetypeNodeData": {
           Name: "Application",
           color: "blue",
-          figure: "RoundedRectangle",
+          figure: "Subroutine",
           dateToday: today2
 
 
@@ -29,10 +29,13 @@ function init() {
         locationSpot: go.Spot.Center
       },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
-      $(go.Shape, "Circle", {
+      $(go.Shape, "Subroutine", {
+          width: 200,
+          height: 100,
+          margin: 4,
           fill: "#29292a",
           stroke: "gray",
-          strokeWidth: 4,
+          strokeWidth: 3.5,
           portId: "",
           fromLinkable: true,
           toLinkable: true,
@@ -151,7 +154,7 @@ function init() {
     {
       Name: "Application",
       color: "blue",
-      figure: "RoundedRectangle",
+      figure: "Subroutine",
       dateToday: today2
     },
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
