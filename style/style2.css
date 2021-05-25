@@ -69,6 +69,11 @@
   margin-top: 3vh;
   margin-left: 75vw;
   z-index: 2;
-  font-size: 500px;
+
+
+}
+
+
+.inspector input {
 
 }
