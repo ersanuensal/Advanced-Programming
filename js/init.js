@@ -94,16 +94,67 @@ function init() {
 
       // Link Label
 
-      $(go.TextBlock,
-        {
-          editable: true,
-          textAlign: 'center',
-          font: 'bold 16px Arial Rounded MT',
-          segmentOffset: new go.Point(0, -10),
-          segmentOrientation: go.Link.OrientUpright,
-        },
-        new go.Binding("stroke", "color"),
-        new go.Binding("text", "Name").makeTwoWay()
+      // $(go.TextBlock,
+      //   {
+      //     editable: true,
+      //     textAlign: 'center',
+      //     font: 'bold 16px Arial Rounded MT',
+      //     segmentOffset: new go.Point(0, -10),
+      //     segmentOrientation: go.Link.OrientUpright,
+      //   },
+      //   new go.Binding("stroke", "color"),
+      //   new go.Binding("text", "Name").makeTwoWay()
+      // ),
+
+
+      $(go.Panel, "Auto",  // this whole Panel is a link label
+        $(go.Shape, "RoundedRectangle",
+          { fill: 'white', stroke: "#eeeeee", strokeWidth: 3 }
+        ),
+        $(go.Panel, "Table",
+          { margin: 8, stretch: go.GraphObject.Fill },
+          $(go.RowColumnDefinition, { row: 0, sizing: go.RowColumnDefinition.None }),
+          $(go.TextBlock,
+            {
+              row: 0,
+              alignment: go.Spot.Center,
+              margin: new go.Margin(3, 24, 3, 2),  // leave room for Button
+              font: "bold 16px sans-serif"
+            },
+            new go.Binding("text", "name")
+          ),
+          $("PanelExpanderButton", "HIDEN",  // the name of the element whose visibility this button toggles
+            { row: 0, alignment: go.Spot.TopRight }
+          ),
+          $(go.Panel, "Table",
+            { name: "HIDEN", row: 1 },
+            $(go.RowColumnDefinition,
+              { row: 1, separatorStrokeWidth: 1.5, separatorStroke: "#eeeeee" }
+            ),
+            $(go.TextBlock,
+              {
+                row: 0,
+                alignment: go.Spot.Left,
+                margin: new go.Margin(15, 10, 10, 10),  // leave room for Button
+                font: "bold 13px sans-serif",
+                wrap: go.TextBlock.WrapFit,
+                textAlign: "left",
+                width: 120
+              },
+              new go.Binding("text", "description")
+            ),
+            $(go.Panel, "Vertical",
+              {
+                row: 1,
+                padding: 3,
+                alignment: go.Spot.TopLeft,
+                defaultAlignment: go.Spot.Left,
+                stretch: go.GraphObject.Horizontal,
+                itemArray: [{ name: "Personal Data:", figure: "Decision", color: "red" }]
+              },
+            )
+          )
+        )
       ),
 
       /**
@@ -151,21 +202,23 @@ function init() {
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
-  var inspector = new Inspector('myInspectorDiv', myDiagram, {
-    includesOwnProperties: false,
-    properties: {
-      // Application properties - properties window
-      "Name": {},
-      "Version": { show: Inspector.showIfNode },
-      "Description": { show: Inspector.showIfNode },
-      "COTS": { show: Inspector.showIfNode },
-      "Release date": { show: Inspector.showIfNode },
-      "Shutdown date": { show: Inspector.showIfNode },
-      "color": {
-        type: 'color'
-      },
+  var inspector = new Inspector('myInspectorDiv', myDiagram,
+    {
+      includesOwnProperties: false,
+      properties:
+      {
+        // Application properties - properties window
+        "name": {},
+        "Version": { show: Inspector.showIfNode },
+        "description": {},
+        "COTS": { show: Inspector.showIfNode },
+        "Release date": { show: Inspector.showIfNode },
+        "Shutdown date": { show: Inspector.showIfNode },
+        "color": { type: 'color' },
+        "personal data?": { type: "checkbox", show: Inspector.showIfLink }
+      }
     }
-  });
+  );
 
   // This function is for to show or hide the inspector
   myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
