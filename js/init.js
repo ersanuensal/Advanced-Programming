@@ -160,6 +160,8 @@ function init() {
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
+
+
   var inspector = new Inspector('myInspectorDiv', myDiagram, {
     includesOwnProperties: false,
     properties: {
