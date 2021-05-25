@@ -2,16 +2,21 @@ function init() {
 
   // short form for defining templates
   var $ = go.GraphObject.make;
+  const today = new Date();
+  var today2 = today.toLocaleDateString();
+
 
   var myDiagram =
     $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
       {
         // create new node with doube click
-        "clickCreatingTool.archetypeNodeData":
-        {
+        "clickCreatingTool.archetypeNodeData": {
           Name: "Application",
           color: "blue",
-          figure: "RoundedRectangle"
+          figure: "Subroutine",
+          dateToday: today2
+
+
         },
         // function redo and undo
         "undoManager.isEnabled": true
@@ -20,15 +25,17 @@ function init() {
 
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
-    $(go.Node, "Auto",
-      {
-        locationSpot: go.Spot.Center
-      },
+    $(go.Node, "Auto", {
+      locationSpot: go.Spot.Center
+    },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
-      $(go.Shape, "Circle", {
+      $(go.Shape, "Subroutine", {
+        width: 200,
+        height: 100,
+        margin: 4,
         fill: "#29292a",
         stroke: "gray",
-        strokeWidth: 4,
+        strokeWidth: 3.5,
         portId: "",
         fromLinkable: true,
         toLinkable: true,
@@ -51,19 +58,21 @@ function init() {
         verticalAlignment: go.Spot.Center,
         margin: 10
       },
-        new go.Binding("text", "Name").makeTwoWay())
+        new go.Binding("text", "Name").makeTwoWay()
+      )
+
+
     );
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
-    $(go.Link,
-      {
-        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-        curve: go.Link.Bezier,
-        relinkableFrom: true,
-        relinkableTo: true,
-        reshapable: true
-      },
+    $(go.Link, {
+      toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
+      curve: go.Link.Bezier,
+      relinkableFrom: true,
+      relinkableTo: true,
+      reshapable: true
+    },
       new go.Binding("stroke", "color"),
       // Link shape
 
@@ -74,11 +83,10 @@ function init() {
         toShortLength: 8
       }),
 
-      $(go.Shape,
-        { // the real drwan path default
-          isPanelMain: true,
-          strokeWidth: 4
-        },
+      $(go.Shape, { // the real drwan path default
+        isPanelMain: true,
+        strokeWidth: 4
+      },
         new go.Binding("stroke", "color")
       ),
 
@@ -90,6 +98,7 @@ function init() {
       },
         new go.Binding("stroke", "color"),
         new go.Binding("fill", "color")
+
       ),
 
       // Link Label
@@ -121,7 +130,7 @@ function init() {
               margin: new go.Margin(3, 24, 3, 2),  // leave room for Button
               font: "bold 16px sans-serif"
             },
-            new go.Binding("text", "name")
+            new go.Binding("text", "Name")
           ),
           $("PanelExpanderButton", "HIDEN",  // the name of the element whose visibility this button toggles
             { row: 0, alignment: go.Spot.TopRight }
@@ -141,7 +150,7 @@ function init() {
                 textAlign: "left",
                 width: 120
               },
-              new go.Binding("text", "description")
+              new go.Binding("text", "Description")
             ),
             $(go.Panel, "Vertical",
               {
@@ -156,7 +165,6 @@ function init() {
           )
         )
       ),
-
       /**
        * Handling mouse events (mouseover the Link)
        */
@@ -197,25 +205,45 @@ function init() {
     {
       Name: "Application",
       color: "blue",
-      figure: "RoundedRectangle"
+      figure: "Subroutine",
+      dateToday: today2
     },
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
+
   var inspector = new Inspector('myInspectorDiv', myDiagram,
     {
       includesOwnProperties: false,
-      properties:
-      {
+      properties: {
         // Application properties - properties window
-        "name": {},
-        "Version": { show: Inspector.showIfNode },
-        "description": {},
-        "COTS": { show: Inspector.showIfNode },
-        "Release date": { show: Inspector.showIfNode },
-        "Shutdown date": { show: Inspector.showIfNode },
-        "color": { type: 'color' },
-        "personal data?": { type: "checkbox", show: Inspector.showIfLink }
+        "Name": {},
+        "Version": {
+          show: Inspector.showIfNode
+        },
+        "Description": {
+          // show: Inspector.showIfNode
+        },
+        "State": {
+          show: Inspector.showIfNode,
+          type: "select",
+          choices: function (node, propName) {
+            if (Array.isArray(node.data.choices)) return node.data.choices;
+            return ["COTS", "Propietary", "Undefined"];
+          }
+        },
+        "Release date": {
+          show: Inspector.showIfNode,
+          type: "date"
+        },
+        "Shutdown date": {
+          show: Inspector.showIfNode,
+          type: "date"
+        },
+        "color": {
+          type: 'color'
+        },
+        "dateToday": { show: Inspector.showIfNode }
       }
     }
   );
