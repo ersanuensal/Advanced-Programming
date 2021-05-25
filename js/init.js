@@ -243,7 +243,11 @@ function init() {
         "color": {
           type: 'color'
         },
-        "dateToday": { show: Inspector.showIfNode }
+        "dateToday": { show: Inspector.showIfNode },
+        "personal data?": {
+          show: Inspector.showIfLink,
+          type: "checkbox"
+        }
       }
     }
   );
