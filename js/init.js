@@ -196,6 +196,7 @@ function init() {
         wrappingColumn: 1,
         cellSize: new go.Size(2, 2)
       }),
+
     });
 
   // now add the initial contents of the Palette
@@ -263,6 +264,20 @@ function init() {
     }
   });
 
+  myDiagram.model = new go.TreeModel([  // specify the contents of the Palette
+{"Name" : "test", key : "1"}
+          ]);
+var dataObj = myDiagram.model.findNodeDataForKey("1");
+myDiagram.model.set(dataObj, "Name");
+
 }
+
+
+function save () {
+
+  //file = myDiagram.model.toJSON();
+  window.alert(myDiagram.model.toJson());
+}
+
 
 window.addEventListener('DOMContentLoaded', init);
