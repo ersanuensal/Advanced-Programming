@@ -22,6 +22,9 @@
   },
   "dependencies": {
     "gojs": "^2.1.39",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "mongo": "^0.1.0",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.11"
   }
 }
