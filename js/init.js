@@ -12,6 +12,11 @@ function init() {
         // create new node with doube click
         "clickCreatingTool.archetypeNodeData": {
           Name: "Application",
+          Version: "",
+          Description: "",
+          State: "",
+          "Release date": "",
+          "Shutdown date": "",
           color: "blue",
           figure: "Subroutine",
           dateToday: today2
@@ -219,6 +224,11 @@ function init() {
     // { Name: "Rectangle", color: "red", figure: "Rectangle" },
     {
       Name: "Application",
+      Version: "",
+      Description: "",
+      State: "",
+      "Release date": "",
+      "Shutdown date": "",
       color: "blue",
       figure: "Subroutine",
       dateToday: today2
@@ -260,7 +270,7 @@ function init() {
       "dateToday": {
         show: Inspector.showIfNode
       },
-      "personal data?": {
+      "PersonalData": {
         show: Inspector.showIfLink,
         type: "checkbox"
       }
@@ -281,11 +291,6 @@ function init() {
 }
 
 
-function save() {
-
-  //file = myDiagram.model.toJSON();
-  window.alert(myDiagram.model.toJson());
-}
 
 
 

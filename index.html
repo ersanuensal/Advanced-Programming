@@ -12,6 +12,7 @@
   <link rel='stylesheet' href='./node_modules/gojs/extensions/DataInspector.css' />
   <script src="./node_modules/gojs/extensions/DataInspector.js"></script>
   <script src="./js/init.js"></script>
+  <script src="./js/export.js"></script>
 
 </head>
 
@@ -26,8 +27,10 @@
     <div id="myInspectorDiv" class="inspector"></div>
 
   </div>
-  <button id="savedModel" onclick="save()">Save</button>
-
+  <div>
+    <button id="savedModel" onclick="save()">Export DataObj</button>
+    <!--<textarea id="mySavedModel" style="width:100%;height:200px"></textarea>-->
+  </div>
 </body>
 
 </html>
