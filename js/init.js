@@ -31,7 +31,7 @@ function init() {
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
     $(go.Node, "Auto", {
-        locationSpot: go.Spot.Center
+        locationSpot: go.Spot.Center,
       },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Subroutine", {
@@ -275,6 +275,8 @@ function init() {
         type: "checkbox"
       }
     }
+
+
   });
 
   // This function is for to show or hide the inspector
@@ -288,10 +290,24 @@ function init() {
     }
   });
 
+  //multiline();
+
 }
 
 
+function multiline() {
 
+  // var input = document.getElementById('myInspectorDiv').querySelectorAll('td')[5].children;
+
+  // var line = document.getElementById("myInspectorDiv").tabindex;
+var x = document.getElementById('myInspectorDiv');
+x.querySelectorAll('td')[5].children.querySelector('input').defaultValue = "Hallo";
+
+// input.parentNode.replaceChild(textarea, input);
+
+  console.log("Hallo");
+
+}
 
 
 
