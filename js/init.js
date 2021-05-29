@@ -3,7 +3,7 @@ function init() {
   // short form for defining templates
   var $ = go.GraphObject.make;
   const today = new Date();
-  var today2 = today.toLocaleDateString();
+  today2 = today.toISOString().split('T')[0];
 
 
   myDiagram =
@@ -15,11 +15,11 @@ function init() {
           Version: "",
           Description: "",
           State: "",
-          "Release date": "",
+          Release: "",
           "Shutdown date": "",
           color: "blue",
           figure: "Subroutine",
-          dateToday: today2
+          dateToday: ""
 
 
         },
@@ -49,7 +49,7 @@ function init() {
           fromLinkableSelfNode: false,
           toLinkableSelfNode: false //disabling links from a node to it self
         },
-        new go.Binding("stroke", "color"),
+        new go.Binding("stroke", "color").makeTwoWay(),
         new go.Binding("figure")),
       //    new go.Binding("fill", "color")),
       $(go.TextBlock, {
@@ -63,11 +63,14 @@ function init() {
           verticalAlignment: go.Spot.Center,
           margin: 10
         },
-        new go.Binding("text", "Name").makeTwoWay()
+        new go.Binding("text", "Name").makeTwoWay(),
+
       )
 
 
     );
+
+
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
@@ -92,7 +95,7 @@ function init() {
           isPanelMain: true,
           strokeWidth: 4
         },
-        new go.Binding("stroke", "color")
+        new go.Binding("stroke", "color").makeTwoWay()
       ),
 
       // Link arrowhead
@@ -101,8 +104,9 @@ function init() {
           toArrow: "Standard",
           scale: 1.5
         },
-        new go.Binding("stroke", "color"),
-        new go.Binding("fill", "color")
+        new go.Binding("stroke", "color").makeTwoWay(),
+        new go.Binding("fill", "color").makeTwoWay(),
+
 
       ),
 
@@ -227,11 +231,11 @@ function init() {
       Version: "",
       Description: "",
       State: "",
-      "Release date": "",
-      "Shutdown date": "",
+      Release: "",
+      Shutdown: "",
       color: "blue",
       figure: "Subroutine",
-      dateToday: today2
+      dateToday: "",
     },
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
@@ -256,25 +260,53 @@ function init() {
           return ["COTS", "Propietary", "Undefined"];
         }
       },
-      "Release date": {
+      "Release": {
         show: Inspector.showIfNode,
         type: "date"
       },
-      "Shutdown date": {
+      "Shutdown": {
         show: Inspector.showIfNode,
         type: "date"
       },
       "color": {
-        type: 'color'
-      },
-      "dateToday": {
-        show: Inspector.showIfNode
+        type: 'color',
       },
       "PersonalData": {
         show: Inspector.showIfLink,
         type: "checkbox"
       }
     }
+
+
+  });
+
+  myDiagram.addDiagramListener("ChangingSelection", function(diagramEvent) {
+
+      myDiagram.commit(function(d) { // this Diagram
+
+        // iterate over all nodes in Diagram
+        d.nodes.each(function(node) {
+
+
+          if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
+            node.data.color = "red";
+          } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === ""  && node.data.Release != "")) {
+            node.data.color = "green";
+          } else if (node.data.Release > today2) {
+            node.data.color = "orange";
+          } else {
+            node.data.color = "blue";
+          }
+
+          if (node.data.Shutdown < node.data.Release && node.data.Shutdown >= "0000-00-00") {
+            node.data.Shutdown = "0000-00-00";
+          }
+
+
+
+        });
+
+      });
 
 
   });
@@ -287,8 +319,13 @@ function init() {
       document.getElementById("myInspectorDiv").style.display = "none";
     } else {
       document.getElementById("myInspectorDiv").style.display = "initial";
+
     }
+
+
   });
+
+
 
   //multiline();
 
@@ -300,15 +337,23 @@ function multiline() {
   // var input = document.getElementById('myInspectorDiv').querySelectorAll('td')[5].children;
 
   // var line = document.getElementById("myInspectorDiv").tabindex;
-var x = document.getElementById('myInspectorDiv');
-x.querySelectorAll('td')[5].children.querySelector('input').defaultValue = "Hallo";
+  var x = document.getElementById('myInspectorDiv');
+  x.querySelectorAll('td')[5].children.querySelector('input').defaultValue = "Hallo";
 
-// input.parentNode.replaceChild(textarea, input);
+  // input.parentNode.replaceChild(textarea, input);
 
   console.log("Hallo");
 
 }
 
+
+function showData() {
+
+  var json = myDiagram.model.toJson();
+
+  console.log(json);
+
+}
 
 
 window.addEventListener('DOMContentLoaded', init);

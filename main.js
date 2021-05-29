@@ -9,21 +9,21 @@ const path = require('path')
 var mongo = require('mongoose');
 var mongourl = "mongodb://app:Adv4nc3d-Pr0gr4mm1ng@46.101.207.27:27017/advpro"
 
-mongo.connect(mongourl);
-
-mongo.connection.once('open', function() {
-  console.log('connected to Database');
-}).on('error', function(error) {
-  console.log('error is', error);
-});
-const Cat = mongo.model('Cat', {
-  name: String
-});
-
-const kitty = new Cat({
-  name: 'Zildjian'
-});
-kitty.save().then(() => console.log('meow'));
+// mongo.connect(mongourl);
+//
+// mongo.connection.once('open', function() {
+//   console.log('connected to Database');
+// }).on('error', function(error) {
+//   console.log('error is', error);
+// });
+// const Cat = mongo.model('Cat', {
+//   name: String
+// });
+//
+// const kitty = new Cat({
+//   name: 'Zildjian'
+// });
+// kitty.save().then(() => console.log('meow'));
 
 
 
