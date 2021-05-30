@@ -280,36 +280,7 @@ function init() {
 
   });
 
-  myDiagram.addDiagramListener("ChangingSelection", function(diagramEvent) {
 
-      myDiagram.commit(function(d) { // this Diagram
-
-        // iterate over all nodes in Diagram
-        d.nodes.each(function(node) {
-
-          
-          if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
-            node.data.color = "red";
-          } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === ""  && node.data.Release != "")) {
-            node.data.color = "green";
-          } else if (node.data.Release > today2) {
-            node.data.color = "orange";
-          } else {
-            node.data.color = "blue";
-          }
-
-          if (node.data.Shutdown < node.data.Release && node.data.Shutdown >= "0000-00-00") {
-            node.data.Shutdown = "0000-00-00";
-          }
-
-
-
-        });
-
-      });
-
-
-  });
 
   // This function is for to show or hide the inspector
   myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
@@ -321,6 +292,32 @@ function init() {
       document.getElementById("myInspectorDiv").style.display = "initial";
 
     }
+
+    myDiagram.commit(function(d) { // this Diagram
+
+      // iterate over all nodes in Diagram
+      d.nodes.each(function(node) {
+
+
+        if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
+          node.data.color = "red";
+        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === ""  && node.data.Release != "")) {
+          node.data.color = "green";
+        } else if (node.data.Release > today2) {
+          node.data.color = "orange";
+        } else {
+          node.data.color = "blue";
+        }
+
+        if (node.data.Shutdown < node.data.Release && node.data.Shutdown >= "0000-00-00") {
+          node.data.Shutdown = "0000-00-00";
+        }
+
+
+
+      });
+
+    });
 
 
   });
