@@ -16,7 +16,7 @@ function init() {
           Description: "",
           State: "",
           Release: "",
-          "Shutdown date": "",
+          Shutdown: "",
           color: "blue",
           figure: "Subroutine",
           dateToday: ""
@@ -287,7 +287,7 @@ function init() {
         // iterate over all nodes in Diagram
         d.nodes.each(function(node) {
 
-
+          
           if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
             node.data.color = "red";
           } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === ""  && node.data.Release != "")) {
