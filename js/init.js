@@ -171,7 +171,8 @@ function init() {
                 textAlign: "left",
                 width: 120
               },
-              new go.Binding("text", "Description")
+              new go.Binding("text", "Description"),
+              new go.Binding("text", "PersonalData")
             ),
             $(go.Panel, "Vertical", {
               row: 1,
@@ -301,7 +302,7 @@ function init() {
 
         if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
           node.data.color = "red";
-        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === ""  && node.data.Release != "")) {
+        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
           node.data.color = "green";
         } else if (node.data.Release > today2) {
           node.data.color = "orange";
@@ -312,6 +313,8 @@ function init() {
         if (node.data.Shutdown < node.data.Release && node.data.Shutdown >= "0000-00-00") {
           node.data.Shutdown = "0000-00-00";
         }
+
+
 
 
 
