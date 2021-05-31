@@ -252,6 +252,7 @@ function init() {
       },
       "Description": {
         // show: Inspector.showIfNode
+        type: "field"
       },
       "State": {
         show: Inspector.showIfNode,
@@ -269,9 +270,9 @@ function init() {
         show: Inspector.showIfNode,
         type: "date"
       },
-      "color": {
-        type: 'color',
-      },
+      // "color": {
+      //   type: 'color',
+      // },
       "PersonalData": {
         show: Inspector.showIfLink,
         type: "checkbox"
@@ -291,32 +292,25 @@ function init() {
       document.getElementById("myInspectorDiv").style.display = "none";
     } else {
       document.getElementById("myInspectorDiv").style.display = "initial";
-
     }
 
     myDiagram.commit(function(d) { // this Diagram
 
       // iterate over all nodes in Diagram
       d.nodes.each(function(node) {
-
-
         if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
-          node.data.color = "red";
+          myDiagram.model.setDataProperty(node.data, "color", "red")
         } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
-          node.data.color = "green";
+          myDiagram.model.setDataProperty(node.data, "color", "green")
         } else if (node.data.Release > today2) {
-          node.data.color = "orange";
+          myDiagram.model.setDataProperty(node.data, "color", "orange")
         } else {
-          node.data.color = "blue";
+          myDiagram.model.setDataProperty(node.data, "color", "blue")
         }
 
         if (node.data.Shutdown < node.data.Release && node.data.Shutdown >= "0000-00-00") {
           node.data.Shutdown = "0000-00-00";
         }
-
-
-
-
 
       });
 
@@ -333,17 +327,11 @@ function init() {
 
 
 function multiline() {
-
-  // var input = document.getElementById('myInspectorDiv').querySelectorAll('td')[5].children;
-
-  // var line = document.getElementById("myInspectorDiv").tabindex;
-  var x = document.getElementById('myInspectorDiv');
-  x.querySelectorAll('td')[5].children.querySelector('input').defaultValue = "Hallo";
-
-  // input.parentNode.replaceChild(textarea, input);
-
-  console.log("Hallo");
-
+  const el = document.querySelector("#myInspectorDiv > table > tbody > tr:nth-child(3) > td:nth-child(2) > input");
+  const type = el.nodeName.toLowerCase();
+  const rpl = document.createElement(type === 'input' ? 'textarea' : 'input');
+  rpl.id = 'foo';
+  el.parentNode.replaceChild(rpl, el);
 }
 
 

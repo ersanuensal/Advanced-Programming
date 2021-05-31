@@ -9,8 +9,8 @@ const path = require('path')
 var mongo = require('mongoose');
 var mongourl = "mongodb://app:Adv4nc3d-Pr0gr4mm1ng@46.101.207.27:27017/advpro"
 
-// mongo.connect(mongourl);
-//
+mongo.connect(mongourl);
+
 // mongo.connection.once('open', function() {
 //   console.log('connected to Database');
 // }).on('error', function(error) {

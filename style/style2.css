@@ -33,6 +33,7 @@
   width: 8vw;
   min-width: 230px;
   position: absolute;
+  z-index: 1;
 
 
 }
@@ -73,6 +74,28 @@
 
 }
 
+.Descriptor {
+  position: absolute;
+  margin-top: 20vh;
+  margin-left: 75vw;
+  z-index: 2;
+  align-items: center;
+}
+
+.descripted {
+  margin: auto;
+  color: black;
+}
+
+.inspector textarea {
+  background-color: #424242; /* Grey 800 */
+  color: #F5F5F5; /* Grey 100 */
+  font: bold 12px helvetica, sans-serif;
+  border: 0px;
+  padding: 2px;
+  min-height: 10vh;
+  width: 170px;
+}
 
 .inspector input {
 
