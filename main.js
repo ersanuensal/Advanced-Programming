@@ -21,7 +21,7 @@ mongo.connect(mongourl);
 // });
 //
 // const kitty = new Cat({
-//   name: 'Zildjian'
+//   name: 'TEST'
 // });
 // kitty.save().then(() => console.log('meow'));
 

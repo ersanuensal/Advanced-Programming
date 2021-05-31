@@ -320,19 +320,8 @@ function init() {
   });
 
 
-
-  //multiline();
-
 }
 
-
-function multiline() {
-  const el = document.querySelector("#myInspectorDiv > table > tbody > tr:nth-child(3) > td:nth-child(2) > input");
-  const type = el.nodeName.toLowerCase();
-  const rpl = document.createElement(type === 'input' ? 'textarea' : 'input');
-  rpl.id = 'foo';
-  el.parentNode.replaceChild(rpl, el);
-}
 
 
 function showData() {
