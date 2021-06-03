@@ -4,27 +4,7 @@ const {
   Menu
 } = require('electron')
 const path = require('path')
-
-//establishing connection to MongoDB
-var mongo = require('mongoose');
-var mongourl = "mongodb://app:Adv4nc3d-Pr0gr4mm1ng@46.101.207.27:27017/advpro"
-
-mongo.connect(mongourl);
-
-// mongo.connection.once('open', function() {
-//   console.log('connected to Database');
-// }).on('error', function(error) {
-//   console.log('error is', error);
-// });
-// const Cat = mongo.model('Cat', {
-//   name: String
-// });
-//
-// const kitty = new Cat({
-//   name: 'TEST'
-// });
-// kitty.save().then(() => console.log('meow'));
-
+require('./app.js')
 
 
 function createWindow() {
@@ -37,8 +17,9 @@ function createWindow() {
   })
   win.webContents.openDevTools()
 
-  win.loadFile('index.html')
+  win.loadURL(`http://localhost:3000/`)
 }
+
 
 app.whenReady().then(() => {
   createWindow()

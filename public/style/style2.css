@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body {
+
+
+  background: ghostwhite;
+  background-repeat: no-repeat;
+  display: fixed;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.centercontainer {
+  margin-top: 60px;
+  margin-bottom: auto;
+  margin-left: 60px;
+  margin-right: auto;
+  height: 93.89vh;
+  width: 100vh;
+}
+
+.palette {
+
+  background: ghostwhite;
+  border: solid 3px darkgrey;
+  border-top-left-radius: 2rem;
+  height: 70vh;
+  width: 8vw;
+  min-width: 230px;
+  position: absolute;
+  z-index: 1;
+
+
+}
+
+.overview {
+
+  background: ghostwhite;
+  border: solid 2px darkgrey;
+  border-bottom-left-radius: 2rem;
+  height: 20vh;
+  width: 8vw;
+  min-width: 230px;
+  position: absolute;
+  margin-top: 70vh;
+
+}
+
+.diagram {
+
+  border: solid 2px darkgrey;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  height: 90%;
+  width: 80vw;
+  position: absolute;
+  margin-left: 230px;
+
+
+}
+
+.inspector {
+
+  position: absolute;
+  margin-top: 3vh;
+  margin-left: 75vw;
+  z-index: 2;
+
+
+}
+
+.Descriptor {
+  position: absolute;
+  margin-top: 20vh;
+  margin-left: 75vw;
+  z-index: 2;
+  align-items: center;
+}
+
+.descripted {
+  margin: auto;
+  color: black;
+}
+
+.inspector textarea {
+  background-color: #424242; /* Grey 800 */
+  color: #F5F5F5; /* Grey 100 */
+  font: bold 12px helvetica, sans-serif;
+  border: 0px;
+  padding: 2px;
+  min-height: 10vh;
+  width: 170px;
+}
