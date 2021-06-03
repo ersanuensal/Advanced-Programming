@@ -308,8 +308,9 @@ function init() {
           myDiagram.model.setDataProperty(node.data, "color", "blue")
         }
 
-        if (node.data.Shutdown < node.data.Release && node.data.Shutdown >= "0000-00-00") {
+        if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
           node.data.Shutdown = "0000-00-00";
+		  myDiagram.model.setDataProperty(node.data, "color", "green")
         }
 
       });
