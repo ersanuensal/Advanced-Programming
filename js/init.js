@@ -253,7 +253,7 @@ function init() {
         // show: Inspector.showIfNode
         type: "field"
       },
-      "State": {
+      "COTS": {
         show: Inspector.showIfNode,
         type: "select",
         choices: function (node, propName) {
