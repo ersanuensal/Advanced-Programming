@@ -79,7 +79,17 @@ function init() {
       curve: go.Link.Bezier,
       relinkableFrom: true,
       relinkableTo: true,
-      reshapable: true
+      reshapable: true,
+      /**
+       * Handling mouse events (mouseover the Link)
+       */
+      // a mouseover highlights the link by changing the first main path shape's stroke:
+      mouseEnter: function (e, link) {
+        link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
+      },
+      mouseLeave: function (e, link) {
+        link.elt(0).stroke = "transparent";
+      }
     },
       new go.Binding("stroke", "Color"),
       // Link shape
@@ -113,6 +123,9 @@ function init() {
       ),
 
       // Link Label
+      /*
+      link label is not just a simple text, it#s a node like object
+      */
 
       $(go.Panel, "Auto", // this whole Panel is a link label
         $(go.Shape, "RoundedRectangle",
@@ -127,12 +140,13 @@ function init() {
             margin: 8,
             stretch: go.GraphObject.Fill
           },
-          $(go.TextBlock, {
-            row: 0,
-            alignment: go.Spot.Center,
-            margin: new go.Margin(3, 24, 3, 2), // leave room for Button
-            font: "bold 16px sans-serif"
-          },
+          $(go.TextBlock,
+            {
+              row: 0,
+              alignment: go.Spot.Center,
+              margin: new go.Margin(3, 24, 3, 2), // leave room for Button
+              font: "bold 16px sans-serif"
+            },
             new go.Binding("text", "Name")
           ),
           $("PanelExpanderButton", "HIDEN", // the name of the element whose visibility this button toggles
@@ -141,21 +155,25 @@ function init() {
               alignment: go.Spot.TopRight
             }
           ),
-          $(go.RowColumnDefinition, {
-            row: 1,
-            separatorStrokeWidth: 1.5,
-            separatorStroke: "#eeeeee"
-          }),
-          $(go.Panel, "Table", {
-            name: "HIDEN",
-            width: 150,
-            row: 1
-          },
-            $(go.RowColumnDefinition, {
+          $(go.RowColumnDefinition,
+            {
               row: 1,
               separatorStrokeWidth: 1.5,
               separatorStroke: "#eeeeee"
             }),
+          $(go.Panel, "Table",
+            {
+              name: "HIDEN",
+              width: 150,
+              row: 1
+            },
+            $(go.RowColumnDefinition,
+              {
+                row: 1,
+                separatorStrokeWidth: 1.5,
+                separatorStroke: "#eeeeee"
+              }
+            ),
             $(go.TextBlock,
               {
                 row: 0,
@@ -167,6 +185,8 @@ function init() {
               },
               new go.Binding("text", "Description"),
             ),
+
+            /**personal Data: true or false*/
             $(go.TextBlock,
               {
                 row: 1,
@@ -187,19 +207,7 @@ function init() {
             ),
           )
         )
-      ),
-      /**
-       * Handling mouse events (mouseover the Link)
-       */
-      {
-        // a mouseover highlights the link by changing the first main path shape's stroke:
-        mouseEnter: function (e, link) {
-          link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
-        },
-        mouseLeave: function (e, link) {
-          link.elt(0).stroke = "transparent";
-        }
-      }
+      )
     );
 
 
@@ -310,7 +318,7 @@ function init() {
 
         if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
           node.data.Shutdown = "0000-00-00";
-		  myDiagram.model.setDataProperty(node.data, "color", "green")
+          myDiagram.model.setDataProperty(node.data, "color", "green")
         }
 
       });
