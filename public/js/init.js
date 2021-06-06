@@ -2,8 +2,10 @@ function init() {
 
   // short form for defining templates
   var $ = go.GraphObject.make;
-  const today = new Date();
-  today2 = today.toISOString().split('T')[0];
+//  const today = new Date();
+  today2 = getTodayTime();
+
+  console.log(today2);
 
 
   myDiagram =

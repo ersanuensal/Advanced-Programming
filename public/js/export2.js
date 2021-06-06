@@ -47,7 +47,10 @@ function save2() {
   }
 
   //  console.log(str);
+  var filename = "";
 
-  download(str, pe);
+  filename += getTodayTime() + "_" + "PersonalData.csv";
+
+  download(str, filename);
 
 }
