@@ -3,7 +3,7 @@ function init() {
   // short form for defining templates
   var $ = go.GraphObject.make;
 //  const today = new Date();
-  today2 = getTodayTime();
+  today2 = getTodayTime().split('T')[0];
 
 //  console.log(today2);
 

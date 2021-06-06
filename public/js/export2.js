@@ -49,7 +49,7 @@ function save2() {
   //  console.log(str);
   var filename = "";
 
-  filename += getTodayTime() + "_" + "PersonalData.csv";
+  filename += getTodayTime().split(".")[0] + "_" + "PersonalData.csv";
 
   download(str, filename);
 
