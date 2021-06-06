@@ -5,7 +5,7 @@ function init() {
 //  const today = new Date();
   today2 = getTodayTime();
 
-  console.log(today2);
+//  console.log(today2);
 
 
   myDiagram =
