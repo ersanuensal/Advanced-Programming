@@ -1,7 +1,9 @@
 (
-  function() {
+  function () {
     "use strict";
     const path = require('path');
+
+
 
     let express = require('express');
 
@@ -15,21 +17,28 @@
       useUnifiedTopology: true
     });
 
-    mongo.connection.once('open', function() {
+    mongo.connection.once('open', function () {
       console.log('Connected to Database');
-    }).on('error', function(error) {
+    }).on('error', function (error) {
       console.log('error is', error);
     });
 
 
     app.use(express.static(__dirname + '/public'));
 
-    app.get('/', function(req, res) {
+    app.get('/', function (req, res) {
       res.sendFile(path.join(__dirname + '/index.html'));
       console.log("testing express")
 
     });
-    let server = app.listen(3000, function() {
+
+    /**
+     * when the user wants o import existing application from a csv file
+     */
+    const csvReader = require('./routes/readFromExcel');
+    app.use('/importAppsFromCsv', csvReader);
+
+    let server = app.listen(3000, function () {
       console.log('Express server listening on port ' + server.address().port);
     });
     module.exports = app;
