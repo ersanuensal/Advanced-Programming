@@ -1,19 +1,4 @@
-function download(str, pe) {
-
-  var filename = "";
-  const todaydate = new Date();
-
-  var datetoday = todaydate.toLocaleDateString();
-
-  console.log(datetoday);
-
-  var res = datetoday.split(".");
-
-  if (pe == false) {
-    filename += res[2] + "-" + res[1] + "-" + res[0] + "-" + "DataObj.csv";
-  } else if (pe == true) {
-    filename += res[2] + "-" + res[1] + "-" + res[0] + "-" + "PersonalData.csv";
-  }
+function download(str, filename) {
 
   var blob = new Blob([str], {
     type: 'text/csv;charset=utf-8;'

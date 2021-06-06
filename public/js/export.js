@@ -37,7 +37,11 @@ function save() {
     str += "\n";
   }
 
-  download(str, pe);
+  var filename = "";
+
+  filename += getTodayTime() + "_" + "DataObj.csv";
+
+  download(str, filename);
   //  console.log(str);
 
 }
