@@ -16,14 +16,12 @@ function init() {
           Name: "Application",
           Version: "",
           Description: "",
-          State: "",
+          COTS: "",
           Release: "",
           Shutdown: "",
           color: "blue",
           figure: "Subroutine",
           dateToday: ""
-
-
         },
         // function redo and undo
         "undoManager.isEnabled": true
@@ -240,7 +238,7 @@ function init() {
       Name: "Application",
       Version: "",
       Description: "",
-      State: "",
+      COTS: "",
       Release: "",
       Shutdown: "",
       color: "blue",
@@ -268,7 +266,7 @@ function init() {
         type: "select",
         choices: function (node, propName) {
           if (Array.isArray(node.data.choices)) return node.data.choices;
-          return ["COTS", "Propietary", "Undefined"];
+          return ["COTS", "Proprietary", "Undefined"];
         }
       },
       "Release": {
