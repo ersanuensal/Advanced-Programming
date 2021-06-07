@@ -39,7 +39,7 @@ function save() {
 
   var filename = "";
 
-  filename += getTodayTime() + "_" + "DataObj.csv";
+  filename += getTodayTime().split(".")[0] + "_" + "DataObj.csv";
 
   download(str, filename);
   //  console.log(str);
