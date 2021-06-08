@@ -30,17 +30,17 @@ const upload = multer({ storage: storage });
 router.post('/', upload.single('inpFile'), function (req, res) {
     const filePath = req.file.path;
 
-    const workbook = reader.readFile(filePath);
-    const worksheet = workbook.Sheets["Applications"];
-
-    const applications = reader.utils.sheet_to_json(worksheet);
+    const workbook = reader.readFile(filePath, { sheetRows: 100 });
+    const worksheet = workbook.Sheets['Applications'];
+    const data = reader.utils.sheet_to_json(worksheet, { raw: false });
 
     res.send({
         status: 'ok',
-        data: applications
+        data: data
     });
 
     fs.unlinkSync(req.file.path);
+
     /**
      * read from csv
      */
