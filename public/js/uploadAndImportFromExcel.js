@@ -5,7 +5,7 @@ uploadForm.addEventListener('submit', async function (e) {
 
     const inpFile = document.getElementById('inpFile');
 
-    const endPoint = "/importAppsFromCsv";
+    const endPoint = "/importAppsFromExcel";
     const formData = new FormData();
 
     formData.append("inpFile", inpFile.files[0]);

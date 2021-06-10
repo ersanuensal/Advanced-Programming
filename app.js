@@ -35,8 +35,8 @@
     /**
      * when the user wants o import existing application from a csv file
      */
-    const csvReader = require('./routes/readFromExcel');
-    app.use('/importAppsFromCsv', csvReader);
+    const excelReader = require('./routes/importAppsFromExcel');
+    app.use('/importAppsFromExcel', excelReader);
 
     let server = app.listen(3000, function () {
       console.log('Express server listening on port ' + server.address().port);
