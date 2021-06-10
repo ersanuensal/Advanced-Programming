@@ -1,5 +1,7 @@
-function init() {
+// import { Node } = from  '../../models/Node.js';
 
+
+function init() {
   // short form for defining templates
   var $ = go.GraphObject.make;
 //  const today = new Date();
@@ -248,6 +250,9 @@ function init() {
     // { Name: "Triangle", color: "purple", figure: "Triangle" },
   ];
 
+function generateObjects() {
+New
+};
 
   var inspector = new Inspector('myInspectorDiv', myDiagram, {
     includesOwnProperties: false,
