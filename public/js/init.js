@@ -289,6 +289,21 @@ New
       "PersonalData": {
         show: Inspector.showIfLink,
         type: "checkbox"
+      },
+      "LoadPreset": {
+        show: Inspector.showIfLink,
+        type: "select",
+        choices: function (link, propName) {
+          if (Array.isArray(link.data.choices)) return link.data.choices;
+          var array = reuseDataObj();
+          if (!array.length) {
+            var test = "NULL";
+            console.log("No DataObj available!");
+          } else {
+            var test = array[0].name;
+          }
+          return [test, "Proprietary", "Undefined"];
+        }
       }
     }
 
@@ -300,7 +315,12 @@ New
   // This function is for to show or hide the inspector
   myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
     let selectedPart = myDiagram.selection.first();
-
+    var array = reuseDataObj();
+    if (!array.length) {
+      console.log("No DataObj available!");
+    } else {
+      console.log(array[0].name);
+    }
     if (selectedPart == null) {
       document.getElementById("myInspectorDiv").style.display = "none";
     } else {
