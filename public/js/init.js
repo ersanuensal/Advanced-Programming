@@ -1,9 +1,10 @@
 function init() {
-
   // short form for defining templates
   var $ = go.GraphObject.make;
 //  const today = new Date();
   today2 = getTodayTime().split('T')[0];
+
+  nodeList = [];
 
 //  console.log(today2);
 
@@ -284,6 +285,21 @@ function init() {
       "PersonalData": {
         show: Inspector.showIfLink,
         type: "checkbox"
+      },
+      "LoadPreset": {
+        show: Inspector.showIfLink,
+        type: "select",
+        choices: function (link, propName) {
+          if (Array.isArray(link.data.choices)) return link.data.choices;
+          var array = reuseDataObj();
+          if (!array.length) {
+            var test = "NULL";
+            console.log("No DataObj available!");
+          } else {
+            var test = array[0].name;
+          }
+          return [test, "Proprietary", "Undefined"];
+        }
       }
     }
 
@@ -294,17 +310,22 @@ function init() {
 
   // This function is for to show or hide the inspector
   myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
+    nodeList = [];
     let selectedPart = myDiagram.selection.first();
-
+    var array = reuseDataObj();
+    if (!array.length) {
+      // console.log("No DataObj available!");
+    } else {
+      // console.log(array[0].name);
+    }
     if (selectedPart == null) {
       document.getElementById("myInspectorDiv").style.display = "none";
     } else {
       document.getElementById("myInspectorDiv").style.display = "initial";
     }
 
-    myDiagram.commit(function (d) { // this Diagram
 
-      // iterate over all nodes in Diagram
+    myDiagram.commit(function (d) {
       d.nodes.each(function (node) {
         if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
           myDiagram.model.setDataProperty(node.data, "color", "red")
@@ -321,6 +342,11 @@ function init() {
           myDiagram.model.setDataProperty(node.data, "color", "green")
         }
 
+
+        var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location)
+        nodeList.push(nodeObj);
+        document.getElementById('uploadData').value = JSON.stringify(nodeList);
+
       });
 
     });
@@ -330,8 +356,6 @@ function init() {
 
 
 }
-
-
 
 function showData() {
 

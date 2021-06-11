@@ -1,49 +1,18 @@
-var mongoose = require('mongoose');
+module.exports = class Node {
 
-var Schema = mongoose.Schema;
+  constructor(Name, Version, Description, COTS, Release, Shutdown, color, figure, key, location) {
 
-var NodeSchema = new Schema({
-  Name: {
-    type: String
-  },
-  Version: {
-    type: String
-  },
-  Description: {
-    type: String
-  },
-  COTS: {
-    type: String,
-    required: true,
-    enum: ['COTS', 'Proprietary', 'Undefined'],
-    default: 'Undefined'
-  },
-  Release: {
-    type: Date
-  },
-  Shutdown: {
-    type: Date
-  },
-  color: {
-    type: String,
-    required: true,
-    enum: ['blue', 'green', 'red', 'orange'],
-    default: 'blue'
-  },
-  figure: {
-    type: String,
-    required: true,
-    enum: ['Subroutine'],
-    default: 'Subroutine'
-  },
-  key: {
-    type: Number,
-    required: true
-  },
-  location: {
-    type: String,
-    required: true
+    this.Name = Name;
+    this.Version = Version;
+    this.Description = Description;
+    this.COTS = COTS;
+    this.Release = Release;
+    this.Shutdown = Shutdown;
+    this.color = color;
+    this.figure = figure;
+    this.key = key;
+    this.location = location;
+
   }
-});
 
-module.exports = mongoose.model('Node', NodeSchema)
+}
