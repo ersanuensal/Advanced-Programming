@@ -1,4 +1,4 @@
-export class Node {
+module.exports = class Node {
 
   constructor(Name, Version, Description, COTS, Release, Shutdown, color, figure, key, location) {
 

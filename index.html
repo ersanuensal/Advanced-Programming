@@ -18,6 +18,7 @@
   <script src="./js/todayTime.js"></script>
   <script src="./js/uploadAndImportFromExcel.js" defer></script>
   <script src="./js/reuse.js" defer></script>
+  <script src="./js/classes/Node.js"></script>
 </head>
 
 <body class="body">
@@ -50,11 +51,10 @@
   </div>
 
   <div>
-    <button id="saveToDatabase" onclick="saveToDatabase()"> Save to Database </button>
-  </div>
-
-  <div>
-    <button id="loadFromDatabase" onclick="loadFromDatabase()"> Load from Database </button>
+    <form action="/upload" method="post">
+       <input type="hidden" id="uploadData" name="uploadData">
+      <input type="submit" value="Submit">
+    </form>
   </div>
   <div>
     <button id="x" onclick="reuseDataObj()"> Test </button>

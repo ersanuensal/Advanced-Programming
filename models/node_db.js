@@ -14,7 +14,6 @@ var NodeSchema = new Schema({
   },
   COTS: {
     type: String,
-    required: true,
     enum: ['COTS', 'Proprietary', 'Undefined'],
     default: 'Undefined'
   },
@@ -46,4 +45,4 @@ var NodeSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Node', NodeSchema)
+module.exports = mongoose.model('Nodedb', NodeSchema)
