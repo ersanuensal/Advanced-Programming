@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-
 var LinkSchema = new Schema({
   from: {
     type: Number,
@@ -25,4 +24,4 @@ var LinkSchema = new Schema({
 
 
 
-module.exports = mongoose.model('link', LinkSchema);
+module.exports = mongoose.model('Linkdb', LinkSchema);

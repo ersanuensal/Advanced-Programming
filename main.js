@@ -6,10 +6,6 @@ const {
 const path = require('path')
 require('./app.js')
 
-// const Node = require('./models/Node.js');
-//
-// const n1 = new Node("test", "testversion", "test1", "Cots", "Release", "Shutdown", "color", "figure", "key", "location");
-// console.log(n1.Name);
 
 function createWindow() {
   const win = new BrowserWindow({

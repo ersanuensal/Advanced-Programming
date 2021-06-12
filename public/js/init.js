@@ -1,12 +1,13 @@
 function init() {
   // short form for defining templates
   var $ = go.GraphObject.make;
-//  const today = new Date();
+  //  const today = new Date();
   today2 = getTodayTime().split('T')[0];
 
   nodeList = [];
+  linkList = [];
 
-//  console.log(today2);
+  //  console.log(today2);
 
 
   myDiagram =
@@ -32,38 +33,38 @@ function init() {
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
     $(go.Node, "Auto", {
-      locationSpot: go.Spot.Center,
-    },
+        locationSpot: go.Spot.Center,
+      },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Subroutine", {
-        width: 200,
-        height: 100,
-        margin: 4,
-        fill: "#29292a",
-        stroke: "gray",
-        strokeWidth: 3.5,
-        portId: "",
-        fromLinkable: true,
-        toLinkable: true,
-        fromLinkableDuplicates: false,
-        toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
-        fromLinkableSelfNode: false,
-        toLinkableSelfNode: false //disabling links from a node to it self
-      },
+          width: 200,
+          height: 100,
+          margin: 4,
+          fill: "#29292a",
+          stroke: "gray",
+          strokeWidth: 3.5,
+          portId: "",
+          fromLinkable: true,
+          toLinkable: true,
+          fromLinkableDuplicates: false,
+          toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
+          fromLinkableSelfNode: false,
+          toLinkableSelfNode: false //disabling links from a node to it self
+        },
         new go.Binding("stroke", "color").makeTwoWay(),
         new go.Binding("figure")),
       //    new go.Binding("fill", "color")),
       $(go.TextBlock, {
-        margin: new go.Margin(5, 5, 3, 5),
-        font: "bold 16pt sans-serif",
-        stroke: 'ghostwhite',
-        minSize: new go.Size(32, 32),
-        maxSize: new go.Size(120, NaN),
-        textAlign: "center",
-        editable: true,
-        verticalAlignment: go.Spot.Center,
-        margin: 10
-      },
+          margin: new go.Margin(5, 5, 3, 5),
+          font: "bold 16pt sans-serif",
+          stroke: 'ghostwhite',
+          minSize: new go.Size(32, 32),
+          maxSize: new go.Size(120, NaN),
+          textAlign: "center",
+          editable: true,
+          verticalAlignment: go.Spot.Center,
+          margin: 10
+        },
         new go.Binding("text", "Name").makeTwoWay(),
 
       )
@@ -76,36 +77,33 @@ function init() {
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
     $(go.Link, {
-      toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-      curve: go.Link.Bezier,
-      relinkableFrom: true,
-      relinkableTo: true,
-      reshapable: true,
-      /**
-       * Handling mouse events (mouseover the Link)
-       */
-      // a mouseover highlights the link by changing the first main path shape's stroke:
-      mouseEnter: function (e, link) {
-        link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
+        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
+        curve: go.Link.Bezier,
+        relinkableFrom: true,
+        relinkableTo: true,
+        reshapable: true,
+        /**
+         * Handling mouse events (mouseover the Link)
+         */
+        // a mouseover highlights the link by changing the first main path shape's stroke:
+        mouseEnter: function(e, link) {
+          link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
+        },
+        mouseLeave: function(e, link) {
+          link.elt(0).stroke = "transparent";
+        }
       },
-      mouseLeave: function (e, link) {
-        link.elt(0).stroke = "transparent";
-      }
-    },
       new go.Binding("stroke", "Color"),
       // Link shape
 
-      $(go.Shape,
-        { // thick undrawn path make it easier the click the link
-          isPanelMain: true,
-          stroke: "transparent",
-          strokeWidth: 8,
-          toShortLength: 8
-        }
-      ),
+      $(go.Shape, { // thick undrawn path make it easier the click the link
+        isPanelMain: true,
+        stroke: "transparent",
+        strokeWidth: 8,
+        toShortLength: 8
+      }),
 
-      $(go.Shape,
-        { // the real drwan path default
+      $(go.Shape, { // the real drwan path default
           isPanelMain: true,
           strokeWidth: 4
         },
@@ -114,8 +112,7 @@ function init() {
 
       // Link arrowhead
 
-      $(go.Shape,
-        { // make the arrowhead more visibile and clear by scaling it
+      $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
           toArrow: "Standard",
           scale: 1.5
         },
@@ -129,20 +126,16 @@ function init() {
       */
 
       $(go.Panel, "Auto", // this whole Panel is a link label
-        $(go.Shape, "RoundedRectangle",
-          {
-            fill: 'white',
-            stroke: "#eeeeee",
-            strokeWidth: 3
-          }
-        ),
-        $(go.Panel, "Table",
-          {
+        $(go.Shape, "RoundedRectangle", {
+          fill: 'white',
+          stroke: "#eeeeee",
+          strokeWidth: 3
+        }),
+        $(go.Panel, "Table", {
             margin: 8,
             stretch: go.GraphObject.Fill
           },
-          $(go.TextBlock,
-            {
+          $(go.TextBlock, {
               row: 0,
               alignment: go.Spot.Center,
               margin: new go.Margin(3, 24, 3, 2), // leave room for Button
@@ -156,27 +149,22 @@ function init() {
               alignment: go.Spot.TopRight
             }
           ),
-          $(go.RowColumnDefinition,
-            {
-              row: 1,
-              separatorStrokeWidth: 1.5,
-              separatorStroke: "#eeeeee"
-            }),
-          $(go.Panel, "Table",
-            {
+          $(go.RowColumnDefinition, {
+            row: 1,
+            separatorStrokeWidth: 1.5,
+            separatorStroke: "#eeeeee"
+          }),
+          $(go.Panel, "Table", {
               name: "HIDEN",
               width: 150,
               row: 1
             },
-            $(go.RowColumnDefinition,
-              {
-                row: 1,
-                separatorStrokeWidth: 1.5,
-                separatorStroke: "#eeeeee"
-              }
-            ),
-            $(go.TextBlock,
-              {
+            $(go.RowColumnDefinition, {
+              row: 1,
+              separatorStrokeWidth: 1.5,
+              separatorStroke: "#eeeeee"
+            }),
+            $(go.TextBlock, {
                 row: 0,
                 alignment: go.Spot.Left,
                 font: "bold 13px sans-serif",
@@ -188,17 +176,14 @@ function init() {
             ),
 
             /**personal Data: true or false*/
-            $(go.TextBlock,
-              {
-                row: 1,
-                alignment: go.Spot.Left,
-                margin: new go.Margin(3, 2, 3, 2),
-                font: "bold 13px sans-serif",
-                text: "Personal Data: "
-              }
-            ),
-            $(go.TextBlock,
-              {
+            $(go.TextBlock, {
+              row: 1,
+              alignment: go.Spot.Left,
+              margin: new go.Margin(3, 2, 3, 2),
+              font: "bold 13px sans-serif",
+              text: "Personal Data: "
+            }),
+            $(go.TextBlock, {
                 row: 1,
                 alignment: go.Spot.Right,
                 margin: new go.Margin(3, 2, 3, 2),
@@ -265,7 +250,7 @@ function init() {
       "COTS": {
         show: Inspector.showIfNode,
         type: "select",
-        choices: function (node, propName) {
+        choices: function(node, propName) {
           if (Array.isArray(node.data.choices)) return node.data.choices;
           return ["COTS", "Proprietary", "Undefined"];
         }
@@ -289,7 +274,7 @@ function init() {
       "LoadPreset": {
         show: Inspector.showIfLink,
         type: "select",
-        choices: function (link, propName) {
+        choices: function(link, propName) {
           if (Array.isArray(link.data.choices)) return link.data.choices;
           var array = reuseDataObj();
           if (!array.length) {
@@ -306,11 +291,10 @@ function init() {
 
   });
 
-
-
-  // This function is for to show or hide the inspector
-  myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
+  // Eventlistener for hiding the Inspector and trafficlight system
+  myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
     nodeList = [];
+    linkList = [];
     let selectedPart = myDiagram.selection.first();
     var array = reuseDataObj();
     if (!array.length) {
@@ -325,8 +309,14 @@ function init() {
     }
 
 
-    myDiagram.commit(function (d) {
-      d.nodes.each(function (node) {
+    myDiagram.commit(function(d) {
+      d.links.each(function(link) {
+        var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Color, link.data.PersonalData)
+        linkList.push(linkObj);
+        document.getElementById('uploadLinks').value = JSON.stringify(linkList);
+
+      });
+      d.nodes.each(function(node) {
         if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
           myDiagram.model.setDataProperty(node.data, "color", "red")
         } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
