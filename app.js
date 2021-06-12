@@ -27,20 +27,28 @@
 
 
     let app = express();
-
+    app.set('view engine', 'pug');
     app.use(express.static(__dirname + '/public'));
     app.use(bodyParser.urlencoded({ extended: false }))
 
     app.get('/', function(req, res) {
       res.sendFile(path.join(__dirname + '/index.html'));
-      console.log("Diagram request complete")
+      console.log("Diagram request complete");
     });
+
+    app.get('/download', async function(req, res) {
+      // res.redirect('/');
+    const nodesInDB = await NodeSchema.find({}, function(err, data) {});
+    const linksInDB = await LinkSchema.find({}, function(err, data) {});
+    //   NodeSchema.find({}, function(err, data){
+    //     res.render('index', {downloadData: data});
+    // });
+    res.render('index', {downloadData: nodesInDB, downloadLinks: linksInDB})
+    })
 
     app.post('/upload', function(req, res) {
       // upload Nodes to the Database
       var dataUpload = req.body.uploadData;
-
-
 
       if (dataUpload.length > 0) {
         const myObj = JSON.parse(dataUpload);

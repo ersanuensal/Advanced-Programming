@@ -6,6 +6,9 @@ function init() {
 
   nodeList = [];
   linkList = [];
+  downloadedData = [];
+  downloadedLinks = [];
+
 
   //  console.log(today2);
 
@@ -72,7 +75,23 @@ function init() {
 
     );
 
+    function loadDataFromDB() {
+      if (document.getElementById('downloadData').value != "") {
+        nodeArrayfromDB = JSON.parse(document.getElementById('downloadData').value)
+        for (var i = 0; i < nodeArrayfromDB.length; i++) {
+          downloadedData.push(nodeArrayfromDB[i]);
+        }
+        linkArrayfromDB = JSON.parse(document.getElementById('downloadLinks').value)
+        for (var i = 0; i < linkArrayfromDB.length; i++) {
+        downloadedLinks.push(linkArrayfromDB[i]);
+        }
 
+        myDiagram.model = new go.GraphLinksModel(downloadedData, downloadedLinks);
+
+
+      }
+    }
+    loadDataFromDB();
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
@@ -235,6 +254,9 @@ function init() {
   ];
 
 
+
+
+
   var inspector = new Inspector('myInspectorDiv', myDiagram, {
     includesOwnProperties: false,
     properties: {
@@ -287,9 +309,11 @@ function init() {
         }
       }
     }
-
-
   });
+
+
+
+
 
   // Eventlistener for hiding the Inspector and trafficlight system
   myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
@@ -339,6 +363,8 @@ function init() {
 
       });
 
+
+
     });
 
 
@@ -346,6 +372,11 @@ function init() {
 
 
 }
+
+
+
+
+
 
 function showData() {
 
