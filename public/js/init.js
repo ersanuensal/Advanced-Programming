@@ -298,17 +298,21 @@ function init() {
         type: "select",
         choices: function(link, propName) {
           if (Array.isArray(link.data.choices)) return link.data.choices;
-          var array = reuseDataObj();
-          if (!array.length) {
-            var test = "NULL";
+
+          if (!linkList.length) {
+
             console.log("No DataObj available!");
           } else {
-            var test = array[0].name;
+              return [linkList.forEach()];
+            }
+
+            }
+
           }
-          return [test, "Proprietary", "Undefined"];
+
         }
-      }
-    }
+
+
   });
 
 
@@ -320,8 +324,8 @@ function init() {
     nodeList = [];
     linkList = [];
     let selectedPart = myDiagram.selection.first();
-    var array = reuseDataObj();
-    if (!array.length) {
+
+    if (!linkList.length) {
       // console.log("No DataObj available!");
     } else {
       // console.log(array[0].name);
