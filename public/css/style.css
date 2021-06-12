@@ -4,17 +4,12 @@
   box-sizing: border-box;
 }
 
-
-
 body {
-
-
   background: ghostwhite;
   background-repeat: no-repeat;
   display: fixed;
   align-items: center;
   justify-content: center;
-
 }
 
 .centercontainer {
@@ -27,7 +22,6 @@ body {
 }
 
 .palette {
-
   background: ghostwhite;
   border: solid 3px darkgrey;
   border-top-left-radius: 2rem;
@@ -36,12 +30,9 @@ body {
   min-width: 230px;
   position: absolute;
   z-index: 1;
-
-
 }
 
 .overview {
-
   background: ghostwhite;
   border: solid 2px darkgrey;
   border-bottom-left-radius: 2rem;
@@ -50,11 +41,9 @@ body {
   min-width: 230px;
   position: absolute;
   margin-top: 70vh;
-
 }
 
 .diagram {
-
   border: solid 2px darkgrey;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
@@ -62,18 +51,13 @@ body {
   width: 80vw;
   position: absolute;
   margin-left: 230px;
-
-
 }
 
 .inspector {
-
   position: absolute;
   margin-top: 3vh;
   margin-left: 75vw;
   z-index: 2;
-
-
 }
 
 .Descriptor {
@@ -90,8 +74,10 @@ body {
 }
 
 .inspector textarea {
-  background-color: #424242; /* Grey 800 */
-  color: #F5F5F5; /* Grey 100 */
+  background-color: #424242;
+  /* Grey 800 */
+  color: #F5F5F5;
+  /* Grey 100 */
   font: bold 12px helvetica, sans-serif;
   border: 0px;
   padding: 2px;
@@ -103,7 +89,6 @@ body {
 Default CSS for the Data inspector
 see also: DataInspector.js, DataInspector.html
 */
-
 /*
   Grey color palette
   https://www.google.com/design/spec/style/color.html
@@ -117,12 +102,13 @@ see also: DataInspector.js, DataInspector.html
 /*   #616161; /* Grey 700 */
 /*   #424242; /* Grey 800 */
 /*   #212121; /* Grey 900 */
-
 .inspector {
   display: inline-block;
   font: bold 14px helvetica, sans-serif;
-  background-color: #212121; /* Grey 900 */
-  color: #F5F5F5; /* Grey 100 */
+  background-color: #212121;
+  /* Grey 900 */
+  color: #F5F5F5;
+  /* Grey 100 */
   cursor: default;
 }
 
@@ -136,16 +122,20 @@ see also: DataInspector.js, DataInspector.html
 }
 
 .inspector input {
-  background-color: #424242; /* Grey 800 */
-  color: #F5F5F5; /* Grey 100 */
+  background-color: #424242;
+  /* Grey 800 */
+  color: #F5F5F5;
+  /* Grey 100 */
   font: bold 12px helvetica, sans-serif;
   border: 0px;
   padding: 2px;
 }
 
 .inspector input:disabled {
-  background-color: #BDBDBD; /* Grey 400 */
-  color: #616161; /* Grey 700 */
+  background-color: #BDBDBD;
+  /* Grey 400 */
+  color: #616161;
+  /* Grey 700 */
 }
 
 .inspector select {

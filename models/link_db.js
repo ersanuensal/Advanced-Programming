@@ -14,11 +14,17 @@ var LinkSchema = new Schema({
   Name: {
     type: String
   },
+  Description: {
+    type: String
+  },
   Color: {
     type: String
   },
   PersonalData: {
     type: Boolean
+  },
+  LoadPreset: {
+    type: String
   }
 });
 

@@ -335,7 +335,7 @@ function init() {
 
     myDiagram.commit(function(d) {
       d.links.each(function(link) {
-        var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Color, link.data.PersonalData)
+        var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset)
         linkList.push(linkObj);
         document.getElementById('uploadLinks').value = JSON.stringify(linkList);
 

@@ -29,7 +29,9 @@
     let app = express();
     app.set('view engine', 'pug');
     app.use(express.static(__dirname + '/public'));
-    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.urlencoded({
+      extended: false
+    }))
 
     app.get('/', function(req, res) {
       res.sendFile(path.join(__dirname + '/index.html'));
@@ -38,12 +40,15 @@
 
     app.get('/download', async function(req, res) {
       // res.redirect('/');
-    const nodesInDB = await NodeSchema.find({}, function(err, data) {});
-    const linksInDB = await LinkSchema.find({}, function(err, data) {});
-    //   NodeSchema.find({}, function(err, data){
-    //     res.render('index', {downloadData: data});
-    // });
-    res.render('index', {downloadData: nodesInDB, downloadLinks: linksInDB})
+      const nodesInDB = await NodeSchema.find({}, function(err, data) {});
+      const linksInDB = await LinkSchema.find({}, function(err, data) {});
+      //   NodeSchema.find({}, function(err, data){
+      //     res.render('index', {downloadData: data});
+      // });
+      res.render('index', {
+        downloadData: nodesInDB,
+        downloadLinks: linksInDB
+      })
     })
 
     app.post('/upload', function(req, res) {
@@ -52,11 +57,11 @@
 
       if (dataUpload.length > 0) {
         const myObj = JSON.parse(dataUpload);
-        NodeSchema.deleteMany({}, function (err) {
-          if(err) console.log(err);
+        NodeSchema.deleteMany({}, function(err) {
+          if (err) console.log(err);
         });
-        LinkSchema.deleteMany({}, function (err) {
-          if(err) console.log(err);
+        LinkSchema.deleteMany({}, function(err) {
+          if (err) console.log(err);
         });
 
         for (var i = 0; i < myObj.length; i++) {
@@ -78,7 +83,7 @@
 
       if (dataUpload.length == 0) {
         console.log("Nothing to upload...")
-      }else {
+      } else {
         console.log("Data uploaded to the Database")
       }
     });
