@@ -24,7 +24,8 @@ var LinkSchema = new Schema({
     type: Boolean
   },
   LoadPreset: {
-    type: String
+    type: String,
+    default: 'Undefined'
   }
 });
 
