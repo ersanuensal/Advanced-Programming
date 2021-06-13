@@ -71,17 +71,4 @@
 //       console.log(reuseArray.length);
 //       return reuseArray;
 //
-
-
-
-function saveAsPreset() {
-
-  var preset = [];
-
-  for (var i = 0; i < linkList.length; i++) {
-    preset [i] = linkList[i];
-    return preset[i].Name;
-}
-
-
-}
+//   }
