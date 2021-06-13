@@ -8,6 +8,11 @@ function init() {
   linkList = [];
   downloadedData = [];
   downloadedLinks = [];
+  presetList = [];
+  loadcheck = false;
+  loadname = null;
+
+  reuseselected = null;
 
 
   //  console.log(today2);
@@ -291,6 +296,7 @@ function init() {
         },
         "PersonalData": {
           show: Inspector.showIfLink,
+          default: false,
           type: "checkbox"
         },
         "LoadPreset": {
@@ -346,6 +352,27 @@ function init() {
           linkList.push(linkObj);
           document.getElementById('uploadLinks').value = JSON.stringify(linkList);
 
+          if (loadcheck && reuseselected != null && reuseselected instanceof go.Link) {
+
+            if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
+              for (var i = 0; i < presetList.length; i++) {
+                if (loadname == presetList[i].Name) {
+                  //link.data.Name = presetList[i].Name;
+                  myDiagram.model.setDataProperty(link.data, "Name", presetList[i].Name);
+                  myDiagram.model.setDataProperty(link.data, "Description", presetList[i].Description);
+                  myDiagram.model.setDataProperty(link.data, "Color", presetList[i].Color);
+                  myDiagram.model.setDataProperty(link.data, "PersonalData", presetList[i].PersonalData);
+                  loadcheck = false;
+                  reuseselected = null;
+                }
+              }
+            }
+
+
+
+
+          }
+
         });
         d.nodes.each(function(node) {
           if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
@@ -375,6 +402,17 @@ function init() {
       });
 
 
+    });
+
+    myDiagram.addDiagramListener("ObjectSingleClicked",
+    function(e) {
+
+      var tz = true;
+      reuseselected = e.subject.part;
+
+      if (reuseselected instanceof go.Link) {
+        console.log("Clicked on " + reuseselected.data.Name);
+      }
     });
 
 

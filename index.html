@@ -20,6 +20,8 @@
   <script src="./js/reuse.js" defer></script>
   <script src="./js/classes/Node.js"></script>
   <script src="./js/classes/Link.js"></script>
+  <script src="./js/reuse2.js" defer></script>
+  <script src="./js/classes/Preset.js"></script>
 </head>
 
 <body class="body">
@@ -53,19 +55,58 @@
 
   <div>
     <form action="/upload" method="post">
-       <input type="hidden" id="uploadData" name="uploadData">
-       <input type="hidden" id="uploadLinks" name="uploadLinks">
+      <input type="hidden" id="uploadData" name="uploadData">
+      <input type="hidden" id="uploadLinks" name="uploadLinks">
       <input type="submit" value="Upload to Database" class="button">
     </form>
 
     <form action="/download" method="get">
-       <input type="hidden" id="downloadData" name="downloadData">
-       <input type="hidden" id="downloadLinks" name="downloadLinks">
+      <input type="hidden" id="downloadData" name="downloadData">
+      <input type="hidden" id="downloadLinks" name="downloadLinks">
       <input type="submit" value="Load from Database" class="button">
     </form>
-    </div>
+  </div>
   <div>
     <button id="x" onclick="reuseDataObj()"> Test </button>
+  </div>
+
+  <!-- Jan addet 13.06.21 -->
+  <div>
+    <button id="resave" onclick="asd(1)"> Save Preset </button>
+    <button id="reload" onclick="asdf(1)"> Load Preset </button>
+    <button id="reedit" onclick=""> Edit Preset </button>
+  </div>
+  <div></div>
+
+
+  <div class="form-popup" id="saveDataObj">
+    <form class="form-container" id="asd" action="">
+      <h1>Save a Preset</h1>
+
+      <label for="dataObjName" id="dataObjNameLabel"><b>Name</b></label>
+      <input type="text" placeholder="Enter Name" id="dataObjName" required>
+
+
+      <label for="email"><b>Description</b></label>
+      <input type="text" placeholder="Enter Description" id="dataObjDes" required>
+
+      <label for="email"><b>Color</b></label>
+      <input type="color" id="dataObjColor" value="#000000" required>
+
+      <label for="email"><b>PersonalData</b></label>
+      <input type="checkbox" id="dataObjPer">
+
+      <button type="button" class="btn" onclick="resave()">Save Preset</button>
+      <button type="button" class="btn cancel" onclick="asd(0)">Close</button>
+    </form>
+    <form class="form-container" id="asdf" action="">
+    <select id="selectNumber">
+      <option value="A">Select a preset:</option>
+    </select>
+
+    <button type="button" class="btn" onclick="reload()">Load Preset</button>
+    <button type="button" class="btn cancel" onclick="asdf(0)">Close</button>
+  </form>
   </div>
 
 </body>
