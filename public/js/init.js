@@ -78,6 +78,7 @@ function init() {
     function loadDataFromDB() {
       if (document.getElementById('downloadData').value != "") {
         nodeArrayfromDB = JSON.parse(document.getElementById('downloadData').value)
+        
         for (var i = 0; i < nodeArrayfromDB.length; i++) {
           downloadedData.push(nodeArrayfromDB[i]);
         }

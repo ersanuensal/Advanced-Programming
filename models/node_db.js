@@ -18,10 +18,10 @@ var NodeSchema = new Schema({
     default: 'Undefined'
   },
   Release: {
-    type: Date
+    type: String
   },
   Shutdown: {
-    type: Date
+    type: String
   },
   color: {
     type: String,
