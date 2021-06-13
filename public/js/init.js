@@ -75,32 +75,23 @@ function init() {
 
     );
 
-    // Function to initalize the loaded Data from Database
-    function loadDataFromDB() {
-      if (document.getElementById('downloadData').value != "") {
-        nodeArrayfromDB = JSON.parse(document.getElementById('downloadData').value)
-
-        // for each JSON object we load the JSON String in to their position in the Array
-        for (var i = 0; i < nodeArrayfromDB.length; i++) {
-          downloadedData.push(nodeArrayfromDB[i]);
-        }
-
-        linkArrayfromDB = JSON.parse(document.getElementById('downloadLinks').value)
-
-        // for each JSON object we load the JSON String in to their position in the Array
-        for (var i = 0; i < linkArrayfromDB.length; i++) {
-        downloadedLinks.push(linkArrayfromDB[i]);
-        }
-
-        // Generation a new Diagram with our downloaded Nodes and Links from Database with GoJS
-        myDiagram.model = new go.GraphLinksModel(downloadedData, downloadedLinks);
-
-
+  function loadDataFromDB() {
+    if (document.getElementById('downloadData').value != "") {
+      nodeArrayfromDB = JSON.parse(document.getElementById('downloadData').value)
+      for (var i = 0; i < nodeArrayfromDB.length; i++) {
+        downloadedData.push(nodeArrayfromDB[i]);
       }
-    }
+      linkArrayfromDB = JSON.parse(document.getElementById('downloadLinks').value)
+      for (var i = 0; i < linkArrayfromDB.length; i++) {
+        downloadedLinks.push(linkArrayfromDB[i]);
+      }
 
-    // trigger function
-    loadDataFromDB();
+      myDiagram.model = new go.GraphLinksModel(downloadedData, downloadedLinks);
+
+
+    }
+  }
+  loadDataFromDB();
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
@@ -267,145 +258,140 @@ function init() {
 
 
   var inspector = new Inspector('myInspectorDiv', myDiagram, {
-    includesOwnProperties: false,
-    properties: {
-      // Application properties - properties window
-      "Name": {},
-      "Version": {
-        show: Inspector.showIfNode
-      },
-      "Description": {
-        // show: Inspector.showIfNode
-        type: "field"
-      },
-      "COTS": {
-        show: Inspector.showIfNode,
-        type: "select",
-        choices: function(node, propName) {
-          if (Array.isArray(node.data.choices)) return node.data.choices;
-          return ["COTS", "Proprietary", "Undefined"];
-        }
-      },
-      "Release": {
-        show: Inspector.showIfNode,
-        type: "date"
-      },
-      "Shutdown": {
-        show: Inspector.showIfNode,
-        type: "date"
-      },
-      "Color": {
-        show: Inspector.showIfLink,
-        type: 'color',
-      },
-      "PersonalData": {
-        show: Inspector.showIfLink,
-        type: "checkbox"
-      },
-      "LoadPreset": {
-        show: Inspector.showIfLink,
-        type: "select",
-        choices: function(link, propName) {
-          if (Array.isArray(link.data.choices)) return link.data.choices;
-          var array = reuseDataObj();
-          if (!array.length) {
-            var test = "NULL";
-            console.log("No DataObj available!");
-          } else {
-            var test = array[0].name;
+      includesOwnProperties: false,
+      properties: {
+        // Application properties - properties window
+        "Name": {},
+        "Version": {
+          show: Inspector.showIfNode
+        },
+        "Description": {
+          // show: Inspector.showIfNode
+          type: "field"
+        },
+        "COTS": {
+          show: Inspector.showIfNode,
+          type: "select",
+          choices: function(node, propName) {
+            if (Array.isArray(node.data.choices)) return node.data.choices;
+            return ["COTS", "Proprietary", "Undefined"];
           }
-          return [test, "Proprietary", "Undefined"];
+        },
+        "Release": {
+          show: Inspector.showIfNode,
+          type: "date"
+        },
+        "Shutdown": {
+          show: Inspector.showIfNode,
+          type: "date"
+        },
+        "Color": {
+          show: Inspector.showIfLink,
+          type: 'color',
+        },
+        "PersonalData": {
+          show: Inspector.showIfLink,
+          type: "checkbox"
+        },
+        "LoadPreset": {
+          show: Inspector.showIfLink,
+          type: "select",
+          choices:
+          function(link, propName) {
+
+            var presetName = [];
+
+            for (var i = 0; i < linkList.length; i++) {
+
+              if (linkList[i].Name === link.data.Name) {
+
+              } else {
+                presetName [i] = linkList[i].Name;
+
+              }
+
+          };
+
+          return [presetName.toString()];
+
         }
+
+
+        }
+
+
+    }});
+
+
+
+
+
+    // Eventlistener for hiding the Inspector and trafficlight system
+    myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
+      nodeList = [];
+      linkList = [];
+      let selectedPart = myDiagram.selection.first();
+
+
+      if (selectedPart == null) {
+        document.getElementById("myInspectorDiv").style.display = "none";
+      } else {
+        document.getElementById("myInspectorDiv").style.display = "initial";
       }
-    }
-  });
 
 
+      myDiagram.commit(function(d) {
+        d.links.each(function(link) {
+          var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset)
+          linkList.push(linkObj);
+          document.getElementById('uploadLinks').value = JSON.stringify(linkList);
+
+        });
+        d.nodes.each(function(node) {
+          if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
+            myDiagram.model.setDataProperty(node.data, "color", "red")
+          } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
+            myDiagram.model.setDataProperty(node.data, "color", "green")
+          } else if (node.data.Release > today2) {
+            myDiagram.model.setDataProperty(node.data, "color", "orange")
+          } else {
+            myDiagram.model.setDataProperty(node.data, "color", "blue")
+          }
+
+          if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
+            node.data.Shutdown = "0000-00-00";
+            myDiagram.model.setDataProperty(node.data, "color", "green")
+          }
 
 
+          var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location)
+          nodeList.push(nodeObj);
+          document.getElementById('uploadData').value = JSON.stringify(nodeList);
 
-  // Eventlistener for changing selections
-  myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
-    // Clearing our Lists
-    nodeList = [];
-    linkList = [];
-
-    let selectedPart = myDiagram.selection.first();
-    var array = reuseDataObj();
-    if (!array.length) {
-      // console.log("No DataObj available!");
-    } else {
-      // console.log(array[0].name);
-    }
-    if (selectedPart == null) {
-      document.getElementById("myInspectorDiv").style.display = "none";
-    } else {
-      document.getElementById("myInspectorDiv").style.display = "initial";
-    }
+        });
 
 
-    myDiagram.commit(function(d) {
-      // iterating over the Links in our Diagram
-      d.links.each(function(link) {
-        // For each Link in our Diagram we generate a list of Links as Javascript classes (Link) and add it to our index.html
-        var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset)
-        // Then we add this object of class to our Array
-        linkList.push(linkObj);
-        // And then we set the list equal to the input in our index.html
-        document.getElementById('uploadLinks').value = JSON.stringify(linkList);
 
       });
-      // iterating over the nodes in our Diagram
-      d.nodes.each(function(node) {
-
-        // Trafficlight system colors depending on the Release and Shutdown dates
-        if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
-          myDiagram.model.setDataProperty(node.data, "color", "red")
-        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
-          myDiagram.model.setDataProperty(node.data, "color", "green")
-        } else if (node.data.Release > today2) {
-          myDiagram.model.setDataProperty(node.data, "color", "orange")
-        } else {
-          myDiagram.model.setDataProperty(node.data, "color", "blue")
-        }
-
-        // when the Shutdowndate is smaller than the release date the Shutdown date will be resetted
-        if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
-          node.data.Shutdown = "0000-00-00";
-          myDiagram.model.setDataProperty(node.data, "color", "green")
-        }
-
-        // For each Node in our Diagram we generate a Node as Javascript classes
-        var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location)
-        // Then we add this object of class to our Array
-        nodeList.push(nodeObj);
-        // And then we set the list equal to the input in our index.html
-        document.getElementById('uploadData').value = JSON.stringify(nodeList);
-
-      });
-
 
 
     });
 
 
-  });
-
-
-}
+  }
 
 
 
 
 
 
-function showData() {
+  function showData() {
 
-  var json = myDiagram.model.toJson();
+    var json = myDiagram.model.toJson();
 
-  console.log(json);
+    console.log(json);
 
-}
+  }
 
 
-window.addEventListener('DOMContentLoaded', init);
+  window.addEventListener('DOMContentLoaded', init);
