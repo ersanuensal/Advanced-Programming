@@ -13,7 +13,7 @@ body {
 }
 
 .centercontainer {
-  margin-top: 60px;
+  margin-top: 30px;
   margin-bottom: auto;
   margin-left: 60px;
   margin-right: auto;
@@ -149,8 +149,8 @@ see also: DataInspector.js, DataInspector.html
 }
 
 .bigselector{
-  height: 20vh;
-  width: 30vh;
+  height: 50vh;
+  width: 50vh;
   border: 3px solid black;
   border-radius: 10px;
   font-family: sans serif;
