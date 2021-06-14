@@ -29,6 +29,17 @@ const upload = multer({ storage: storage });
 router.post('/', upload.single('inpFile'), function (req, res) {
 
     const filePath = req.file.path;
+    let sheetsName = req.body.sheetsName;
+
+    const colNames = {
+        appName: req.body.appName,
+        appId: req.body.appId,
+        appDescription: req.body.appDescription,
+        appCOTS: req.body.appCOTS,
+        appReleaseDate: req.body.appReleaseDate,
+        appShutdownDatee: req.body.appShutdownDate
+    }
+
     const parsingOptions = {
         type: 'string',
         cellFormula: false,
@@ -38,16 +49,20 @@ router.post('/', upload.single('inpFile'), function (req, res) {
     };
 
     const workbook = XLSX.readFile(filePath, parsingOptions);
-    const worksheet = workbook.Sheets['Applications'];
+    let data = {};
 
-    const data = converSheetToJsonArray(worksheet);
-    // const data = json;
+    const allSheetNames = workbook.SheetNames;
 
+    const realSheetName = findSheetName(sheetsName, Object.values(allSheetNames));
+
+    if (realSheetName) {
+        const worksheet = workbook.Sheets[realSheetName];
+        data = converSheetToJsonArray(worksheet, getColIndex(colNames, worksheet));
+    }
 
     //  delete the file
     fs.unlinkSync(filePath);
 
-    //const data = XLSX.utils.sheet_to_json(worksheet);
 
     res.send({
         status: 'ok',
@@ -57,7 +72,46 @@ router.post('/', upload.single('inpFile'), function (req, res) {
 });
 
 
-const converSheetToJsonArray = function (ws) {
+const getColIndex = function (colNames, ws) {
+
+    const firstRow = [];
+    const { rows, cols } = getRowsAndCols(ws);
+    const colIndex = {}
+
+    for (let C = cols.start; C <= cols.end; C++) {
+        let cellRef = encodeCell(0, C);
+        if (ws[cellRef]) {
+            firstRow.push(ws[cellRef].v);
+        } else {
+            firstRow.push('');
+        }
+    }
+
+    for (const [key, value] of Object.entries(colNames)) {
+        for (let index = 0; index < firstRow.length; index++) {
+            if (firstRow[index].trim().toLowerCase() == value.trim().toLowerCase()) {
+                colIndex[key] = index;
+            }
+        }
+    }
+
+    return colIndex;
+}
+
+
+const findSheetName = function (name, allSheets) {
+
+    for (const sheet of allSheets) {
+        if (sheet.trim().toLowerCase() == name.trim().toLowerCase()) {
+            return sheet;
+        }
+    }
+    return false;
+}
+
+
+
+const converSheetToJsonArray = function (ws, colIndex) {
 
     /**
      * in this method we are going to go through the excel sheet cell by cell before converting it into array of Json objects,
@@ -71,30 +125,21 @@ const converSheetToJsonArray = function (ws) {
      */
 
     // getting the range of the sheet
-    const sheetrange_encoded = ws['!ref'];
-    // the range is encoded in format like A1:H21
-    const sheetrange_decoded = XLSX.utils.decode_range(sheetrange_encoded);
+    const { rows, cols } = getRowsAndCols(ws);
 
-    // get row and col range
-    cols = { start: sheetrange_decoded.s.c, end: sheetrange_decoded.e.c }
-    rows = { start: sheetrange_decoded.s.r, end: sheetrange_decoded.e.r }
-
-    // going through the cells one by one 
-    for (let R = rows.start; R < rows.end; R++) {
-        for (let C = cols.start; C < cols.end; C++) {
-            let cellRef = XLSX.utils.encode_cell({ c: C, r: R });
-            if (ws[cellRef]) { /**if the cell is defined/exists */
-                /**
-                 * check if cell is empty
-                 * if yes: assign undefined to this cell
-                 */
-                if ([null, undefined, ''].includes(ws[cellRef].v)) {
-                    ws[cellRef] = undefined
-                }
-            }
-        }
+    importantCols = {
+        KeyIndex: colIndex.appId,
+        nameIndex: colIndex.appName
     }
 
+    /**
+     * Delete each row which doesn't have Name or Key Column
+     */
+
+    ws = detectFalseApplications(ws, rows.start, Object.values(importantCols));
+
+
+    // converting to json
     const convertingOptions = {
         raw: false,
         range: ws['!ref'],
@@ -115,70 +160,64 @@ const converSheetToJsonArray = function (ws) {
 
 }
 
-const secondMethod = function (ws) {
 
-    const sheetrange_encoded = ws['!ref'];
-    const sheetrange_decoded = XLSX.utils.decode_range(sheetrange_encoded);
+const encodeCell = function (r, c) {
+    return XLSX.utils.encode_cell({ r: r, c: c });
+}
 
-    cols = { start: sheetrange_decoded.s.c, end: sheetrange_decoded.e.c }
-    rows = { start: sheetrange_decoded.s.r, end: sheetrange_decoded.e.r }
+const getRowsAndCols = function (ws) {
+    const sheetsRange = XLSX.utils.decode_range(ws['!ref']);
+    const cols = { start: sheetsRange.s.c, end: sheetsRange.e.c };
+    const rows = { start: sheetsRange.s.r, end: sheetsRange.e.r };
 
-    let result = `Cols: from ${cols.start} to ${cols.end} and rows from ${rows.start} to ${rows.end}`;
+    return { rows, cols };
+}
 
-    // first we have to find the index of Propretie names
-    const indexes = {
-        id: 0,
-        name: 1,
-        description: 2,
-        releaseDate: 3,
-        shutdownDate: 4,
-        cots: 7,
+const deleteRow = function (ws, rowIndex) {
+
+    let sheetsRangeDecoded = XLSX.utils.decode_range(ws["!ref"]);
+
+    for (var R = rowIndex; R <= sheetsRangeDecoded.e.r; ++R) {
+        for (var C = sheetsRangeDecoded.s.c; C <= sheetsRangeDecoded.e.c; ++C) {
+            ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)]
+        }
     }
+    sheetsRangeDecoded.e.r--
+    ws['!ref'] = XLSX.utils.encode_range(sheetsRangeDecoded.s, sheetsRangeDecoded.e);
+    return ws;
+}
 
-    const allApps = [];
 
-    for (let i = 1; i < rows.end; i++) {
+const detectFalseApplications = function (ws, row = 0, importantCols) {
 
-        let app = {};
-        let status = true;
-        // if a app doesn't have a name or date then skip the row
+    let rowDeleted = false;
+    const { rows, cols } = getRowsAndCols(ws);
 
-        app.id = getCellValue(ws[XLSX.utils.encode_cell({ r: i, c: indexes.id })]);
-        app.name = getCellValue(ws[XLSX.utils.encode_cell({ r: i, c: indexes.name })]);
-        app.description = getCellValue(ws[XLSX.utils.encode_cell({ r: i, c: indexes.description })]);
-        app.releaseDate = getCellValue(ws[XLSX.utils.encode_cell({ r: i, c: indexes.releaseDate })]);
-        app.shutdownDate = getCellValue(ws[XLSX.utils.encode_cell({ r: i, c: indexes.shutdownDate })]);
-        app.cots = getCellValue(ws[XLSX.utils.encode_cell({ r: i, c: indexes.cots })]);
-
-        for (const [key, value] of Object.entries(app)) {
-            if (value == undefined) {
-                if (['id', 'name'].includes(key)) {
-                    status = false;
+    while (row <= rows.end) {
+        for (let C = cols.start; C <= cols.end; ++C) {
+            let cellRef = encodeCell(row, C);;
+            if (!ws[cellRef] || [null, undefined, ''].includes(ws[cellRef].v)) {
+                if (importantCols.includes(C)) {
+                    ws = deleteRow(ws, row);
+                    rowDeleted = true;
+                    break;
                 } else {
-                    app[key] = null;
+                    ws[cellRef] = undefined
                 }
             }
         }
 
-        if (status) {
-            allApps.push(app);
+        if (!rowDeleted) {
+            row++;
+        } else {
+            rowDeleted = false;
+            rows.end--;
         }
+
     }
 
-    return allApps;
-
+    return ws;
 }
-
-const getCellValue = function (cell) {
-    if (cell) {
-        return cell.v;
-    }
-    else {
-        return undefined;
-    }
-}
-
-
 
 
 
