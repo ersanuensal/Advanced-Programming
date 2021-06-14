@@ -49,8 +49,8 @@ uploadForm.addEventListener('submit', async function (e) {
             Version: "",
             Description: app['Description'],
             COTS: "COTS",
-            Release: app['Release'],
-            Shutdown: app["Shutdown"],
+            Release: new Date(app['Release']).toISOString(),
+            Shutdown: app["Shutdown"] ? new Date(app["Shutdown"]).toISOString() : '',
             color: "blue",
             dateToday: ""
         };

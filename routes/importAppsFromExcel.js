@@ -120,6 +120,7 @@ const getColIndex = function (colNames, ws) {
 }
 
 
+
 const findSheetName = function (name, allSheets) {
 
     for (const sheet of allSheets) {
@@ -162,7 +163,7 @@ const converSheetToJsonArray = function (ws, colIndex) {
 
     // converting to json
     const convertingOptions = {
-        raw: true,
+        raw: false,
         range: ws['!ref'],
         blankrows: false
     }
@@ -200,7 +201,7 @@ const deleteRow = function (ws, rowIndex) {
 
     for (var R = rowIndex; R <= sheetsRangeDecoded.e.r; ++R) {
         for (var C = sheetsRangeDecoded.s.c; C <= sheetsRangeDecoded.e.c; ++C) {
-            ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)]
+            ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)];
         }
     }
     sheetsRangeDecoded.e.r--
