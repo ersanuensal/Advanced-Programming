@@ -149,8 +149,8 @@ const converSheetToJsonArray = function (ws, colIndex) {
     const { rows, cols } = getRowsAndCols(ws);
 
     importantCols = {
-        KeyIndex: colIndex.appId,
-        nameIndex: colIndex.appName
+        KeyIndex: colIndex.Key,
+        nameIndex: colIndex.Name
     }
 
     /**

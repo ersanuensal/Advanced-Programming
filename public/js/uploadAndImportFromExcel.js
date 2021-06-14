@@ -44,12 +44,13 @@ uploadForm.addEventListener('submit', async function (e) {
     for (const app of appsFromExcel) {
 
         const newApp = {
-            Name: app['Name Application'],
+            Key: app['Key'],
+            Name: app['Name'],
             Version: "",
             Description: app['Description'],
-            COTS: "",
-            Release: app['Start Date'],
-            Shutdown: "",
+            COTS: "COTS",
+            Release: app['Release'],
+            Shutdown: app["Shutdown"],
             color: "blue",
             dateToday: ""
         };
