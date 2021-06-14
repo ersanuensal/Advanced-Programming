@@ -27,21 +27,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/', upload.single('inpFile'), function (req, res) {
-
     const filePath = req.file.path;
     let sheetsName = req.body.sheetsName;
 
     const colNames = {
-        appName: req.body.appName,
-        appId: req.body.appId,
-        appDescription: req.body.appDescription,
-        appCOTS: req.body.appCOTS,
-        appReleaseDate: req.body.appReleaseDate,
-        appShutdownDatee: req.body.appShutdownDate
+        Name: req.body.appName,
+        Key: req.body.appId,
+        Description: req.body.appDescription,
+        COTS: req.body.appCOTS,
+        Release: req.body.appReleaseDate,
+        Shutdown: req.body.appShutdownDate
     }
 
     const parsingOptions = {
-        type: 'string',
+
         cellFormula: false,
         cellHTML: false,
         cellDates: true,
@@ -57,7 +56,9 @@ router.post('/', upload.single('inpFile'), function (req, res) {
 
     if (realSheetName) {
         const worksheet = workbook.Sheets[realSheetName];
-        data = converSheetToJsonArray(worksheet, getColIndex(colNames, worksheet));
+        const { newColNames, colIndex } = getColIndex(colNames, worksheet);
+        const json = converSheetToJsonArray(worksheet, colIndex);
+        data = mapColstoProp(json, newColNames);
     }
 
     //  delete the file
@@ -72,11 +73,30 @@ router.post('/', upload.single('inpFile'), function (req, res) {
 });
 
 
+const mapColstoProp = function (data, colNames) {
+
+    const allApps = [];
+    let newApp = {};
+
+    for (const obj of data) {
+
+        newApp = {};
+        for (const [key, value] of Object.entries(colNames)) {
+            newApp[key] = obj[value];
+        }
+        allApps.push(newApp);
+
+    }
+
+    return allApps;
+}
+
 const getColIndex = function (colNames, ws) {
 
     const firstRow = [];
     const { rows, cols } = getRowsAndCols(ws);
-    const colIndex = {}
+    const colIndex = {};
+    const newColNames = {};
 
     for (let C = cols.start; C <= cols.end; C++) {
         let cellRef = encodeCell(0, C);
@@ -91,11 +111,12 @@ const getColIndex = function (colNames, ws) {
         for (let index = 0; index < firstRow.length; index++) {
             if (firstRow[index].trim().toLowerCase() == value.trim().toLowerCase()) {
                 colIndex[key] = index;
+                newColNames[key] = firstRow[index];
             }
         }
     }
 
-    return colIndex;
+    return { newColNames, colIndex };
 }
 
 
@@ -141,7 +162,7 @@ const converSheetToJsonArray = function (ws, colIndex) {
 
     // converting to json
     const convertingOptions = {
-        raw: false,
+        raw: true,
         range: ws['!ref'],
         blankrows: false
     }
