@@ -1,0 +1,30 @@
+doctype html
+html(lang='de')
+  head
+    meta(charset='UTF-8')
+    title Application Landscape
+    meta(http-equiv='Content-Security-Policy', content="script-src 'self' 'unsafe-inline';")
+    link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
+    link(rel='stylesheet', href='./css/style.css')
+  body.grid
+    h1 Select the Diagram you want to work with: 
+    br 
+    br
+    div
+      select.bigselector(size="3")
+        option 1. Diagram
+        option 2. Diagram
+        option 3. Diagram
+    div
+      br
+      br
+    div
+      form.formstogether(action='/download', method='get')
+        input#downloadData(type='hidden', name='downloadData' value=downloadData)
+        input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
+        input.button(type='submit', value='Load ')
+      form.formstogether(action='/new', method='get')
+            input#downloadData(type='hidden', name='downloadData')
+            input#downloadLinks(type='hidden', name='downloadLinks')
+            input.button(type='submit', value='Create a new Diagram')
+    div

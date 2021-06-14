@@ -43,6 +43,12 @@
 
     // Initial controller for the Diagram
     app.get('/', function(req, res) {
+      // res.sendFile(path.join(__dirname + '/index.html'));
+      res.render('greeting', {})
+      console.log("Diagram request complete");
+    });
+
+    app.get('/new', function(req, res) {
       res.sendFile(path.join(__dirname + '/index.html'));
       console.log("Diagram request complete");
     });
