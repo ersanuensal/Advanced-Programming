@@ -29,6 +29,7 @@
     // Adding the Models to our server application
     var NodeSchema = require('./models/node_db');
     var LinkSchema = require('./models/link_db');
+    var DiagramSchema = require('./models/diagram_db');
 
     // Initialize express
     let app = express();
@@ -41,17 +42,66 @@
       extended: false
     }))
 
+
+
     // Initial controller for the Diagram
-    app.get('/', function(req, res) {
-      // res.sendFile(path.join(__dirname + '/index.html'));
-      res.render('greeting', {})
-      console.log("Diagram request complete");
+    app.get('/', async function(req, res) {
+      const diagramsList = await DiagramSchema.find({}, function(err, data) {});
+      res.render('greeting', {diagramsList: diagramsList})
+      console.log("Diagramlist loaded.")
     });
 
-    app.get('/new', function(req, res) {
-      res.sendFile(path.join(__dirname + '/index.html'));
-      console.log("Diagram request complete");
+    app.get('/new=:diagramName', async function(req, res) {
+      var newDiagram = req.params.diagramName;
+      var diagramObj = new Object({name: newDiagram});
+      const newDiagramInDB = new DiagramSchema(diagramObj);
+
+      newDiagramInDB.save();
+
+      const newDiagramID = await DiagramSchema.find({name: newDiagram}, function(err, data) {});
+
+      console.log("New Diagram with ID: " + newDiagramID[0]._id + " has been created.");
+
+      res.redirect('/edit=' + newDiagramID[0]._id);
+
     });
+
+    app.get('/edit=:diagramId', async function(req, res) {
+      var diagramId = req.params.diagramId;
+      const nodesInDB = await NodeSchema.find({diagramId: diagramId}, function(err, data) {});
+      const linksInDB = await LinkSchema.find({diagramId: diagramId}, function(err, data) {});
+
+      console.log("Diagram with ID: " + diagramId + " has been loaded.");
+
+
+      // We have to render the index with pug to pass the variables from the controller to html
+      res.render('index', {
+        downloadData: nodesInDB,
+        downloadLinks: linksInDB,
+        diagramId: diagramId
+      })
+
+    })
+
+    app.get('/delete=:diagramId', async function(req, res) {
+      var diagramId = req.params.diagramId;
+
+      // Clearing the Database
+      NodeSchema.deleteMany({diagramId: diagramId}, function(err) {
+        if (err) console.log(err);
+      });
+      LinkSchema.deleteMany({diagramId: diagramId}, function(err) {
+        if (err) console.log(err);
+      });
+      DiagramSchema.findByIdAndDelete(diagramId, function(err) {
+        if (err) console.log(err);
+      });
+
+      console.log("Diagram with ID: " + diagramId + " has been deleted.");
+
+      res.redirect('/');
+
+    })
 
     // Downloading Data from Database
     app.get('/download', async function(req, res) {
@@ -71,14 +121,15 @@
     app.post('/upload', function(req, res) {
       // upload Nodes to the Database
       var dataUpload = req.body.uploadData;
+      var diagramId = req.body.diagramId
 
       if (dataUpload.length > 0) {
         const myObj = JSON.parse(dataUpload);
         // Clearing the Database
-        NodeSchema.deleteMany({}, function(err) {
+        NodeSchema.deleteMany({diagramId: diagramId}, function(err) {
           if (err) console.log(err);
         });
-        LinkSchema.deleteMany({}, function(err) {
+        LinkSchema.deleteMany({diagramId: diagramId}, function(err) {
           if (err) console.log(err);
         });
 
@@ -104,7 +155,7 @@
       if (dataUpload.length == 0) {
         console.log("Nothing to upload...")
       } else {
-        console.log("Data uploaded to the Database")
+        console.log("Diagram with ID: " + diagramId + " has been updated.")
       }
     });
 

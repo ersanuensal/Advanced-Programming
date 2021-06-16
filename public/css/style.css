@@ -182,8 +182,44 @@ see also: DataInspector.js, DataInspector.html
 .formstogether{
   display:inline-block;
   margin-right:5px;
+  margin-bottom: 5px;
 }
-.formstogether input.button {
-  height: 50px;
-  font-size: 20px;
+
+modal {
+  display: grid;
+  margin-top 30%;
+}
+
+.modal-body {
+  display: grid;
+  place-items: center;
+  margin-top: 1%;
+}
+
+.CancelSubmit {
+  display:inline-block;
+  margin-right:5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* Style buttons */
+.imgbtn {
+ display: inline-block;
+ background-color: red; /* Blue background */
+ border: none; /* Remove borders */
+ color: white; /* White text */
+ padding: 6px 12px; /* Some padding */
+ font-size: 16px; /* Set a font size */
+ cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.imgbtn:hover {
+ background-color: RoyalBlue;
+}
+
+.inlinediv {
+    width:100%;
+    text-align: center;
 }

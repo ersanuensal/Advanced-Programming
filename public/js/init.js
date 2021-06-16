@@ -11,8 +11,10 @@ function init() {
   presetList = [];
   loadcheck = false;
   loadname = null;
+  diagramId = document.getElementById('diagramId').value
 
   reuseselected = null;
+
 
 
   //  console.log(today2);
@@ -97,6 +99,9 @@ function init() {
     }
   }
   loadDataFromDB();
+
+
+
 
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
@@ -321,14 +326,10 @@ function init() {
           return [presetName.toString()];
 
         }
-
-
-        }
-
-
-    }});
-
-
+      }
+    }
+  }
+);
 
 
 
@@ -348,7 +349,7 @@ function init() {
 
       myDiagram.commit(function(d) {
         d.links.each(function(link) {
-          var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset)
+          var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset, diagramId)
           linkList.push(linkObj);
           document.getElementById('uploadLinks').value = JSON.stringify(linkList);
 
@@ -391,7 +392,7 @@ function init() {
           }
 
 
-          var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location)
+          var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
           nodeList.push(nodeObj);
           document.getElementById('uploadData').value = JSON.stringify(nodeList);
 

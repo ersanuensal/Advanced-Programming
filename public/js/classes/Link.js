@@ -1,6 +1,6 @@
 class Link {
 
-  constructor(from, to, Name, Description, Color, PersonalData, LoadPreset) {
+  constructor(from, to, Name, Description, Color, PersonalData, LoadPreset, diagramId) {
 
     this.from = from;
     this.to = to;
@@ -9,6 +9,7 @@ class Link {
     this.Color = Color;
     this.PersonalData = PersonalData;
     this.LoadPreset = LoadPreset;
+    this.diagramId = diagramId;
 
   }
 

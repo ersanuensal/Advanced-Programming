@@ -1,6 +1,6 @@
 class Node {
 
-  constructor(Name, Version, Description, COTS, Release, Shutdown, color, figure, key, location) {
+  constructor(Name, Version, Description, COTS, Release, Shutdown, color, figure, key, location, diagramId) {
 
     this.Name = Name;
     this.Version = Version;
@@ -12,6 +12,8 @@ class Node {
     this.figure = figure;
     this.key = key;
     this.location = location;
+    this.diagramId = diagramId;
+
 
   }
 

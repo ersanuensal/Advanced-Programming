@@ -42,6 +42,9 @@ var NodeSchema = new Schema({
   location: {
     type: String,
     required: true
+  },
+  diagramId: {
+    type: String
   }
 });
 

@@ -3,28 +3,45 @@ html(lang='de')
   head
     meta(charset='UTF-8')
     title Application Landscape
-    meta(http-equiv='Content-Security-Policy', content="script-src 'self' 'unsafe-inline';")
     link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
     link(rel='stylesheet', href='./css/style.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(rel="stylesheet", href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+    script(src='https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
+    script(src='./js/loadFromDatabase.js' defer)
   body.grid
-    h1 Select the Diagram you want to work with: 
-    br 
+    h1 Select the Diagram you want to work with:
+    br
     br
     div
-      select.bigselector(size="3")
-        option 1. Diagram
-        option 2. Diagram
-        option 3. Diagram
+      input#diagramsList(type='hidden', name='diagramsList' value=diagramsList)
+      select.bigselector(size="5", id='selectDiagram')
     div
       br
       br
-    div
-      form.formstogether(action='/download', method='get')
-        input#downloadData(type='hidden', name='downloadData' value=downloadData)
-        input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
-        input.button(type='submit', value='Load ')
-      form.formstogether(action='/new', method='get')
-            input#downloadData(type='hidden', name='downloadData')
-            input#downloadLinks(type='hidden', name='downloadLinks')
-            input.button(type='submit', value='Create a new Diagram')
-    div
+    div(class="inlinediv")
+      button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Load
+      a.formstogether(data-toggle="modal" href="#normalModal" class="btn btn-default") New Diagram
+      button(type="submit" onclick="deleteDiagram()" class="imgbtn")
+        i.fa.fa-trash
+
+
+      #normalModal(class="modal fade")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+              h4(class="modal-title") New Diagram
+      
+            div(class="modal-body")
+              label(id='errorMsg')
+              br
+              div(class="CancelSubmit")
+                label Name:  
+                input(style="margin-left: 2.5em;" type='input', name='diagramName', id='diagramName')
+              br
+              div(class="CancelSubmit")
+                button(type="button" class="btn btn-default" data-dismiss="modal") Cancel 
+                button(style="margin-left: 2.5em;" type="submit" onclick="test()" class="btn btn-primary" margin-left="5px") Create
+              

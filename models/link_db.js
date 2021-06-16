@@ -25,6 +25,9 @@ var LinkSchema = new Schema({
   },
   LoadPreset: {
     type: String
+  },
+  diagramId: {
+    type: String
   }
 });
 
