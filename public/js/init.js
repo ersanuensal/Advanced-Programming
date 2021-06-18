@@ -12,7 +12,6 @@ function init() {
   loadcheck = false;
   loadname = null;
   diagramId = document.getElementById('diagramId').value
-
   reuseselected = null;
 
 

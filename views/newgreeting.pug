@@ -1,0 +1,45 @@
+extends template.pug
+
+block scripts
+  link(rel='stylesheet' href='css/greeter.css')
+  script.
+    window.jQuery = window.$ = require('jquery');
+  script(src='./js/loadFromDatabase.js' defer)
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+
+
+
+block content
+  #mySidebar.leftMenu
+  .contentPages
+    h1 Select the Diagram you want to work with:
+    br(id="removeBR")
+    label(class="errorMsg" id='selectMsg')
+    div
+      input#diagramsList(type='hidden', name='diagramsList' value=diagramsList)
+      select.bigselector(size="5", id='selectDiagram')
+    br
+    br
+    div(class="inlinediv")
+      button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Load
+      a.formstogether(style="margin-left: 1em;" data-toggle="modal" href="#normalModal" class="btn btn-success") New Diagram
+      button(style="margin-left: 1em;" type="submit" onclick="deleteDiagram()" class="imgbtn")
+        i.fa.fa-trash
+      #normalModal(class="modal fade")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h4(style="justify-self: center;" class="modal-title") New Diagram
+              button( type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+        
+            div(class="modal-body")
+              label(class="errorMsg" id='errorMsg')
+              br
+              div(class="CancelSubmit")
+                label Name:  
+                input(style="margin-left: 2.5em" type='input', name='diagramName', id='diagramName')
+              br
+              div(class="CancelSubmit")
+                button(type="button" class="btn btn-danger" data-dismiss="modal") Cancel 
+                button(style="margin-left: 2.5em;" type="submit" onclick="test()" class="btn btn-primary" margin-left="5px") Create
+          

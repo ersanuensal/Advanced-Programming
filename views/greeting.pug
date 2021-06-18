@@ -4,44 +4,57 @@ html(lang='de')
     meta(charset='UTF-8')
     title Application Landscape
     link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
-    link(rel='stylesheet', href='./css/style.css')
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
     link(rel="stylesheet", href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-    script(src='https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
+    link(rel='stylesheet', href='./css/style.css')
+    script.
+      window.jQuery = window.$ = require('jquery');
+    //script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+    //script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+    script(src='./js/menubar.js' defer)
     script(src='./js/loadFromDatabase.js' defer)
-  body.grid
-    h1 Select the Diagram you want to work with:
-    br
-    br
-    div
-      input#diagramsList(type='hidden', name='diagramsList' value=diagramsList)
-      select.bigselector(size="5", id='selectDiagram')
-    div
-      br
-      br
-    div(class="inlinediv")
-      button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Load
-      a.formstogether(data-toggle="modal" href="#normalModal" class="btn btn-default") New Diagram
-      button(type="submit" onclick="deleteDiagram()" class="imgbtn")
-        i.fa.fa-trash
-
-
-      #normalModal(class="modal fade")
-        div(class="modal-dialog")
-          div(class="modal-content")
-            div(class="modal-header")
-              button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
-              h4(class="modal-title") New Diagram
-      
-            div(class="modal-body")
-              label(id='errorMsg')
-              br
-              div(class="CancelSubmit")
-                label Name:  
-                input(style="margin-left: 2.5em;" type='input', name='diagramName', id='diagramName')
-              br
-              div(class="CancelSubmit")
-                button(type="button" class="btn btn-default" data-dismiss="modal") Cancel 
-                button(style="margin-left: 2.5em;" type="submit" onclick="test()" class="btn btn-primary" margin-left="5px") Create
+  body(class="mainApp")
+    div(class="topBar")
+      div(class="titleBar")
+        button(id="showHideMenus", class="toggleButton")
+        div(class="title") Application Landscapes
+      div(class="titleBarBtns")
+        button(id="minimizeBtn", class="topBtn minimizeBtn")
+        button(id="maxResBtn", class="topBtn maximizeBtn")
+        button(id="closeBtn", class="topBtn closeBtn")
+    div(class="content-area")
+      div(id="mySidebar", class="leftMenu")
+      div(class="contentPages")
+        h1 Select the Diagram you want to work with:
+        br(id="removeBR")
+        label.grid(class="errorMsg" id='selectMsg')
+        div.grid
+          input#diagramsList(type='hidden', name='diagramsList' value=diagramsList)
+          select.bigselector(size="5", id='selectDiagram')
+        br
+        br
+        div(class="inlinediv")
+          button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Load
+          a.formstogether(data-toggle="modal" href="#normalModal" class="btn btn-default") New Diagram
+          button(type="submit" onclick="deleteDiagram()" class="imgbtn")
+            i.fa.fa-trash
+            
+          #normalModal(class="modal fade")
+            div(class="modal-dialog")
+              div(class="modal-content")
+                div(class="modal-header")
+                  h4(style="justify-self: center;" class="modal-title") New Diagram
+                  button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+            
+                div(class="modal-body")
+                  label(class="errorMsg" id='errorMsg')
+                  br
+                  div(class="CancelSubmit")
+                    label Name:  
+                    input(style="margin-left: 2.5em" type='input', name='diagramName', id='diagramName')
+                  br
+                  div(class="CancelSubmit")
+                    button(type="button" class="btn btn-default" data-dismiss="modal") Cancel 
+                    button(style="margin-left: 2.5em;" type="submit" onclick="test()" class="btn btn-primary" margin-left="5px") Create
               

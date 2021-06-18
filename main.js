@@ -1,24 +1,62 @@
 const {
   app,
   BrowserWindow,
-  Menu
+  Menu,
+  ipcMain
 } = require('electron')
 const path = require('path')
+const ipc = ipcMain
 require('./app.js')
 
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 2000,
-    height: 2000,
+    width: 1400,
+    height: 800,
+    frame: false,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       preload: path.join(__dirname, 'preload.js')
     }
   })
   win.webContents.openDevTools()
 
-  win.loadURL(`http://localhost:3000/`)
+  win.loadURL(`http://localhost:3000/`);
+
+    //// CLOSE APP
+     ipc.on('minimizeApp', ()=>{
+         console.log('Clicked on Minimize Btn')
+         win.minimize()
+     })
+
+     //// MAXIMIZE RESTORE APP
+     ipc.on('maximizeRestoreApp', ()=>{
+         if(win.isMaximized()){
+             console.log('Clicked on Restore')
+             win.restore()
+         } else {
+             console.log('Clicked on Maximize')
+             win.maximize()
+         }
+     })
+     // Check if is Maximized
+     win.on('maximize', ()=>{
+         win.webContents.send('isMaximized')
+     })
+     // Check if is Restored
+     win.on('unmaximize', ()=>{
+         win.webContents.send('isRestored')
+     })
+
+     //// CLOSE APP
+     ipc.on('closeApp', ()=>{
+         console.log('Clicked on Close Btn')
+         win.close()
+     })
+
 }
+
 
 
 app.whenReady().then(() => {
@@ -82,6 +120,18 @@ const template = [
         role: 'close'
       } : {
         role: 'quit'
+      },
+      {
+        label: 'New Window',
+        click: function(){
+          createWindow();
+        }
+      },
+      {
+        label: 'Save',
+        click: function(){
+          createWindow();
+        }
       }
     ]
   },

@@ -2,9 +2,16 @@
 
 function showSelectedItem() {
   var element = document.getElementById("selectDiagram");
-  var selectedDiagram = element.options[element.selectedIndex].value;
-  console.log("The selected Diagram is " + selectedDiagram);
-  window.location.replace("http://localhost:3000/edit="+selectedDiagram);
+  try {
+    var selectedDiagram = element.options[element.selectedIndex].value;
+    console.log("The selected Diagram is " + selectedDiagram);
+    window.location.replace("http://localhost:3000/edit="+selectedDiagram);
+  } catch (e) {
+    var placeholder = document.getElementById("removeBR");
+    placeholder.remove();
+    selectMsg.innerHTML = 'Please select a Diagram';
+  }
+
 }
 
 function deleteDiagram() {
@@ -37,7 +44,7 @@ function test(){
   var diagramName = document.getElementById("diagramName").value;
   const errorMsg = document.getElementById('errorMsg');
   if ( diagramName == '') {
-    errorMsg.innerHTML = 'Feld ist erforderlich';
+    errorMsg.innerHTML = 'A name is required to create a Diagram';
     document.getElementById("diagramName").focus();
 } else {
   console.log(diagramName + " created." );

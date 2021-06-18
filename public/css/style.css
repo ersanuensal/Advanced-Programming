@@ -142,21 +142,6 @@ see also: DataInspector.js, DataInspector.html
   background-color: #424242;
 }
 
-.grid {
-  display: grid;
-  place-items: center;
-  margin-top: 15%;
-}
-
-.bigselector{
-  height: 50vh;
-  width: 50vh;
-  border: 3px solid black;
-  border-radius: 10px;
-  font-family: sans serif;
-  font-size: 30px;
-  outline: none;
-}
 
 /* width */
 ::-webkit-scrollbar {
@@ -185,9 +170,22 @@ see also: DataInspector.js, DataInspector.html
   margin-bottom: 5px;
 }
 
+
+
 modal {
-  display: grid;
-  margin-top 30%;
+  display: flex;
+}
+
+.modal-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.modal-header {
+  display: flex;
+  width: 100%;
 }
 
 .modal-body {
@@ -201,22 +199,6 @@ modal {
   margin-right:5px;
   margin-top: 5px;
   margin-bottom: 10px;
-}
-
-/* Style buttons */
-.imgbtn {
- display: inline-block;
- background-color: red; /* Blue background */
- border: none; /* Remove borders */
- color: white; /* White text */
- padding: 6px 12px; /* Some padding */
- font-size: 16px; /* Set a font size */
- cursor: pointer; /* Mouse pointer on hover */
-}
-
-/* Darker background on mouse-over */
-.imgbtn:hover {
- background-color: RoyalBlue;
 }
 
 .inlinediv {

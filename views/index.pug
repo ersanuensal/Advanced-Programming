@@ -1,8 +1,6 @@
-doctype html
-head
-  meta(charset='UTF-8')
-  title Application Landscape
-  meta(http-equiv='Content-Security-Policy', content="script-src 'self' 'unsafe-inline';")
+extends template.pug
+
+block scripts
   link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
   link(rel='stylesheet', href='./css/style.css')
   script(src='./js/gojs/release/go.js')
@@ -17,33 +15,36 @@ head
   script(src='./js/reuse.js', defer='')
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
-  form.formstogether(action='/', method='get')
-        input.button(type='submit', value='Home')
-.centercontainer
-  #myPaletteDiv.palette
-  #myOverviewDiv.overview
-  #myDiagramDiv.diagram
-  #myInspectorDiv.inspector
-  // <div id="Descriptor" class="Descriptor"><textarea id="descripted" class="descripted">test</textarea></div>
-div
-  button#savedModel(onclick='save()') Export DataObj
-  // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
-div
-  form#uploadForm
-    input#inpFile.button(type='file')
-    button#submitBtn(type='submit') import
-div
-  button#savedModel2(onclick='save2()') Export Personal Data Application
-  // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
-div
-  form(action='/upload', method='post')
-    input#diagramId(type='hidden', name='diagramId' value=diagramId)
-    input#uploadData(type='hidden', name='uploadData')
-    input#uploadLinks(type='hidden', name='uploadLinks')
-    input.button(type='submit', value='Upload to Database')
-  form(action='/download', method='get')
-    input#downloadData(type='hidden', name='downloadData' value=downloadData)
-    input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
-    input.button(type='submit', value='Load from Database')
-div
-  button#x(onclick='reuseDataObj()')  Test
+block content
+  #mySidebar.leftMenu
+    form.formstogether(action='/', method='get')
+      input.button(type='submit', value='Home' class="btn btn-primary")
+    div
+      button#savedModel(onclick='save()') Export DataObj
+      // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
+    div
+      form#uploadForm
+        input#inpFile.button(type='file')
+        button#submitBtn(type='submit') import
+    div
+      button#savedModel2(onclick='save2()') Export Personal Data Application
+      // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
+    div
+      form(action='/upload', method='post')
+        input#diagramId(type='hidden', name='diagramId' value=diagramId)
+        input#uploadData(type='hidden', name='uploadData')
+        input#uploadLinks(type='hidden', name='uploadLinks')
+        input.button(type='submit', value='Upload to Database')
+      form(action='/download', method='get')
+        input#downloadData(type='hidden', name='downloadData' value=downloadData)
+        input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
+        input.button(type='submit', value='Load from Database')
+    div
+      button#x(onclick='reuseDataObj()')  Test
+  .contentPages
+    .centercontainer
+      #myPaletteDiv.palette
+      #myOverviewDiv.overview
+      #myDiagramDiv.diagram
+      #myInspectorDiv.inspector
+    // <div id="Descriptor" class="Descriptor"><textarea id="descripted" class="descripted">test</textarea></div>

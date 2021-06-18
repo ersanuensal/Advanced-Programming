@@ -3,9 +3,6 @@
     "use strict";
     const path = require('path');
     const bodyParser = require('body-parser');
-
-
-
     let express = require('express');
 
     // Driver Module for MongoDB
@@ -47,9 +44,18 @@
     // Initial controller for the Diagram
     app.get('/', async function(req, res) {
       const diagramsList = await DiagramSchema.find({}, function(err, data) {});
-      res.render('greeting', {diagramsList: diagramsList})
+      res.render('newgreeting', {diagramsList: diagramsList})
       console.log("Diagramlist loaded.")
     });
+
+    app.get('/template', function(req, res) {
+      res.render('template', {})
+    });
+
+    app.get('/test', function(req, res) {
+      res.render('newgreeting', {})
+    });
+
 
     app.get('/new=:diagramName', async function(req, res) {
       var newDiagram = req.params.diagramName;
