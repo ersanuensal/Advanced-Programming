@@ -17,8 +17,14 @@ block scripts
   script(src='./js/classes/Link.js')
 block content
   #mySidebar.leftMenu
-    form.formstogether(action='/', method='get')
-      input.button(type='submit', value='Home' class="btn btn-primary")
+    form.formstogether(action='/', method='get', id='homeForm')
+      a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") Home
+    form(action='/upload', method='post', id='uploadDBForm')
+      input#diagramId(type='hidden', name='diagramId' value=diagramId)
+      input#uploadData(type='hidden', name='uploadData')
+      input#uploadLinks(type='hidden', name='uploadLinks')
+      a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") Save
+    a(onclick='save2()' ) Export Personal Data Application
     div
       button#savedModel(onclick='save()') Export DataObj
       // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
@@ -27,18 +33,14 @@ block content
         input#inpFile.button(type='file')
         button#submitBtn(type='submit') import
     div
-      button#savedModel2(onclick='save2()') Export Personal Data Application
+      
       // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
+      //- >>>>>> not in use anymore because you chose at greeting what to download <<<<<<<<
     div
-      form(action='/upload', method='post')
-        input#diagramId(type='hidden', name='diagramId' value=diagramId)
-        input#uploadData(type='hidden', name='uploadData')
-        input#uploadLinks(type='hidden', name='uploadLinks')
-        input.button(type='submit', value='Upload to Database')
       form(action='/download', method='get')
         input#downloadData(type='hidden', name='downloadData' value=downloadData)
         input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
-        input.button(type='submit', value='Load from Database')
+        //- input.button(type='submit', value='Load from Database')
     div
       button#x(onclick='reuseDataObj()')  Test
   .contentPages
