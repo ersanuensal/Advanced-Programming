@@ -24,26 +24,17 @@ block content
       input#uploadData(type='hidden', name='uploadData')
       input#uploadLinks(type='hidden', name='uploadLinks')
       a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") Save
-    a(onclick='save2()' ) Export Personal Data Application
-    div
-      button#savedModel(onclick='save()') Export DataObj
-      // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
+    a(href="javascript:{}", onclick='save2()' ) Export Personal Data
+    a#savedModel(href="javascript:{}", onclick='save()') Export DataObj
     div
       form#uploadForm
-        input#inpFile.button(type='file')
-        button#submitBtn(type='submit') import
-    div
-      
-      // <textarea id="mySavedModel" style="width:100%;height:200px"></textarea>
-      //- >>>>>> not in use anymore because you chose at greeting what to download <<<<<<<<
-    div
-      form(action='/download', method='get')
-        input#downloadData(type='hidden', name='downloadData' value=downloadData)
-        input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
-        //- input.button(type='submit', value='Load from Database')
-    div
-      button#x(onclick='reuseDataObj()')  Test
+        //- input#inpFile.button(type='file')
+        a(href="javascript:{}" onclick="document.getElementById('').submit();") import
+    a#x(href="javascript:{}", onclick='reuseDataObj()')  reuse DataObj
+    a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") Documentation
   .contentPages
+    input#downloadData(type='hidden', name='downloadData' value=downloadData)
+    input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
     .centercontainer
       #myPaletteDiv.palette
       #myOverviewDiv.overview
