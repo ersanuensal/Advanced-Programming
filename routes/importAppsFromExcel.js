@@ -27,17 +27,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/', upload.single('inpFile'), function (req, res) {
-    const filePath = req.file.path;
-    let sheetsName = req.body.sheetsName;
 
-    const colNames = {
-        Name: req.body.appName,
-        Key: req.body.appId,
-        Description: req.body.appDescription,
-        COTS: req.body.appCOTS,
-        Release: req.body.appReleaseDate,
-        Shutdown: req.body.appShutdownDate
-    }
+    const filePath = req.file.path;
+    const firstRowIsHeader = Boolean(req.body.firstRowIsHeader)
+
+    const data = {};
+
+    // const colNames = {
+    //     Name: req.body.appName,
+    //     Key: req.body.appId,
+    //     Description: req.body.appDescription,
+    //     COTS: req.body.appCOTS,
+    //     Release: req.body.appReleaseDate,
+    //     Shutdown: req.body.appShutdownDate
+    // }
 
     const parsingOptions = {
 
@@ -48,22 +51,25 @@ router.post('/', upload.single('inpFile'), function (req, res) {
     };
 
     const workbook = XLSX.readFile(filePath, parsingOptions);
-    let data = {};
+    // let data = {};
 
-    const allSheetNames = workbook.SheetNames;
+    // const allSheetNames = workbook.SheetNames;
 
-    const realSheetName = findSheetName(sheetsName, Object.values(allSheetNames));
+    // const realSheetName = findSheetName(sheetsName, Object.values(allSheetNames));
 
-    if (realSheetName) {
-        const worksheet = workbook.Sheets[realSheetName];
-        const { newColNames, colIndex } = getColIndex(colNames, worksheet);
-        const json = converSheetToJsonArray(worksheet, colIndex);
-        data = mapColstoProp(json, newColNames);
-    }
+    // if (realSheetName) {
+    //     const worksheet = workbook.Sheets[realSheetName];
+    //     const { newColNames, colIndex } = getColIndex(colNames, worksheet);
+    //     const json = converSheetToJsonArray(worksheet, colIndex);
+    //     data = mapColstoProp(json, newColNames);
+    // }
 
     //  delete the file
     fs.unlinkSync(filePath);
 
+    data.filePath = filePath;
+    data.firstRowIsHeader = firstRowIsHeader;
+    data.headers = getHeaders(workbook);
 
     res.send({
         status: 'ok',
@@ -73,19 +79,51 @@ router.post('/', upload.single('inpFile'), function (req, res) {
 });
 
 
-const mapColstoProp = function (data, colNames) {
+const getHeaders = function (wb) {
+
+    const allSheetNames = wb.SheetNames;
+
+    const sheets = {};
+
+    for (sheetName of allSheetNames) {
+        sheets[sheetName] = [];
+        const ws = wb.Sheets[sheetName]
+        const { rows, cols } = getRowsAndCols(ws)
+
+        for (let C = cols.start; C <= cols.end; C++) {
+            cellRef = encodeCell(0, C);
+
+            let cellValue = '';
+
+            if (ws[cellRef] && ws[cellRef].v) {
+                cellValue = ws[cellRef].v;
+            }
+
+            const obj = {}
+
+            obj[C] = cellValue
+            sheets[sheetName].push(obj);
+        }
+    }
+
+    return sheets;
+}
+
+
+const mapColstoProp = function (json, colNames) {
 
     const allApps = [];
     let newApp = {};
 
-    for (const obj of data) {
+    for (const obj of json) {
 
         newApp = {};
+
         for (const [key, value] of Object.entries(colNames)) {
             newApp[key] = obj[value];
         }
-        allApps.push(newApp);
 
+        allApps.push(newApp);
     }
 
     return allApps;
@@ -112,6 +150,7 @@ const getColIndex = function (colNames, ws) {
             if (firstRow[index].trim().toLowerCase() == value.trim().toLowerCase()) {
                 colIndex[key] = index;
                 newColNames[key] = firstRow[index];
+                break;
             }
         }
     }
@@ -217,7 +256,7 @@ const detectFalseApplications = function (ws, row = 0, importantCols) {
 
     while (row <= rows.end) {
         for (let C = cols.start; C <= cols.end; ++C) {
-            let cellRef = encodeCell(row, C);;
+            let cellRef = encodeCell(row, C);
             if (!ws[cellRef] || [null, undefined, ''].includes(ws[cellRef].v)) {
                 if (importantCols.includes(C)) {
                     ws = deleteRow(ws, row);

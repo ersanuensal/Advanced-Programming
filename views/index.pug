@@ -1,6 +1,7 @@
 extends template.pug
 
 block scripts
+  link(rel='stylesheet', href='./bootstrap-5.0.1-dist/css/bootstrap.min.css')
   link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
   link(rel='stylesheet', href='./css/style.css')
   script(src='./js/gojs/release/go.js')
@@ -26,10 +27,11 @@ block content
       a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") Save
     a(href="javascript:{}", onclick='save2()' ) Export Personal Data
     a#savedModel(href="javascript:{}", onclick='save()') Export DataObj
-    div
-      form#uploadForm
-        //- input#inpFile.button(type='file')
-        a(href="javascript:{}" onclick="document.getElementById('').submit();") import
+
+
+    a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") import
+
+
     a#x(href="javascript:{}", onclick='reuseDataObj()')  reuse DataObj
     a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") Documentation
   .contentPages
@@ -40,4 +42,26 @@ block content
       #myOverviewDiv.overview
       #myDiagramDiv.diagram
       #myInspectorDiv.inspector
+      div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="ModalLabel" aria-hidden="true")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h5(class="modal-title" id="ModalLabel">Import from Excel)
+              button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+            div(class="modal-body")
+              <div class="row mb-3">
+                form#uploadForm
+                  div
+                    .row.mb-3
+                      input(type='file' class = 'form-control' id = 'inpFile' name='inpFile' required accept='.xlsx, .xls, .xlsm')
+                    .row.mb-3
+                      label(class = 'form-label' for='sheetsName') un check if first row is not a header.
+                      input(id = 'headerRow' class="form-check-input" type="checkbox" checked)
+                  div
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                    button.btn.btn-primary(type='submit') upload
+
+    script(src="./bootstrap-5.0.1-dist/js/bootstrap.min.js")     
+
     // <div id="Descriptor" class="Descriptor"><textarea id="descripted" class="descripted">test</textarea></div>
