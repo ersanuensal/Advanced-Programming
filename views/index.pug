@@ -4,6 +4,7 @@ block scripts
   link(rel='stylesheet', href='./bootstrap-5.0.1-dist/css/bootstrap.min.css')
   link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
   link(rel='stylesheet', href='./css/style.css')
+  script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4' crossorigin='anonymous')
   script(src='./js/gojs/release/go.js')
   script(src='./js/gojs/extensions/Figures.js')
@@ -18,8 +19,16 @@ block scripts
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
   script(src='./js/classes/Preset.js')
+  script(src='./js/collapse.js')
 block content
   #mySidebar.leftMenu
+    p
+      a.btn.btn-primary(data-bs-toggle='collapse' href='#collapseExample' role='button' aria-expanded='false' aria-controls='collapseExample')
+        | Link with href
+    
+    #collapseExample.collapse
+      .card.card-body
+        | Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
     form.formstogether(action='/', method='get', id='homeForm')
       a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") Home
     form(action='/upload', method='post', id='uploadDBForm')
@@ -53,13 +62,13 @@ block content
             div(class="modal-body")
               <div class="row mb-3">
                 div
-                  button#resave(onclick='asd(1)')  Save Preset 
-                  button#reload(onclick='asdf(1)')  Load Preset 
-                  button#reedit(onclick='')  Edit Preset 
+                  button#resave(onclick='asd(1)')  Save Data Object 
+                  button#reload(onclick='asdf(1)')  Load Data Object
+                  button#reedit(onclick='')  Edit Data Object 
                 div
                 #saveDataObj.form-popup
                   form#asd.form-container(action='')
-                    h1 Save a Preset
+                    h1 Save a Data Object
                     label#dataObjNameLabel(for='dataObjName')
                       b Name
                     input#dataObjName(type='text' placeholder='Enter Name' required='')
@@ -72,12 +81,12 @@ block content
                     label(for='email')
                       b PersonalData
                     input#dataObjPer(type='checkbox')
-                    button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Preset
+                    button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
                     button.btn.cancel(type='button' onclick='asd(0)') Close
                   form#asdf.form-container(action='')
                     select#selectNumber
-                      option(value='A') Select a preset:
-                    button.btn(type='button' onclick='reload()') Load Preset
+                      option(value='A') Select an Data Object:
+                    button.btn(type='button' onclick='reload()') Load Data Object
                     button.btn.cancel(type='button' onclick='asdf(0)') Close
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
