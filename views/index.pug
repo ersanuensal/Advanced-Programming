@@ -22,13 +22,6 @@ block scripts
   script(src='./js/collapse.js')
 block content
   #mySidebar.leftMenu
-    p
-      a.btn.btn-primary(data-bs-toggle='collapse' href='#collapseExample' role='button' aria-expanded='false' aria-controls='collapseExample')
-        | Link with href
-    
-    #collapseExample.collapse
-      .card.card-body
-        | Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
     form.formstogether(action='/', method='get', id='homeForm')
       a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") Home
     form(action='/upload', method='post', id='uploadDBForm')
@@ -36,14 +29,22 @@ block content
       input#uploadData(type='hidden', name='uploadData')
       input#uploadLinks(type='hidden', name='uploadLinks')
       a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") Save
-      .dropdown
-        a(href="javascript:{}") Export
-        .dropdown-content
-          a(href="javascript:{}", onclick='save2()', class="dropdown-item") Export Personal Data
-          a#savedModel(href="javascript:{}", onclick='save()', class="dropdown-item") Export DataObj
-    a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") import
-    a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#dataObjModal")  reuse DataObj
-    a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") Documentation
+      a.collapsed(data-bs-toggle='collapse' data-bs-target='#home-collapse' aria-expanded='true') Export
+        i(class='fa fa-caret-down', style='align:right;')
+      #home-collapse.collapse
+        ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small
+          li
+            a(href="javascript:{}", onclick='save2()', class="dropdown-item") &nbsp; Export Personal Data
+          li
+            a#savedModel(href="javascript:{}", onclick='save()', class="dropdown-item") &nbsp; Export DataObj
+      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") Import from Excel
+      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#dataObjModal")  Manage Data Objects
+      a.collapsed(data-bs-toggle='collapse' data-bs-target='#account-collapse' aria-expanded='false') About
+        i(class='fa fa-caret-down', style='align: right')
+      #account-collapse.collapse
+        ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small
+          li
+            a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") &nbsp; Documentation
   .contentPages
     input#downloadData(type='hidden', name='downloadData' value=downloadData)
     input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
@@ -109,6 +110,6 @@ block content
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
                     button.btn.btn-primary(type='submit') upload
 
-    script(src="./bootstrap-5.0.1-dist/js/bootstrap.min.js")     
+        
 
     // <div id="Descriptor" class="Descriptor"><textarea id="descripted" class="descripted">test</textarea></div>
