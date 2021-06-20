@@ -13,9 +13,10 @@ block scripts
   script(src='./js/download.js')
   script(src='./js/todayTime.js')
   script(src='./js/uploadAndImportFromExcel.js', defer='')
-  script(src='./js/reuse.js', defer='')
+  script(src='./js/reuse2.js', defer='')
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
+  script(src='./js/classes/Preset.js')
 block content
   #mySidebar.leftMenu
     form.formstogether(action='/', method='get', id='homeForm')
@@ -28,7 +29,7 @@ block content
     a(href="javascript:{}", onclick='save2()' ) Export Personal Data
     a#savedModel(href="javascript:{}", onclick='save()') Export DataObj
     a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") import
-    a#x(href="javascript:{}", onclick='reuseDataObj()')  reuse DataObj
+    a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#dataObjModal")  reuse DataObj
     a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") Documentation
   .contentPages
     input#downloadData(type='hidden', name='downloadData' value=downloadData)
@@ -38,6 +39,43 @@ block content
       #myOverviewDiv.overview
       #myDiagramDiv.diagram
       #myInspectorDiv.inspector
+      div(class="modal fade" id="dataObjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="ModalLabel" aria-hidden="true")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h5(class="modal-title" id="ModalLabel">Import from Excel)
+              button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+            div(class="modal-body")
+              <div class="row mb-3">
+                div
+                  button#resave(onclick='asd(1)')  Save Preset 
+                  button#reload(onclick='asdf(1)')  Load Preset 
+                  button#reedit(onclick='')  Edit Preset 
+                div
+                #saveDataObj.form-popup
+                  form#asd.form-container(action='')
+                    h1 Save a Preset
+                    label#dataObjNameLabel(for='dataObjName')
+                      b Name
+                    input#dataObjName(type='text' placeholder='Enter Name' required='')
+                    label(for='email')
+                      b Description
+                    input#dataObjDes(type='text' placeholder='Enter Description' required='')
+                    label(for='email')
+                      b Color
+                    input#dataObjColor(type='color' value='#000000' required='')
+                    label(for='email')
+                      b PersonalData
+                    input#dataObjPer(type='checkbox')
+                    button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Preset
+                    button.btn.cancel(type='button' onclick='asd(0)') Close
+                  form#asdf.form-container(action='')
+                    select#selectNumber
+                      option(value='A') Select a preset:
+                    button.btn(type='button' onclick='reload()') Load Preset
+                    button.btn.cancel(type='button' onclick='asdf(0)') Close
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog")
