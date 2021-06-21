@@ -26,10 +26,46 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.put('/', function (req, res) {
+
+    const sheet = req.body.sheetName;
+    const filePath = req.body.filePath;
+
+    const cols = {
+        Name: Number(req.body.appName),
+        Key: Number(req.body.appKey),
+        Description: Number(req.body.appDescription),
+        COTS: Number(req.body.appCOTS),
+        Release: Number(req.body.appReleaseDate),
+        Shutdown: Number(req.body.appShutdownDate)
+    }
+
+    const parsingOptions = {
+        // sheets: sheet,
+        cellFormula: false,
+        cellHTML: false,
+        cellDates: true,
+        cellText: false,
+    }
+
+    const workbook = XLSX.readFile(filePath, parsingOptions);
+    const worksheet = workbook.Sheets[sheet];
+    const json = converSheetToJsonArray(worksheet, cols);
+    const colNames = getColNames(worksheet, cols);
+    data = mapColstoProp(json, colNames);
+
+    fs.unlinkSync(filePath);
+
+    res.send({
+        status: 'ok',
+        data: data
+    });
+
+})
+
 router.post('/', upload.single('inpFile'), function (req, res) {
 
     const filePath = req.file.path;
-    const firstRowIsHeader = Boolean(req.body.firstRowIsHeader)
 
     const data = {};
 
@@ -43,7 +79,6 @@ router.post('/', upload.single('inpFile'), function (req, res) {
     // }
 
     const parsingOptions = {
-
         cellFormula: false,
         cellHTML: false,
         cellDates: true,
@@ -65,11 +100,9 @@ router.post('/', upload.single('inpFile'), function (req, res) {
     // }
 
     //  delete the file
-    fs.unlinkSync(filePath);
 
     data.filePath = filePath;
-    data.firstRowIsHeader = firstRowIsHeader;
-    data.headers = getHeaders(workbook);
+    data.sheets = getHeaders(filePath);
 
     res.send({
         status: 'ok',
@@ -79,36 +112,54 @@ router.post('/', upload.single('inpFile'), function (req, res) {
 });
 
 
-const getHeaders = function (wb) {
+const getHeaders = function (filePath) {
+
+    const parsingOptions = {
+
+        cellFormula: false,
+        cellHTML: false,
+        cellDates: true,
+        cellText: false,
+    };
+
+    const wb = XLSX.readFile(filePath, parsingOptions);
 
     const allSheetNames = wb.SheetNames;
+
+    // const sheets = [];
 
     const sheets = {};
 
     for (sheetName of allSheetNames) {
-        sheets[sheetName] = [];
+
         const ws = wb.Sheets[sheetName]
         const { rows, cols } = getRowsAndCols(ws)
 
+        sheets[sheetName] = {};
+
         for (let C = cols.start; C <= cols.end; C++) {
-            cellRef = encodeCell(0, C);
+            const cellRef = encodeCell(0, C);
 
             let cellValue = '';
 
             if (ws[cellRef] && ws[cellRef].v) {
                 cellValue = ws[cellRef].v;
             }
-
-            const obj = {}
-
-            obj[C] = cellValue
-            sheets[sheetName].push(obj);
+            sheets[sheetName][C] = cellValue;
         }
     }
 
     return sheets;
 }
 
+const getColNames = function (ws, cols) {
+    const row = 0;
+    const colNames = {};
+    for ([propName, colNumber] of Object.entries(cols)) {
+        colNames[propName] = ws[encodeCell(row, colNumber)].v;
+    }
+    return colNames;
+}
 
 const mapColstoProp = function (json, colNames) {
 
@@ -158,8 +209,6 @@ const getColIndex = function (colNames, ws) {
     return { newColNames, colIndex };
 }
 
-
-
 const findSheetName = function (name, allSheets) {
 
     for (const sheet of allSheets) {
@@ -170,32 +219,14 @@ const findSheetName = function (name, allSheets) {
     return false;
 }
 
-
-
 const converSheetToJsonArray = function (ws, colIndex) {
-
-    /**
-     * in this method we are going to go through the excel sheet cell by cell before converting it into array of Json objects,
-     * the reason is that sheet_to_json method ignores all undefined cells.
-     * undefined cells are not the empty cells, empty cell is defined, if a row has at least one not undefined cell (cell with the value '' for example)
-     * the sheet_to_json() method is goin te convert the row containing this cell to a JSON object.
-     * 
-     * 
-     * so my solution is to assign the value undefined to each cell whitch its value is '' (empty cell bur´t defined) 
-     * if the all cells in a row are undefined the sheet_to_json method is going to ignore this row
-     */
-
     // getting the range of the sheet
     const { rows, cols } = getRowsAndCols(ws);
 
     importantCols = {
-        KeyIndex: colIndex.Key,
-        nameIndex: colIndex.Name
+        key: colIndex.Key,
+        name: colIndex.Name
     }
-
-    /**
-     * Delete each row which doesn't have Name or Key Column
-     */
 
     ws = detectFalseApplications(ws, rows.start, Object.values(importantCols));
 
@@ -207,20 +238,11 @@ const converSheetToJsonArray = function (ws, colIndex) {
         blankrows: false
     }
 
-    /**
-     * the sheet should be clean from empty cells now
-     */
-
     const json = XLSX.utils.sheet_to_json(ws, convertingOptions);
-
-    /**
-     * the next step is to map the opjects propreties
-     */
 
     return json;
 
 }
-
 
 const encodeCell = function (r, c) {
     return XLSX.utils.encode_cell({ r: r, c: c });
@@ -243,16 +265,17 @@ const deleteRow = function (ws, rowIndex) {
             ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)];
         }
     }
+
     sheetsRangeDecoded.e.r--
     ws['!ref'] = XLSX.utils.encode_range(sheetsRangeDecoded.s, sheetsRangeDecoded.e);
     return ws;
 }
 
-
 const detectFalseApplications = function (ws, row = 0, importantCols) {
 
     let rowDeleted = false;
     const { rows, cols } = getRowsAndCols(ws);
+
 
     while (row <= rows.end) {
         for (let C = cols.start; C <= cols.end; ++C) {
@@ -279,7 +302,5 @@ const detectFalseApplications = function (ws, row = 0, importantCols) {
 
     return ws;
 }
-
-
 
 module.exports = router;

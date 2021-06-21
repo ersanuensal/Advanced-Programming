@@ -44,38 +44,38 @@ function init() {
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
     $(go.Node, "Auto", {
-        locationSpot: go.Spot.Center,
-      },
+      locationSpot: go.Spot.Center,
+    },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Subroutine", {
-          width: 200,
-          height: 100,
-          margin: 4,
-          fill: "#29292a",
-          stroke: "gray",
-          strokeWidth: 3.5,
-          portId: "",
-          fromLinkable: true,
-          toLinkable: true,
-          fromLinkableDuplicates: false,
-          toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
-          fromLinkableSelfNode: false,
-          toLinkableSelfNode: false //disabling links from a node to it self
-        },
+        width: 200,
+        height: 100,
+        margin: 4,
+        fill: "#29292a",
+        stroke: "gray",
+        strokeWidth: 3.5,
+        portId: "",
+        fromLinkable: true,
+        toLinkable: true,
+        fromLinkableDuplicates: false,
+        toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
+        fromLinkableSelfNode: false,
+        toLinkableSelfNode: false //disabling links from a node to it self
+      },
         new go.Binding("stroke", "color").makeTwoWay(),
         new go.Binding("figure")),
       //    new go.Binding("fill", "color")),
       $(go.TextBlock, {
-          margin: new go.Margin(5, 5, 3, 5),
-          font: "bold 16pt sans-serif",
-          stroke: 'ghostwhite',
-          minSize: new go.Size(32, 32),
-          maxSize: new go.Size(120, NaN),
-          textAlign: "center",
-          editable: true,
-          verticalAlignment: go.Spot.Center,
-          margin: 10
-        },
+        margin: new go.Margin(5, 5, 3, 5),
+        font: "bold 16pt sans-serif",
+        stroke: 'ghostwhite',
+        minSize: new go.Size(32, 32),
+        maxSize: new go.Size(120, NaN),
+        textAlign: "center",
+        editable: true,
+        verticalAlignment: go.Spot.Center,
+        margin: 10
+      },
         new go.Binding("text", "Name").makeTwoWay(),
 
       )
@@ -107,22 +107,22 @@ function init() {
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
     $(go.Link, {
-        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-        curve: go.Link.Bezier,
-        relinkableFrom: true,
-        relinkableTo: true,
-        reshapable: true,
-        /**
-         * Handling mouse events (mouseover the Link)
-         */
-        // a mouseover highlights the link by changing the first main path shape's stroke:
-        mouseEnter: function(e, link) {
-          link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
-        },
-        mouseLeave: function(e, link) {
-          link.elt(0).stroke = "transparent";
-        }
+      toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
+      curve: go.Link.Bezier,
+      relinkableFrom: true,
+      relinkableTo: true,
+      reshapable: true,
+      /**
+       * Handling mouse events (mouseover the Link)
+       */
+      // a mouseover highlights the link by changing the first main path shape's stroke:
+      mouseEnter: function (e, link) {
+        link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
       },
+      mouseLeave: function (e, link) {
+        link.elt(0).stroke = "transparent";
+      }
+    },
       new go.Binding("stroke", "Color"),
       // Link shape
 
@@ -134,18 +134,18 @@ function init() {
       }),
 
       $(go.Shape, { // the real drwan path default
-          isPanelMain: true,
-          strokeWidth: 4
-        },
+        isPanelMain: true,
+        strokeWidth: 4
+      },
         new go.Binding("stroke", "Color").makeTwoWay()
       ),
 
       // Link arrowhead
 
       $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
-          toArrow: "Standard",
-          scale: 1.5
-        },
+        toArrow: "Standard",
+        scale: 1.5
+      },
         new go.Binding("stroke", "Color").makeTwoWay(),
         new go.Binding("fill", "Color").makeTwoWay(),
       ),
@@ -162,15 +162,15 @@ function init() {
           strokeWidth: 3
         }),
         $(go.Panel, "Table", {
-            margin: 8,
-            stretch: go.GraphObject.Fill
-          },
+          margin: 8,
+          stretch: go.GraphObject.Fill
+        },
           $(go.TextBlock, {
-              row: 0,
-              alignment: go.Spot.Center,
-              margin: new go.Margin(3, 24, 3, 2), // leave room for Button
-              font: "bold 16px sans-serif"
-            },
+            row: 0,
+            alignment: go.Spot.Center,
+            margin: new go.Margin(3, 24, 3, 2), // leave room for Button
+            font: "bold 16px sans-serif"
+          },
             new go.Binding("text", "Name")
           ),
           $("PanelExpanderButton", "HIDEN", // the name of the element whose visibility this button toggles
@@ -185,23 +185,23 @@ function init() {
             separatorStroke: "#eeeeee"
           }),
           $(go.Panel, "Table", {
-              name: "HIDEN",
-              width: 150,
-              row: 1
-            },
+            name: "HIDEN",
+            width: 150,
+            row: 1
+          },
             $(go.RowColumnDefinition, {
               row: 1,
               separatorStrokeWidth: 1.5,
               separatorStroke: "#eeeeee"
             }),
             $(go.TextBlock, {
-                row: 0,
-                alignment: go.Spot.Left,
-                font: "bold 13px sans-serif",
-                wrap: go.TextBlock.WrapFit,
-                width: 150,
-                textAlign: "left",
-              },
+              row: 0,
+              alignment: go.Spot.Left,
+              font: "bold 13px sans-serif",
+              wrap: go.TextBlock.WrapFit,
+              width: 150,
+              textAlign: "left",
+            },
               new go.Binding("text", "Description"),
             ),
 
@@ -214,11 +214,11 @@ function init() {
               text: "Personal Data: "
             }),
             $(go.TextBlock, {
-                row: 1,
-                alignment: go.Spot.Right,
-                margin: new go.Margin(3, 2, 3, 2),
-                font: "bold 13px sans-serif",
-              },
+              row: 1,
+              alignment: go.Spot.Right,
+              margin: new go.Margin(3, 2, 3, 2),
+              font: "bold 13px sans-serif",
+            },
               new go.Binding("text", "PersonalData")
             ),
           )
@@ -269,47 +269,47 @@ function init() {
 
 
   var inspector = new Inspector('myInspectorDiv', myDiagram, {
-      includesOwnProperties: false,
-      properties: {
-        // Application properties - properties window
-        "Name": {},
-        "Version": {
-          show: Inspector.showIfNode
-        },
-        "Description": {
-          // show: Inspector.showIfNode
-          type: "field"
-        },
-        "COTS": {
-          show: Inspector.showIfNode,
-          type: "select",
-          choices: function(node, propName) {
-            if (Array.isArray(node.data.choices)) return node.data.choices;
-            return ["COTS", "Proprietary", "Undefined"];
-          }
-        },
-        "Release": {
-          show: Inspector.showIfNode,
-          type: "date"
-        },
-        "Shutdown": {
-          show: Inspector.showIfNode,
-          type: "date"
-        },
-        "Color": {
-          show: Inspector.showIfLink,
-          type: 'color',
-        },
-        "PersonalData": {
-          show: Inspector.showIfLink,
-          default: false,
-          type: "checkbox"
-        },
-        "LoadPreset": {
-          show: Inspector.showIfLink,
-          type: "select",
-          choices:
-          function(link, propName) {
+    includesOwnProperties: false,
+    properties: {
+      // Application properties - properties window
+      "Name": {},
+      "Version": {
+        show: Inspector.showIfNode
+      },
+      "Description": {
+        // show: Inspector.showIfNode
+        type: "field"
+      },
+      "COTS": {
+        show: Inspector.showIfNode,
+        type: "select",
+        choices: function (node, propName) {
+          if (Array.isArray(node.data.choices)) return node.data.choices;
+          return ["COTS", "Proprietary", "Undefined"];
+        }
+      },
+      "Release": {
+        show: Inspector.showIfNode,
+        type: "date"
+      },
+      "Shutdown": {
+        show: Inspector.showIfNode,
+        type: "date"
+      },
+      "Color": {
+        show: Inspector.showIfLink,
+        type: 'color',
+      },
+      "PersonalData": {
+        show: Inspector.showIfLink,
+        default: false,
+        type: "checkbox"
+      },
+      "LoadPreset": {
+        show: Inspector.showIfLink,
+        type: "select",
+        choices:
+          function (link, propName) {
 
             var presetName = [];
 
@@ -318,19 +318,19 @@ function init() {
               if (linkList[i].Name === link.data.Name) {
 
               } else {
-                presetName [i] = linkList[i].Name;
+                presetName[i] = linkList[i].Name;
 
               }
 
-          };
+            };
 
-          return [presetName.toString()];
+            return [presetName.toString()];
 
-        }
+          }
       }
     }
   }
-);
+  );
 
     myDiagram.addDiagramListener('LayoutCompleted', function(diagramEvent){
       myDiagram.nodes.each(function(n){
@@ -340,72 +340,68 @@ function init() {
       });
     });
 
-    // Eventlistener for hiding the Inspector and trafficlight system
-    myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
-      nodeList = [];
-      linkList = [];
-      let selectedPart = myDiagram.selection.first();
+  // Eventlistener for hiding the Inspector and trafficlight system
+  myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
+    nodeList = [];
+    linkList = [];
+    let selectedPart = myDiagram.selection.first();
 
 
-      if (selectedPart == null) {
-        document.getElementById("myInspectorDiv").style.display = "none";
-      } else {
-        document.getElementById("myInspectorDiv").style.display = "initial";
-      }
+    if (selectedPart == null) {
+      document.getElementById("myInspectorDiv").style.display = "none";
+    } else {
+      document.getElementById("myInspectorDiv").style.display = "initial";
+    }
 
 
-      myDiagram.commit(function(d) {
-        d.links.each(function(link) {
-          var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset, diagramId)
-          linkList.push(linkObj);
-          document.getElementById('uploadLinks').value = JSON.stringify(linkList);
+    myDiagram.commit(function (d) {
+      d.links.each(function (link) {
+        var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset, diagramId)
+        linkList.push(linkObj);
+        document.getElementById('uploadLinks').value = JSON.stringify(linkList);
 
-          if (loadcheck && reuseselected != null && reuseselected instanceof go.Link) {
+        if (loadcheck && reuseselected != null && reuseselected instanceof go.Link) {
 
-            if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
-              for (var i = 0; i < presetList.length; i++) {
-                if (loadname == presetList[i].Name) {
-                  //link.data.Name = presetList[i].Name;
-                  myDiagram.model.setDataProperty(link.data, "Name", presetList[i].Name);
-                  myDiagram.model.setDataProperty(link.data, "Description", presetList[i].Description);
-                  myDiagram.model.setDataProperty(link.data, "Color", presetList[i].Color);
-                  myDiagram.model.setDataProperty(link.data, "PersonalData", presetList[i].PersonalData);
-                  loadcheck = false;
-                  reuseselected = null;
-                }
+          if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
+            for (var i = 0; i < presetList.length; i++) {
+              if (loadname == presetList[i].Name) {
+                //link.data.Name = presetList[i].Name;
+                myDiagram.model.setDataProperty(link.data, "Name", presetList[i].Name);
+                myDiagram.model.setDataProperty(link.data, "Description", presetList[i].Description);
+                myDiagram.model.setDataProperty(link.data, "Color", presetList[i].Color);
+                myDiagram.model.setDataProperty(link.data, "PersonalData", presetList[i].PersonalData);
+                loadcheck = false;
+                reuseselected = null;
               }
             }
-
-
-
-
-          }
-
-        });
-        d.nodes.each(function(node) {
-          if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
-            myDiagram.model.setDataProperty(node.data, "color", "red")
-          } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
-            myDiagram.model.setDataProperty(node.data, "color", "green")
-          } else if (node.data.Release > today2) {
-            myDiagram.model.setDataProperty(node.data, "color", "orange")
-          } else {
-            myDiagram.model.setDataProperty(node.data, "color", "blue")
-          }
-
-          if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
-            node.data.Shutdown = "0000-00-00";
-            myDiagram.model.setDataProperty(node.data, "color", "green")
           }
 
 
-          var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
-          nodeList.push(nodeObj);
-          document.getElementById('uploadData').value = JSON.stringify(nodeList);
-
-        });
 
 
+        }
+
+      });
+      d.nodes.each(function (node) {
+        if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
+          myDiagram.model.setDataProperty(node.data, "color", "red")
+        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
+          myDiagram.model.setDataProperty(node.data, "color", "green")
+        } else if (node.data.Release > today2) {
+          myDiagram.model.setDataProperty(node.data, "color", "orange")
+        } else {
+          myDiagram.model.setDataProperty(node.data, "color", "blue")
+        }
+
+        if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
+          node.data.Shutdown = "0000-00-00";
+          myDiagram.model.setDataProperty(node.data, "color", "green")
+        }
+
+
+        var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
+        nodeList.push(nodeObj);
+        document.getElementById('uploadData').value = JSON.stringify(nodeList);
 
       });
 
@@ -413,8 +409,12 @@ function init() {
 
     });
 
-    myDiagram.addDiagramListener("ObjectSingleClicked",
-    function(e) {
+
+
+    });
+
+  myDiagram.addDiagramListener("ObjectSingleClicked",
+    function (e) {
 
       var tz = true;
       reuseselected = e.subject.part;
@@ -462,7 +462,7 @@ function init() {
     }
 
 
-  }
+}
 
   function autolayout() {
 
@@ -505,13 +505,13 @@ function init() {
 
 
 
-  function showData() {
+function showData() {
 
-    var json = myDiagram.model.toJson();
+  var json = myDiagram.model.toJson();
 
-    console.log(json);
+  console.log(json);
 
-  }
+}
 
 
-  window.addEventListener('DOMContentLoaded', init);
+window.addEventListener('DOMContentLoaded', init);

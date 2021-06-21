@@ -1,81 +1,132 @@
+
 const uploadForm = document.querySelector('#uploadForm');
+const importForm = document.getElementById('importForm');
+
 const endPoint = "/importAppsFromExcel";
 
 
 uploadForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-
-
     uploadToServer()
-
-
-    // const allNewApps = [];
-
-    // for (const app of appsFromExcel) {
-
-    //     const newApp = {
-    //         Key: app['Key'],
-    //         Name: app['Name'],
-    //         Version: "",
-    //         Description: app['Description'],
-    //         COTS: "COTS",
-    //         Release: new Date(app['Release']).toISOString(),
-    //         Shutdown: app["Shutdown"] ? new Date(app["Shutdown"]).toISOString() : '',
-    //         color: "blue",
-    //         dateToday: ""
-    //     };
-
-    //     allNewApps.push(newApp);
-    // }
-
-    // myDiagram.model.addNodeDataCollection(allNewApps);
-
 });
 
-const uploadToServer = async function () {
-    const inpFile = document.getElementById('inpFile');
-    const headerRow = document.getElementById('headerRow');
+importForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
 
-    const firstRowIsHeader = headerRow.checked
+    getAppsFromExcel(e);
+
+    uploadForm.hidden = false;
+    importForm.hidden = true;
+});
+
+const checkResponse = function (response) {
+    if (response.ok) {
+        return response;
+    }
+
+    throw Error(response.statusText);
+}
+
+
+const initImputForm = function (data) {
+
+    uploadForm.hidden = true;
+    importForm.hidden = false;
+
+    const sheets = data.sheets;
+    const file_path = data.filePath;
+
+    const sheetName = document.getElementById('sheetName');
+    document.getElementById('filePath').value = file_path;
+
+    sheetName.addEventListener('change', function (e) {
+        const sheet = e.target.value;
+        changeSelectOptions(sheets[sheet]);
+    });
+
+    if (sheetName.options) {
+        while (sheetName.options.length > 0) {
+            sheetName.options.remove(0);
+        }
+    }
+
+    for (sheet of Object.keys(sheets)) {
+        sheetName.appendChild(new Option(sheet, sheet));
+    }
+
+    sheetName.dispatchEvent(new Event('change'));
+
+}
+
+const changeSelectOptions = function (cols) {
+
+    const selects = document.querySelectorAll('.selectOptions');
+
+    for (let select of selects) {
+        select.disabled = false;
+        if (select.options) {
+            while (select.options.length > 0) {
+                select.options.remove(0);
+            }
+        }
+        for ([colNum, colName] of Object.entries(cols)) {
+            select.appendChild(new Option(colName, colNum));
+        }
+    }
+}
+
+const uploadToServer = async function () {
+
+    const inpFile = document.getElementById('inpFile');
 
     const formData = new FormData()
 
     formData.set("inpFile", inpFile.files[0]);
-    formData.set('firstRowIsHeader', firstRowIsHeader);
 
-    const response = await fetch(endPoint, {
+    console.log(formData)
+
+    await fetch(endPoint, {
         method: "post",
         body: formData
-    });
 
-    const data = await response.json();
-
-    if (data.firstRowIsHeader == true) {
-        console.log("first row is header");
-    }
-
-    console.log(data)
+    }).then(checkResponse)
+        .then(res => res.json())
+        .then(json => {
+            initImputForm(json.data);
+        })
+        .catch(err => console.log(err));
 }
 
+const getAppsFromExcel = async function (ev) {
 
-const getAppsFromExcel = function () {
 
-    const sheetsName = document.getElementById('sheetsName');
-    const appName = document.getElementById('appName');
-    const appId = document.getElementById('appId');
-    const appDescription = document.getElementById('appDescription');
-    const appCOTS = document.getElementById('appCOTS');
-    const appReleaseDate = document.getElementById('appReleaseDate');
-    const appShutdownDate = document.getElementById('appShutdownDate');
+    const formData = new FormData(ev.target);
 
-    const formData = new FormData();
+    const options = {
+        method: "put",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: convertToJson(formData)
+    }
 
-    formData.set('sheetsName', sheetsName.value);
-    formData.set('appName', appName.value);
-    formData.set('appId', appId.value);
-    formData.set('appDescription', appDescription.value);
-    formData.set('appCOTS', appCOTS.value);
-    formData.set('appReleaseDate', appReleaseDate.value);
-    formData.set('appShutdownDate', appShutdownDate.value);
+    await fetch(endPoint, options)
+        .then(checkResponse)
+        .then(res => res.json())
+        .then(json => appendNewApps(json.data))
+        .catch(err => console.log(err));
 
+}
+
+const appendNewApps = function (apps) {
+    myDiagram.model.addNodeDataCollection(apps)
+}
+
+const convertToJson = function (fd) {
+    const object = {};
+    fd.forEach((value, key) => object[key] = value);
+    const json = JSON.stringify(object);
+
+    return json;
 }
