@@ -41,21 +41,17 @@
   </div>
   <div>
     <button id="savedModel" onclick="save()">Export DataObj</button>
-
     <!--<textarea id="mySavedModel" style="width:100%;height:200px"></textarea>-->
   </div>
   <div>
     <button data-bs-toggle="modal" data-bs-target="#formModal">
       Import Applciations from Excel
     </button>
-
     <!-- Modal -->
     <div class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-
         <div class="modal-content">
-
           <div class="modal-header">
             <h5 class="modal-title" id="ModalLabel">Import from Excel</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -159,7 +155,7 @@
       <label for="email"><b>PersonalData</b></label>
       <input type="checkbox" id="dataObjPer">
 
-      <button type="button" class="btn" onclick="resave()">Save Preset</button>
+      <button type="button" class="btn" onclick="resave()">Save Data Object</button>
       <button type="button" class="btn cancel" onclick="asd(0)">Close</button>
     </form>
     <form class="form-container" id="asdf" action="">
@@ -167,7 +163,7 @@
         <option value="A">Select a preset:</option>
       </select>
 
-      <button type="button" class="btn" onclick="reload()">Load Preset</button>
+      <button type="button" class="btn" onclick="reload()">Load Data Object</button>
       <button type="button" class="btn cancel" onclick="asdf(0)">Close</button>
     </form>
   </div>

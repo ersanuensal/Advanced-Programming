@@ -4,6 +4,8 @@ block scripts
   link(rel='stylesheet', href='./bootstrap-5.0.1-dist/css/bootstrap.min.css')
   link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
   link(rel='stylesheet', href='./css/style.css')
+  script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4' crossorigin='anonymous')
   script(src='./js/gojs/release/go.js')
   script(src='./js/gojs/extensions/Figures.js')
   script(src='./js/gojs/extensions/DataInspector.js')
@@ -13,27 +15,42 @@ block scripts
   script(src='./js/download.js')
   script(src='./js/todayTime.js')
   script(src='./js/uploadAndImportFromExcel.js', defer='')
-  script(src='./js/reuse.js', defer='')
+  script(src='./js/reuse2.js', defer='')
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
+  script(src='./js/classes/Preset.js')
+  script(src='./js/collapse.js')
 block content
   #mySidebar.leftMenu
-    form.formstogether(action='/', method='get', id='homeForm')
-      a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") Home
+    form(action='/', method='get', id='homeForm')
+      a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") &nbsp;Home 
+        i(class='fa fa-home', style='position:relative;float:left;padding:6px 2px;')
     form(action='/upload', method='post', id='uploadDBForm')
       input#diagramId(type='hidden', name='diagramId' value=diagramId)
       input#uploadData(type='hidden', name='uploadData')
       input#uploadLinks(type='hidden', name='uploadLinks')
-      a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") Save
-    a(href="javascript:{}", onclick='save2()' ) Export Personal Data
-    a#savedModel(href="javascript:{}", onclick='save()') Export DataObj
-
-
-    a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") import
-
-
-    a#x(href="javascript:{}", onclick='reuseDataObj()')  reuse DataObj
-    a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") Documentation
+      a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") &nbsp;Save
+        i(class='fa fa-floppy-o', style='position:relative;float:left;padding:6px 2px;')
+      a.collapsed(data-bs-toggle='collapse' data-bs-target='#home-collapse' aria-expanded='true') &nbsp;Export
+        i(class='fa fa-caret-down', style='position:relative;float:right;padding:6px 2px;')
+        i(class='fa fa-external-link', style='position:relative;float:left;padding:6px 2px;')
+      #home-collapse.collapse
+        ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small
+          li
+            a(href="javascript:{}", onclick='save2()', class="dropdown-item") &nbsp; Export Personal Data
+          li
+            a#savedModel(href="javascript:{}", onclick='save()', class="dropdown-item") &nbsp; Export DataObj
+      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") &nbsp;Import from Excel
+        i(class='fa fa-sign-in', style='position:relative;float:left;padding:6px 2px;')
+      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#dataObjModal")  &nbsp;Manage Data Objects
+        i(class='fa fa-wrench', style='position:relative;float:left;padding:6px 2px;')
+      a.collapsed(data-bs-toggle='collapse' data-bs-target='#account-collapse' aria-expanded='false') &nbsp;About
+        i(class='fa fa-caret-down', style='position:relative;float:right;padding:6px 2px;')  
+        i(class='fa fa-info', style='position:relative;float:left;padding:6px 7px;')
+      #account-collapse.collapse
+        ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small
+          li
+            a(href="'https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md") &nbsp; Documentation
   .contentPages
     input#downloadData(type='hidden', name='downloadData' value=downloadData)
     input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
@@ -42,6 +59,43 @@ block content
       #myOverviewDiv.overview
       #myDiagramDiv.diagram
       #myInspectorDiv.inspector
+      div(class="modal fade" id="dataObjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="ModalLabel" aria-hidden="true")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              h5(class="modal-title" id="ModalLabel">Import from Excel)
+              button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+            div(class="modal-body")
+              <div class="row mb-3">
+                div
+                  button#resave(onclick='asd(1)')  Save Data Object 
+                  button#reload(onclick='asdf(1)')  Load Data Object
+                  button#reedit(onclick='')  Edit Data Object 
+                div
+                #saveDataObj.form-popup
+                  form#asd.form-container(action='')
+                    h1 Save a Data Object
+                    label#dataObjNameLabel(for='dataObjName')
+                      b Name
+                    input#dataObjName(type='text' placeholder='Enter Name' required='')
+                    label(for='email')
+                      b Description
+                    input#dataObjDes(type='text' placeholder='Enter Description' required='')
+                    label(for='email')
+                      b Color
+                    input#dataObjColor(type='color' value='#000000' required='')
+                    label(for='email')
+                      b PersonalData
+                    input#dataObjPer(type='checkbox')
+                    button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
+                    button.btn.cancel(type='button' onclick='asd(0)') Close
+                  form#asdf.form-container(action='')
+                    select#selectNumber
+                      option(value='A') Select an Data Object:
+                    button.btn(type='button' onclick='reload()') Load Data Object
+                    button.btn.cancel(type='button' onclick='asdf(0)') Close
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog modal-dialog-centered modal-dialog-scrollable")
@@ -97,6 +151,6 @@ block content
                         button.btn.btn-primary(type='submit') Import now
 
 
-    script(src="./bootstrap-5.0.1-dist/js/bootstrap.min.js")     
+        
 
     // <div id="Descriptor" class="Descriptor"><textarea id="descripted" class="descripted">test</textarea></div>
