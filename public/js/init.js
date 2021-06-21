@@ -332,13 +332,7 @@ function init() {
   }
   );
 
-    myDiagram.addDiagramListener('LayoutCompleted', function(diagramEvent){
-      myDiagram.nodes.each(function(n){
-        console.log(n.data.key+n.actualBounds.width);
-        nodes[n.data.key]['height']=n.actualBounds.height;
-        nodes[n.data.key]['width'] = n.actualBounds.width;
-      });
-    });
+
 
   // Eventlistener for hiding the Inspector and trafficlight system
   myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
