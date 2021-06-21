@@ -1,6 +1,8 @@
 function init() {
   // short form for defining templates
   var $ = go.GraphObject.make;
+  var myModel;
+  var dagre = require("dagre");
   //  const today = new Date();
   today2 = getTodayTime().split('T')[0];
 
@@ -330,7 +332,13 @@ function init() {
   }
 );
 
-
+    myDiagram.addDiagramListener('LayoutCompleted', function(diagramEvent){
+      myDiagram.nodes.each(function(n){
+        console.log(n.data.key+n.actualBounds.width);
+        nodes[n.data.key]['height']=n.actualBounds.height;
+        nodes[n.data.key]['width'] = n.actualBounds.width;
+      });
+    });
 
     // Eventlistener for hiding the Inspector and trafficlight system
     myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
@@ -402,6 +410,7 @@ function init() {
       });
 
 
+
     });
 
     myDiagram.addDiagramListener("ObjectSingleClicked",
@@ -415,10 +424,83 @@ function init() {
       }
     });
 
+    function autolayout() {
+
+        console.log(JSON.stringify(myModel));
+
+        // Create a new dagre graph , note: this graph is only used for layout.
+        var dagreGraph = new dagre.graphlib.Graph();
+        dagreGraph.setGraph({
+          rankdir: 'LR',
+          nodesep: 100,
+          ranksep: 20,
+          edgesep: 20,
+        });
+
+        // Default to assigning a new object as a label for each new edge.
+        dagreGraph.setDefaultEdgeLabel(function() { return {label: 'label'}; });
+
+        for (n in nodes) {
+          dagreGraph.setNode(n,{width: nodes[n].width, height: nodes[n].height})
+        };
+
+        links.forEach(function(link){
+          dagreGraph.setEdge(link.from, link.to, {minlen: 2});
+        });
+
+        dagre.layout(dagreGraph);
+
+        dagreGraph.nodes().forEach(function(v){
+          var node = dagreGraph.node(v);
+          console.log("Node " + v + ": " + JSON.stringify(node));
+    //      myModel.nodeDataArray[n.id].loc = n.x+' '+n.y;
+          nodes[v].x = node.x;
+          nodes[v].y = node.y;
+
+        });
+
+    }
+
 
   }
 
+  function autolayout() {
 
+      console.log(JSON.stringify(myDiagram.model));
+
+      // Create a new dagre graph , note: this graph is only used for layout.
+      var dagreGraph = new dagre.graphlib.Graph();
+      dagreGraph.setGraph({
+        rankdir: 'LR',
+        nodesep: 100,
+        ranksep: 20,
+        edgesep: 20,
+      });
+
+      // Default to assigning a new object as a label for each new edge.
+      dagreGraph.setDefaultEdgeLabel(function() { return {label: 'label'}; });
+      var nodes = myDiagram.model.nodeDataArray;
+      for (n in nodes) {
+        dagreGraph.setNode(n,{width: nodes[n].width, height: nodes[n].height})
+      };
+
+      var links = myDiagram.model.linkDataArray;
+      links.forEach(function(link){
+        dagreGraph.setEdge(link.from, link.to, {minlen: 2});
+      });
+
+      dagre.layout(dagreGraph);
+
+      dagreGraph.nodes().forEach(function(v){
+        var node = dagreGraph.node(v);
+        console.log("Node " + v + ": " + JSON.stringify(node));
+  //      myModel.nodeDataArray[n.id].loc = n.x+' '+n.y;
+        nodes[v].x = node.x;
+        nodes[v].y = node.y;
+
+      });
+
+  }
 
 
 
