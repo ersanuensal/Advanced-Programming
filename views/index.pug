@@ -22,25 +22,31 @@ block scripts
   script(src='./js/collapse.js')
 block content
   #mySidebar.leftMenu
-    form.formstogether(action='/', method='get', id='homeForm')
-      a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") Home
+    form(action='/', method='get', id='homeForm')
+      a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") &nbsp;Home 
+        i(class='fa fa-home', style='position:relative;float:left;padding:6px 2px;')
     form(action='/upload', method='post', id='uploadDBForm')
       input#diagramId(type='hidden', name='diagramId' value=diagramId)
       input#uploadData(type='hidden', name='uploadData')
       input#uploadLinks(type='hidden', name='uploadLinks')
-      a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") Save
-      a.collapsed(data-bs-toggle='collapse' data-bs-target='#home-collapse' aria-expanded='true') Export
-        i(class='fa fa-caret-down', style='align:right;')
+      a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") &nbsp;Save
+        i(class='fa fa-floppy-o', style='position:relative;float:left;padding:6px 2px;')
+      a.collapsed(data-bs-toggle='collapse' data-bs-target='#home-collapse' aria-expanded='true') &nbsp;Export
+        i(class='fa fa-caret-down', style='position:relative;float:right;padding:6px 2px;')
+        i(class='fa fa-external-link', style='position:relative;float:left;padding:6px 2px;')
       #home-collapse.collapse
         ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small
           li
             a(href="javascript:{}", onclick='save2()', class="dropdown-item") &nbsp; Export Personal Data
           li
             a#savedModel(href="javascript:{}", onclick='save()', class="dropdown-item") &nbsp; Export DataObj
-      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") Import from Excel
-      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#dataObjModal")  Manage Data Objects
-      a.collapsed(data-bs-toggle='collapse' data-bs-target='#account-collapse' aria-expanded='false') About
-        i(class='fa fa-caret-down', style='align: right')
+      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#formModal") &nbsp;Import from Excel
+        i(class='fa fa-sign-in', style='position:relative;float:left;padding:6px 2px;')
+      a(href="javascript:{}" data-bs-toggle="modal" data-bs-target="#dataObjModal")  &nbsp;Manage Data Objects
+        i(class='fa fa-wrench', style='position:relative;float:left;padding:6px 2px;')
+      a.collapsed(data-bs-toggle='collapse' data-bs-target='#account-collapse' aria-expanded='false') &nbsp;About
+        i(class='fa fa-caret-down', style='position:relative;float:right;padding:6px 2px;')  
+        i(class='fa fa-info', style='position:relative;float:left;padding:6px 7px;')
       #account-collapse.collapse
         ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small
           li
