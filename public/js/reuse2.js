@@ -122,3 +122,11 @@ function reload() {
   loadcheck = true;
   asdf(0);
 }
+
+function loadDataObjModal() {
+
+  var myModal = new bootstrap.Modal(document.getElementById('dataObjModal'), {
+  keyboard: false
+  })
+  myModal.show()
+}

@@ -415,9 +415,19 @@ function init() {
       reuseselected = e.subject.part;
 
       if (reuseselected instanceof go.Link) {
-        console.log("Clicked on " + reuseselected.data.Name);
+        console.log("Clicked on Single" + reuseselected.data.Name);
       }
     });
+
+    myDiagram.addDiagramListener("ObjectContextClicked",
+      function (e) {
+        reuseselected = e.subject.part;
+
+        if (reuseselected instanceof go.Link) {
+          console.log("Clicked on Double" + reuseselected.data.Name);
+          loadDataObjModal();
+        }
+      });
 
     function autolayout() {
 

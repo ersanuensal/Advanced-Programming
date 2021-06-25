@@ -65,32 +65,32 @@ block content
         div(class="modal-dialog")
           div(class="modal-content")
             div(class="modal-header")
-              h5(class="modal-title" id="ModalLabel">Import from Excel)
+              h5.modal-title#ModalLabel Data Objects
               button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
             div(class="modal-body")
               <div class="row mb-3">
                 div
-                  button#resave(onclick='asd(1)')  Save Data Object 
-                  button#reload(onclick='asdf(1)')  Load Data Object
-                  button#reedit(onclick='')  Edit Data Object 
+                  button#resave(onclick='asd(1)')  Create Data Object 
+                  button#reload(onclick='')  Edit Data Object
+                  button#reedit(onclick='')  Delete Data Object
                 div
                 #saveDataObj.form-popup
                   form#asd.form-container(action='')
-                    h1 Save a Data Object
+                    h1 Create a Data Object
                     label#dataObjNameLabel(for='dataObjName')
                       b Name
                     input#dataObjName(type='text' placeholder='Enter Name' required='')
-                    label(for='email')
+                    label(for='name')
                       b Description
                     input#dataObjDes(type='text' placeholder='Enter Description' required='')
-                    label(for='email')
+                    label(for='desc')
                       b Color
                     input#dataObjColor(type='color' value='#000000' required='')
-                    label(for='email')
+                    label(for='color')
                       b PersonalData
-                    input#dataObjPer(type='checkbox')
+                    input#dataObjPer(type='checkbox' class="form-check-input")
                     button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
-                    button.btn.cancel(type='button' onclick='asd(0)') Close
+                    button.btn.cancel(type='button' class="btn btn-danger" onclick='asd(0)') Close
                   form#asdf.form-container(action='')
                     select#selectNumber
                       option(value='A') Select an Data Object:
