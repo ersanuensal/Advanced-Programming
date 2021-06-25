@@ -70,12 +70,12 @@ block content
             div(class="modal-body")
               <div class="row mb-3">
                 div
-                  button#resave(onclick='asd(1)')  Create Data Object 
-                  button#reload(onclick='')  Edit Data Object
+                  button#resave(onclick='showCreateDataObj(1)')  Create Data Object 
+                  button#reload(onclick='showEditDataObj(1)')  Edit Data Object
                   button#reedit(onclick='')  Delete Data Object
                 div
                 #saveDataObj.form-popup
-                  form#asd.form-container(action='')
+                  form#showCreateDataObj.form-container(action='')
                     h1 Create a Data Object
                     label#dataObjNameLabel(for='dataObjName')
                       b Name
@@ -90,12 +90,11 @@ block content
                       b PersonalData
                     input#dataObjPer(type='checkbox' class="form-check-input")
                     button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
-                    button.btn.cancel(type='button' class="btn btn-danger" onclick='asd(0)') Close
-                  form#asdf.form-container(action='')
-                    select#selectNumber
-                      option(value='A') Select an Data Object:
-                    button.btn(type='button' onclick='reload()') Load Data Object
-                    button.btn.cancel(type='button' onclick='asdf(0)') Close
+                    button.btn.cancel(type='button' class="btn btn-danger" onclick='showCreateDataObj(0)') Close
+                  form#showEditDataObj.form-container(action='')
+                    table#generateTableForEdit
+                    button.btn(type='button' onclick='') Load Data Object
+                    button.btn.cancel(type='button' onclick='showEditDataObj(0)') Close
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
