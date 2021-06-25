@@ -108,7 +108,8 @@ function init() {
   myDiagram.linkTemplate =
     $(go.Link, {
       toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-      curve: go.Link.Bezier,
+      //curve: go.Link.Bezier,
+      routing: go.Link.AvoidsNodes,
       relinkableFrom: true,
       relinkableTo: true,
       reshapable: true,
