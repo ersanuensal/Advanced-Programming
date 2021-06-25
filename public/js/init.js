@@ -406,7 +406,7 @@ function init() {
 
 
 
-    });
+  });
 
   myDiagram.addDiagramListener("ObjectSingleClicked",
     function (e) {
@@ -419,45 +419,86 @@ function init() {
       }
     });
 
-}
-
+<<<<<<< HEAD
+=======
   function autolayout() {
 
-      console.log(JSON.stringify(myDiagram.model));
+    console.log(JSON.stringify(myModel));
 
-      // Create a new dagre graph , note: this graph is only used for layout.
-      var dagreGraph = new dagre.graphlib.Graph();
-      dagreGraph.setGraph({
-        rankdir: 'LR',
-        nodesep: 100,
-        ranksep: 20,
-        edgesep: 20,
-      });
+    // Create a new dagre graph , note: this graph is only used for layout.
+    var dagreGraph = new dagre.graphlib.Graph();
+    dagreGraph.setGraph({
+      rankdir: 'LR',
+      nodesep: 100,
+      ranksep: 20,
+      edgesep: 20,
+    });
 
-      // Default to assigning a new object as a label for each new edge.
-      dagreGraph.setDefaultEdgeLabel(function() { return {label: 'label'}; });
-      var nodes = myDiagram.model.nodeDataArray;
-      for (n in nodes) {
-        dagreGraph.setNode(n,{width: nodes[n].width, height: nodes[n].height})
-      };
+    // Default to assigning a new object as a label for each new edge.
+    dagreGraph.setDefaultEdgeLabel(function () { return { label: 'label' }; });
 
-      var links = myDiagram.model.linkDataArray;
-      links.forEach(function(link){
-        dagreGraph.setEdge(link.from, link.to, {minlen: 2});
-      });
+    for (n in nodes) {
+      dagreGraph.setNode(n, { width: nodes[n].width, height: nodes[n].height })
+    };
 
-      dagre.layout(dagreGraph);
+    links.forEach(function (link) {
+      dagreGraph.setEdge(link.from, link.to, { minlen: 2 });
+    });
 
-      dagreGraph.nodes().forEach(function(v){
-        var node = dagreGraph.node(v);
-        console.log("Node " + v + ": " + JSON.stringify(node));
-  //      myModel.nodeDataArray[n.id].loc = n.x+' '+n.y;
-        nodes[v].x = node.x;
-        nodes[v].y = node.y;
+    dagre.layout(dagreGraph);
 
-      });
+    dagreGraph.nodes().forEach(function (v) {
+      var node = dagreGraph.node(v);
+      console.log("Node " + v + ": " + JSON.stringify(node));
+      //      myModel.nodeDataArray[n.id].loc = n.x+' '+n.y;
+      nodes[v].x = node.x;
+      nodes[v].y = node.y;
+
+    });
 
   }
+
+
+>>>>>>> 6fade2891b9ed57e757ccc399598578c4cba641e
+}
+
+function autolayout() {
+
+  console.log(JSON.stringify(myDiagram.model));
+
+  // Create a new dagre graph , note: this graph is only used for layout.
+  var dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setGraph({
+    rankdir: 'LR',
+    nodesep: 100,
+    ranksep: 20,
+    edgesep: 20,
+  });
+
+  // Default to assigning a new object as a label for each new edge.
+  dagreGraph.setDefaultEdgeLabel(function () { return { label: 'label' }; });
+  var nodes = myDiagram.model.nodeDataArray;
+  for (n in nodes) {
+    dagreGraph.setNode(n, { width: nodes[n].width, height: nodes[n].height })
+  };
+
+  var links = myDiagram.model.linkDataArray;
+  links.forEach(function (link) {
+    dagreGraph.setEdge(link.from, link.to, { minlen: 2 });
+  });
+
+  dagre.layout(dagreGraph);
+
+  dagreGraph.nodes().forEach(function (v) {
+    var node = dagreGraph.node(v);
+    console.log("Node " + v + ": " + JSON.stringify(node));
+    //      myModel.nodeDataArray[n.id].loc = n.x+' '+n.y;
+    nodes[v].x = node.x;
+    nodes[v].y = node.y;
+
+  });
+
+}
 
 
 
