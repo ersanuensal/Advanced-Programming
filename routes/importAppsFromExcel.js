@@ -11,6 +11,7 @@ const multer = require('multer');
 const express = require('express');
 const Router = express.Router;
 const XLSX = require('xlsx');
+const { List } = require('gojs');
 
 const router = new Router();
 
@@ -25,6 +26,31 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage });
+
+router.post('/', upload.single('inpFile'), function (req, res) {
+
+    const filePath = req.file.path;
+
+    const data = {};
+
+    const parsingOptions = {
+        cellFormula: false,
+        cellHTML: false,
+        cellDates: true,
+        cellText: false,
+    };
+
+    const workbook = XLSX.readFile(filePath, parsingOptions);
+
+    data.filePath = filePath;
+    data.sheets = getSheetsWithHeaders(filePath);
+
+    res.send({
+        status: 'ok',
+        data: data
+    });
+
+});
 
 router.put('/', function (req, res) {
 
@@ -41,7 +67,6 @@ router.put('/', function (req, res) {
     }
 
     const parsingOptions = {
-        // sheets: sheet,
         cellFormula: false,
         cellHTML: false,
         cellDates: true,
@@ -50,9 +75,23 @@ router.put('/', function (req, res) {
 
     const workbook = XLSX.readFile(filePath, parsingOptions);
     const worksheet = workbook.Sheets[sheet];
-    const json = converSheetToJsonArray(worksheet, cols);
+    const { json, deletedRows } = converSheetToJsonArray(worksheet, cols);
     const colNames = getColNames(worksheet, cols);
-    data = mapColstoProp(json, colNames);
+    const applications = mapColsToProp(json, colNames);
+
+    const ignoredApplication = new Array()
+
+    deletedRows.forEach(deletedRow => {
+        ignoredApplication.push({
+            'reason': colNames[deletedRow.reason],
+            'app': mapColsToProp([deletedRow.row], colNames)[0]
+        });
+    })
+
+    const data = {
+        'ignoredApplication': ignoredApplication,
+        'applications': applications
+    }
 
     fs.unlinkSync(filePath);
 
@@ -63,56 +102,132 @@ router.put('/', function (req, res) {
 
 })
 
-router.post('/', upload.single('inpFile'), function (req, res) {
-
-    const filePath = req.file.path;
-
-    const data = {};
-
-    // const colNames = {
-    //     Name: req.body.appName,
-    //     Key: req.body.appId,
-    //     Description: req.body.appDescription,
-    //     COTS: req.body.appCOTS,
-    //     Release: req.body.appReleaseDate,
-    //     Shutdown: req.body.appShutdownDate
-    // }
-
-    const parsingOptions = {
-        cellFormula: false,
-        cellHTML: false,
-        cellDates: true,
-        cellText: false,
-    };
-
-    const workbook = XLSX.readFile(filePath, parsingOptions);
-    // let data = {};
-
-    // const allSheetNames = workbook.SheetNames;
-
-    // const realSheetName = findSheetName(sheetsName, Object.values(allSheetNames));
-
-    // if (realSheetName) {
-    //     const worksheet = workbook.Sheets[realSheetName];
-    //     const { newColNames, colIndex } = getColIndex(colNames, worksheet);
-    //     const json = converSheetToJsonArray(worksheet, colIndex);
-    //     data = mapColstoProp(json, newColNames);
-    // }
-
-    //  delete the file
-
-    data.filePath = filePath;
-    data.sheets = getHeaders(filePath);
-
-    res.send({
-        status: 'ok',
-        data: data
-    });
-
-});
+const converSheetToJsonArray = function (ws, colIndex) {
+    // getting the range of the sheet
 
 
-const getHeaders = function (filePath) {
+    importantCols = {
+        key: colIndex.Key,
+        name: colIndex.Name
+    }
+
+    const { ws: newWs, deletedRows } = detectFalseApplications(ws, Object.values(importantCols));
+
+    // converting to json
+    const convertingOptions = {
+        raw: false,
+        range: newWs['!ref'],
+        blankrows: false
+    }
+
+    const json = XLSX.utils.sheet_to_json(newWs, convertingOptions);
+
+    return { json, deletedRows };
+
+}
+
+const getRowsAndCols = function (ws) {
+    const sheetsRange = XLSX.utils.decode_range(ws['!ref']);
+
+    const cols = { start: sheetsRange.s.c, end: sheetsRange.e.c };
+    const rows = { start: sheetsRange.s.r, end: sheetsRange.e.r };
+
+    return { rows, cols };
+}
+
+const detectFalseApplications = function (ws, importantCols) {
+
+    let deleted = false;
+    const { rows, cols } = getRowsAndCols(ws);
+    let row = 0;
+    const deletedRows = new Array()
+
+    /**
+     * travling through the sheet cell by cell
+     * if a empty cell if found, see if this cell is in an important column
+     * if yes then just delete the whole row
+     * if no just assign undefined to it
+     */
+    while (row <= rows.end) {
+        /**
+         * ceck all columns in this row 
+         */
+        for (let C = cols.start; C <= cols.end; ++C) {
+
+            let cellRef = encodeCell(row, C);
+
+            if (!ws[cellRef] || [null, undefined, ''].includes(ws[cellRef].v)) {
+                if (importantCols.includes(C)) {
+                    /**
+                     * remove this row from th sheet and return the deleted row and the new sheet
+                     */
+                    const { ws: newWs, deletedRow } = deleteRow(ws, row);
+                    ws = newWs
+                    /**
+                    * push the deletd row to the list of the deleted rows with the reson for deletion (wich proprety it doesn't have)
+                    */
+                    deletedRows.push({
+                        reason: ws[encodeCell(0, C)].v,
+                        row: deletedRow
+                    })
+                    deleted = true;
+                    break;
+                    // leave the for loop
+                } else {
+                    ws[cellRef] = undefined
+                }
+            }
+        }
+
+        // deleting a row works this way: table[x] = table[x+1]
+        // if the row is deleted, than next checking round should start from present row, because the present row is 
+        // now the previos next row
+        if (!deleted) {
+            // if the no row is deletd than just pass to the next row
+            row++;
+        } else {
+            // if a row is deleted, than the number of rows in sheet/table should be decremented
+            deleted = false;
+            // the loop should go until number of row - 1, because a row is deleted
+            rows.end--;
+        }
+
+    }
+
+    return { ws, deletedRows };
+}
+
+const deleteRow = function (ws, rowIndex) {
+
+    const range = XLSX.utils.decode_range(ws['!ref']);
+
+    const deletedRow = new Object();
+
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+        let cellRef = encodeCell(rowIndex, C);
+        if (!ws[cellRef] || [undefined, null, ''].includes(ws[cellRef].v)) {
+            deletedRow[ws[encodeCell(0, C)].v] = '';
+        } else {
+            deletedRow[ws[encodeCell(0, C)].v] = ws[cellRef].v;
+        }
+    }
+
+    for (var R = rowIndex; R <= range.e.r; ++R) {
+        for (var C = range.s.c; C <= range.e.c; ++C) {
+            ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)];
+        }
+    }
+
+    if (range.e.r > 0) {
+        range.e.r--;
+    }
+
+    ws['!ref'] = XLSX.utils.encode_range(range.s, range.e);
+
+    return { ws, deletedRow };
+}
+
+const getSheetsWithHeaders = function (filePath) {
 
     const parsingOptions = {
 
@@ -156,22 +271,26 @@ const getColNames = function (ws, cols) {
     const row = 0;
     const colNames = {};
     for ([propName, colNumber] of Object.entries(cols)) {
-        colNames[propName] = ws[encodeCell(row, colNumber)].v;
+        let cellRef = encodeCell(row, colNumber);
+        let value = ''
+        if (ws[cellRef] && [undefined, null, ''].includes(ws[cellRef].v) == false) {
+            value = ws[cellRef].v;
+        }
+        colNames[value] = propName;
     }
     return colNames;
 }
 
-const mapColstoProp = function (json, colNames) {
+const mapColsToProp = function (listOfObjects, colNames) {
 
     const allApps = [];
-    let newApp = {};
 
-    for (const obj of json) {
+    for (const obj of listOfObjects) {
 
-        newApp = {};
+        let newApp = new Object();
 
         for (const [key, value] of Object.entries(colNames)) {
-            newApp[key] = obj[value];
+            newApp[value] = obj[key];
         }
 
         allApps.push(newApp);
@@ -219,88 +338,9 @@ const findSheetName = function (name, allSheets) {
     return false;
 }
 
-const converSheetToJsonArray = function (ws, colIndex) {
-    // getting the range of the sheet
-    const { rows, cols } = getRowsAndCols(ws);
-
-    importantCols = {
-        key: colIndex.Key,
-        name: colIndex.Name
-    }
-
-    ws = detectFalseApplications(ws, rows.start, Object.values(importantCols));
-
-
-    // converting to json
-    const convertingOptions = {
-        raw: false,
-        range: ws['!ref'],
-        blankrows: false
-    }
-
-    const json = XLSX.utils.sheet_to_json(ws, convertingOptions);
-
-    return json;
-
-}
-
 const encodeCell = function (r, c) {
     return XLSX.utils.encode_cell({ r: r, c: c });
 }
 
-const getRowsAndCols = function (ws) {
-    const sheetsRange = XLSX.utils.decode_range(ws['!ref']);
-    const cols = { start: sheetsRange.s.c, end: sheetsRange.e.c };
-    const rows = { start: sheetsRange.s.r, end: sheetsRange.e.r };
-
-    return { rows, cols };
-}
-
-const deleteRow = function (ws, rowIndex) {
-
-    let sheetsRangeDecoded = XLSX.utils.decode_range(ws["!ref"]);
-
-    for (var R = rowIndex; R <= sheetsRangeDecoded.e.r; ++R) {
-        for (var C = sheetsRangeDecoded.s.c; C <= sheetsRangeDecoded.e.c; ++C) {
-            ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)];
-        }
-    }
-
-    sheetsRangeDecoded.e.r--
-    ws['!ref'] = XLSX.utils.encode_range(sheetsRangeDecoded.s, sheetsRangeDecoded.e);
-    return ws;
-}
-
-const detectFalseApplications = function (ws, row = 0, importantCols) {
-
-    let rowDeleted = false;
-    const { rows, cols } = getRowsAndCols(ws);
-
-
-    while (row <= rows.end) {
-        for (let C = cols.start; C <= cols.end; ++C) {
-            let cellRef = encodeCell(row, C);
-            if (!ws[cellRef] || [null, undefined, ''].includes(ws[cellRef].v)) {
-                if (importantCols.includes(C)) {
-                    ws = deleteRow(ws, row);
-                    rowDeleted = true;
-                    break;
-                } else {
-                    ws[cellRef] = undefined
-                }
-            }
-        }
-
-        if (!rowDeleted) {
-            row++;
-        } else {
-            rowDeleted = false;
-            rows.end--;
-        }
-
-    }
-
-    return ws;
-}
 
 module.exports = router;
