@@ -12,7 +12,6 @@ uploadForm.addEventListener('submit', async function (e) {
 
 importForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-    const formData = new FormData(this);
 
     getAppsFromExcel(e);
 
@@ -24,10 +23,8 @@ const checkResponse = function (response) {
     if (response.ok) {
         return response;
     }
-
     throw Error(response.statusText);
 }
-
 
 const initImputForm = function (data) {
 
@@ -40,11 +37,6 @@ const initImputForm = function (data) {
     const sheetName = document.getElementById('sheetName');
     document.getElementById('filePath').value = file_path;
 
-    sheetName.addEventListener('change', function (e) {
-        const sheet = e.target.value;
-        changeSelectOptions(sheets[sheet]);
-    });
-
     if (sheetName.options) {
         while (sheetName.options.length > 0) {
             sheetName.options.remove(0);
@@ -54,6 +46,11 @@ const initImputForm = function (data) {
     for (sheet of Object.keys(sheets)) {
         sheetName.appendChild(new Option(sheet, sheet));
     }
+
+    sheetName.addEventListener('change', function (e) {
+        const sheet = e.target.value;
+        changeSelectOptions(sheets[sheet]);
+    });
 
     sheetName.dispatchEvent(new Event('change'));
 
@@ -84,17 +81,14 @@ const uploadToServer = async function () {
 
     formData.set("inpFile", inpFile.files[0]);
 
-    console.log(formData)
-
     await fetch(endPoint, {
         method: "post",
         body: formData
 
-    }).then(checkResponse)
+    })
+        .then(checkResponse)
         .then(res => res.json())
-        .then(json => {
-            initImputForm(json.data);
-        })
+        .then(json => { initImputForm(json.data); })
         .catch(err => console.log(err));
 }
 
@@ -114,7 +108,7 @@ const getAppsFromExcel = async function (ev) {
     await fetch(endPoint, options)
         .then(checkResponse)
         .then(res => res.json())
-        .then(json => appendNewApps(json.data))
+        .then(json => console.log(json))
         .catch(err => console.log(err));
 
 }
@@ -128,5 +122,6 @@ const convertToJson = function (fd) {
     fd.forEach((value, key) => object[key] = value);
     const json = JSON.stringify(object);
 
+    console.log(json);
     return json;
 }
