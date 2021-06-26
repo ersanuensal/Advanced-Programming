@@ -77,18 +77,22 @@ block content
                 #saveDataObj.form-popup
                   form#showCreateDataObj.form-container(action='')
                     h1 Create a Data Object
-                    label#dataObjNameLabel(for='dataObjName')
-                      b Name
-                    input#dataObjName(type='text' placeholder='Enter Name' required='')
-                    label(for='name')
-                      b Description
-                    input#dataObjDes(type='text' placeholder='Enter Description' required='')
-                    label(for='desc')
-                      b Color
-                    input#dataObjColor(type='color' value='#000000' required='')
-                    label(for='color')
-                      b PersonalData
-                    input#dataObjPer(type='checkbox' class="form-check-input")
+                    div(class="form-group")
+                      label#dataObjNameLabel(for='dataObjName')
+                        b Name
+                      input#dataObjName(type='text' placeholder='Enter Name' required='')
+                    div(class="form-group")
+                      label(for='desc')
+                        b Description
+                      input#dataObjDes(type='text' placeholder='Enter Description' required='')
+                    div(class="form-group")
+                      label(for='color')
+                        b Color
+                      input#dataObjColor(type='color' value='#000000' required='')
+                    div(class="form-group")
+                      label(for='checkbox')
+                        b PersonalData &nbsp;
+                      input#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
                     button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
                     button.btn.cancel(type='button' class="btn btn-danger" onclick='showCreateDataObj(0)') Close
                   form#showEditDataObj.form-container(action='')
