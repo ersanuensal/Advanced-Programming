@@ -11,7 +11,7 @@ function init() {
   downloadedData = [];
   downloadedLinks = [];
   downloadedDataObj = [];
-  presetList = [];
+  presetList = downloadedDataObj;
   loadcheck = false;
   loadname = null;
   diagramId = document.getElementById('diagramId').value

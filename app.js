@@ -149,20 +149,21 @@
 
     })
 
-    app.get('/dataobjs/:diagramId', async function(req, res){
-      try {
-        const dataObjInDB = await DataObjSchema.find({
-          diagramId: diagramId
-        }, function(err, data) {});
-
-        res.send({
-          downloadDataObj: dataObjInDB
-        })
-
-      } catch (e) {
-        console.log(e);
-      }
-    })
+    // app.get('/dataobjs/:diagramId', async function(req, res){
+    //   var diagramId = req.params.diagramId;
+    //   try {
+    //     const dataObjInDB = await DataObjSchema.find({
+    //       diagramId: diagramId
+    //     }, function(err, data) {});
+    //
+    //     res.send({
+    //       downloadDataObj: dataObjInDB
+    //     })
+    //
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // })
 
     app.get('/delete=:diagramId', async function(req, res) {
       var diagramId = req.params.diagramId;

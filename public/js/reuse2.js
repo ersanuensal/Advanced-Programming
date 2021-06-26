@@ -141,16 +141,10 @@ function showEditDataObj(a) {
   if (a == 1) {
     document.getElementById("showEditDataObj").style.display = "block";
     document.getElementById("showCreateDataObj").style.display = "none";
+    // diagramId = document.getElementById('diagramId').value
     // var url = "http://localhost:3000/dataobjs/" + diagramId;
-    // fetch(url, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-type": "application/json",
-    //     "accept": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     downloadDataObj: downloadDataObj})
-    // });
+    // var getNewList;
+    // fetch(url).then(res => res.json()).then(data => getNewList = data).then(() => console.log(getNewList));
     // loadDataObjFromDB();
     createTableForEdit();
   } else {
