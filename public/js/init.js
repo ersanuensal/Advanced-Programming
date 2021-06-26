@@ -409,6 +409,7 @@ function init() {
         var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
         nodeList.push(nodeObj);
         document.getElementById('uploadData').value = JSON.stringify(nodeList);
+        document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
 
       });
 
