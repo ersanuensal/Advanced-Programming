@@ -48,7 +48,7 @@ function resave() {
 
     if (check == true) {
 
-      var presetObj = new Preset(dataObjName, dataObjDes, dataObjColor, dataObjPer, dataObjTime);
+      var presetObj = new Preset(dataObjName, dataObjDes, dataObjColor, dataObjPer, dataObjTime, diagramId);
       presetList.push(presetObj);
       document.getElementById("dataObjName").value = "";
       document.getElementById("dataObjDes").value = "";
@@ -56,13 +56,14 @@ function resave() {
       document.getElementById("dataObjPer").checked = false;
       showCreateDataObj(0);
     }
-
-
-    test();
+    // input#diagramId(type='hidden', name='diagramId' value=diagramId)
+    // input#uploadData(type='hidden', name='uploadData')
+    // input#uploadLinks(type='hidden', name='uploadLinks')
+    // input#uploadDataObj(type='hidden', name="uploadDataObj")
+    document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
+    document.getElementById('uploadDBForm').submit();
+    // test();
   }
-
-
-
 }
 
 
@@ -70,8 +71,6 @@ function test() {
   for (var i = 0; i < presetList.length; i++) {
     console.log(presetList[i].Name);
   }
-
-
 }
 
 function asdf(a) {
@@ -137,6 +136,13 @@ function showEditDataObj(a) {
   if (a == 1) {
     document.getElementById("showEditDataObj").style.display = "block";
     document.getElementById("showCreateDataObj").style.display = "none";
+
+    // diagramId = document.getElementById('diagramId').value
+    // var url = "http://localhost:3000/dataobjs/" + diagramId;
+    // var getNewList;
+    // fetch(url).then(res => res.json()).then(data => getNewList = data).then(() => console.log(getNewList));
+    // loadDataObjFromDB();
+    createTableForEdit();
   } else {
     document.getElementById("showEditDataObj").style.display = "none";
   }
@@ -144,6 +150,32 @@ function showEditDataObj(a) {
 }
 
 function createTableForEdit () {
-  
+  var mySelect = document.getElementById("selectDataObj");
+  console.log(downloadedDataObj);
+  //Create array of options to be added
+  var array = downloadedDataObj;
 
+  for (var i = 0; i < array.length; i++) {
+    if (mySelect.length > 0) {
+      mySelect.remove(mySelect.length-1);
+    }
+  }
+
+
+  //Create and append the options
+  for (var i = 0; i < array.length; i++) {
+    var opt = document.createElement('option');
+    opt.value = array[i]._id;
+    opt.innerHTML = array[i].Name;
+    mySelect.appendChild(opt);
+  }
+
+}
+
+function selectDataObjFromTable() {
+    var element = document.getElementById("selectDataObj");
+    console.log(element);
+    var selectedDataObj = element.options[element.selectedIndex].value;
+
+    console.log(selectedDataObj);
 }

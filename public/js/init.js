@@ -10,7 +10,8 @@ function init() {
   linkList = [];
   downloadedData = [];
   downloadedLinks = [];
-  presetList = [];
+  downloadedDataObj = [];
+  presetList = downloadedDataObj;
   loadcheck = false;
   loadname = null;
   diagramId = document.getElementById('diagramId').value
@@ -93,10 +94,21 @@ function init() {
       for (var i = 0; i < linkArrayfromDB.length; i++) {
         downloadedLinks.push(linkArrayfromDB[i]);
       }
+      dataObjArrayfromDB = JSON.parse(document.getElementById('downloadDataObj').value)
+      for (var i = 0; i < dataObjArrayfromDB.length; i++) {
+        downloadedDataObj.push(dataObjArrayfromDB[i]);
+      }
 
       myDiagram.model = new go.GraphLinksModel(downloadedData, downloadedLinks);
 
 
+    }
+  }
+
+  function loadDataObjFromDB() {
+    dataObjArrayfromDB = JSON.parse(document.getElementById('downloadDataObj').value)
+    for (var i = 0; i < dataObjArrayfromDB.length; i++) {
+      downloadedDataObj.push(dataObjArrayfromDB[i]);
     }
   }
   loadDataFromDB();
@@ -397,6 +409,7 @@ function init() {
         var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
         nodeList.push(nodeObj);
         document.getElementById('uploadData').value = JSON.stringify(nodeList);
+        document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
 
       });
 

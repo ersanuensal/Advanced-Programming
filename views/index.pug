@@ -16,7 +16,7 @@ block scripts
   script(src='./js/download.js')
   script(src='./js/todayTime.js')
   script(src='./js/uploadAndImportFromExcel.js', defer='')
-  script(src='./js/reuse2.js', defer='')
+  script(src='./js/reuse2.js', defer)
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
   script(src='./js/classes/Preset.js')
@@ -30,6 +30,7 @@ block content
       input#diagramId(type='hidden', name='diagramId' value=diagramId)
       input#uploadData(type='hidden', name='uploadData')
       input#uploadLinks(type='hidden', name='uploadLinks')
+      input#uploadDataObj(type='hidden', name="uploadDataObj")
       a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") &nbsp;Save
         i(class='fa fa-floppy-o', style='position:relative;float:left;padding:6px 2px;')
       a.collapsed(data-bs-toggle='collapse' data-bs-target='#home-collapse' aria-expanded='true') &nbsp;Export
@@ -55,6 +56,7 @@ block content
   .contentPages
     input#downloadData(type='hidden', name='downloadData' value=downloadData)
     input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
+    input#downloadDataObj(type='hidden', name='downloadDataObj' value=downloadDataObj)
     .centercontainer
       #myPaletteDiv.palette
       #myOverviewDiv.overview
@@ -96,8 +98,11 @@ block content
                     button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
                     button.btn.cancel(type='button' class="btn btn-danger" onclick='showCreateDataObj(0)') Close
                   form#showEditDataObj.form-container(action='')
-                    table#generateTableForEdit
-                    button.btn(type='button' onclick='') Load Data Object
+                    div
+                      select.bigselector(size="5", id='selectDataObj')
+                    br
+                    br
+                    button.btn(type='button' onclick='selectDataObjFromTable()') Load Data Object
                     button.btn.cancel(type='button' onclick='showEditDataObj(0)') Close
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
