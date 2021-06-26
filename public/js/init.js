@@ -108,7 +108,8 @@ function init() {
   myDiagram.linkTemplate =
     $(go.Link, {
       toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-      curve: go.Link.Bezier,
+      //curve: go.Link.Bezier,
+      routing: go.Link.AvoidsNodes,
       relinkableFrom: true,
       relinkableTo: true,
       reshapable: true,
@@ -414,9 +415,19 @@ function init() {
       reuseselected = e.subject.part;
 
       if (reuseselected instanceof go.Link) {
-        console.log("Clicked on " + reuseselected.data.Name);
+        console.log("Clicked on Single" + reuseselected.data.Name);
       }
     });
+
+    myDiagram.addDiagramListener("ObjectContextClicked",
+      function (e) {
+        reuseselected = e.subject.part;
+
+        if (reuseselected instanceof go.Link) {
+          console.log("Clicked on Double" + reuseselected.data.Name);
+          loadDataObjModal();
+        }
+      });
 
     function autolayout() {
 

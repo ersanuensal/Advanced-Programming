@@ -1,16 +1,17 @@
 window.onload = function() {
 
-  document.getElementById("asd").style.display = "none";
-  document.getElementById("asdf").style.display = "none";
+  document.getElementById("showCreateDataObj").style.display = "none";
+  document.getElementById("showEditDataObj").style.display = "none";
 };
 
 
-function asd(a) {
+function showCreateDataObj(a) {
 
   if (a == 1) {
-    document.getElementById("asd").style.display = "block";
+    document.getElementById("showCreateDataObj").style.display = "block";
+    document.getElementById("showEditDataObj").style.display = "none";
   } else {
-    document.getElementById("asd").style.display = "none";
+    document.getElementById("showCreateDataObj").style.display = "none";
   }
 
 }
@@ -53,7 +54,7 @@ function resave() {
       document.getElementById("dataObjDes").value = "";
       document.getElementById("dataObjColor").value = "#000000";
       document.getElementById("dataObjPer").checked = false;
-      asd(0);
+      showCreateDataObj(0);
     }
 
 
@@ -121,4 +122,28 @@ function reload() {
 
   loadcheck = true;
   asdf(0);
+}
+
+function loadDataObjModal() {
+
+  var myModal = new bootstrap.Modal(document.getElementById('dataObjModal'), {
+  keyboard: false
+  })
+  myModal.show()
+}
+
+function showEditDataObj(a) {
+
+  if (a == 1) {
+    document.getElementById("showEditDataObj").style.display = "block";
+    document.getElementById("showCreateDataObj").style.display = "none";
+  } else {
+    document.getElementById("showEditDataObj").style.display = "none";
+  }
+
+}
+
+function createTableForEdit () {
+  
+
 }
