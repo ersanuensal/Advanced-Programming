@@ -214,3 +214,15 @@ modal {
     width:100%;
     text-align: center;
 }
+
+.bigselector{
+  height: 50vh;
+  width: 50vh;
+  border: 3px solid black;
+  border-radius: 10px;
+  font-family: sans serif;
+  font-size: 30px;
+  outline: none;
+  display: flex;
+  justify-content: center;
+}

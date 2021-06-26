@@ -46,6 +46,7 @@
     var NodeSchema = require('./models/node_db');
     var LinkSchema = require('./models/link_db');
     var DiagramSchema = require('./models/diagram_db');
+    var DataObjSchema = require('./models/dataobj_db');
 
     // Initialize express
     let app = express();
@@ -131,6 +132,9 @@
       const linksInDB = await LinkSchema.find({
         diagramId: diagramId
       }, function(err, data) {});
+      const dataObjInDB = await DataObjSchema.find({
+        diagramId: diagramId
+      }, function(err, data) {});
 
       console.log("Diagram with ID: " + diagramId + " has been loaded.");
 
@@ -139,9 +143,25 @@
       res.render('index', {
         downloadData: nodesInDB,
         downloadLinks: linksInDB,
+        downloadDataObj: dataObjInDB,
         diagramId: diagramId
       })
 
+    })
+
+    app.get('/dataobjs/:diagramId', async function(req, res){
+      try {
+        const dataObjInDB = await DataObjSchema.find({
+          diagramId: diagramId
+        }, function(err, data) {});
+
+        res.send({
+          downloadDataObj: dataObjInDB
+        })
+
+      } catch (e) {
+        console.log(e);
+      }
     })
 
     app.get('/delete=:diagramId', async function(req, res) {
@@ -200,7 +220,7 @@
     app.post('/upload', function(req, res) {
       // upload Nodes to the Database
       var dataUpload = req.body.uploadData;
-      var diagramId = req.body.diagramId
+      var diagramId = req.body.diagramId;
 
       if (dataUpload.length > 0) {
         const myObj = JSON.parse(dataUpload);
@@ -211,6 +231,11 @@
           if (err) console.log(err);
         });
         LinkSchema.deleteMany({
+          diagramId: diagramId
+        }, function(err) {
+          if (err) console.log(err);
+        });
+        DataObjSchema.deleteMany({
           diagramId: diagramId
         }, function(err) {
           if (err) console.log(err);
@@ -232,6 +257,18 @@
         for (var i = 0; i < linkObj.length; i++) {
           const linksInDB = new LinkSchema(linkObj[i]);
           linksInDB.save();
+        }
+      }
+
+      // upload DataObj to the Database
+      var dataObjUpload = req.body.uploadDataObj;
+      if (dataObjUpload.length > 0) {
+        const dataObj = JSON.parse(dataObjUpload);
+
+        // saving DataObj in the Database
+        for (var i = 0; i < dataObj.length; i++) {
+          const dataObjInDB = new DataObjSchema(dataObj[i]);
+          dataObjInDB.save();
         }
       }
 

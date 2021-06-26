@@ -10,6 +10,7 @@ function init() {
   linkList = [];
   downloadedData = [];
   downloadedLinks = [];
+  downloadedDataObj = [];
   presetList = [];
   loadcheck = false;
   loadname = null;
@@ -93,10 +94,21 @@ function init() {
       for (var i = 0; i < linkArrayfromDB.length; i++) {
         downloadedLinks.push(linkArrayfromDB[i]);
       }
+      dataObjArrayfromDB = JSON.parse(document.getElementById('downloadDataObj').value)
+      for (var i = 0; i < dataObjArrayfromDB.length; i++) {
+        downloadedDataObj.push(dataObjArrayfromDB[i]);
+      }
 
       myDiagram.model = new go.GraphLinksModel(downloadedData, downloadedLinks);
 
 
+    }
+  }
+
+  function loadDataObjFromDB() {
+    dataObjArrayfromDB = JSON.parse(document.getElementById('downloadDataObj').value)
+    for (var i = 0; i < dataObjArrayfromDB.length; i++) {
+      downloadedDataObj.push(dataObjArrayfromDB[i]);
     }
   }
   loadDataFromDB();
