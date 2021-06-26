@@ -64,9 +64,6 @@ function resave() {
     document.getElementById('uploadDBForm').submit();
     // test();
   }
-
-
-
 }
 
 
@@ -74,8 +71,6 @@ function test() {
   for (var i = 0; i < presetList.length; i++) {
     console.log(presetList[i].Name);
   }
-
-
 }
 
 function asdf(a) {
@@ -141,6 +136,7 @@ function showEditDataObj(a) {
   if (a == 1) {
     document.getElementById("showEditDataObj").style.display = "block";
     document.getElementById("showCreateDataObj").style.display = "none";
+
     // diagramId = document.getElementById('diagramId').value
     // var url = "http://localhost:3000/dataobjs/" + diagramId;
     // var getNewList;

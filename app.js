@@ -278,6 +278,8 @@
       } else {
         console.log("Diagram with ID: " + diagramId + " has been updated.")
       }
+      
+      res.redirect('/edit=' + diagramId);
     });
 
     /**
