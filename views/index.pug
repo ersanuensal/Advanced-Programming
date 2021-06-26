@@ -23,7 +23,7 @@ block scripts
   script(src='./js/collapse.js')
 block content
   #mySidebar.leftMenu
-    form(action='/', method='get', id='homeForm')
+    form(action='/greeter', method='get', id='homeForm')
       a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") &nbsp;Home 
         i(class='fa fa-home', style='position:relative;float:left;padding:6px 2px;')
     form(action='/upload', method='post', id='uploadDBForm')

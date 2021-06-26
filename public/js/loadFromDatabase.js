@@ -1,11 +1,10 @@
-// For debugging
 
 function showSelectedItem() {
   var element = document.getElementById("selectDiagram");
   try {
     var selectedDiagram = element.options[element.selectedIndex].value;
     console.log("The selected Diagram is " + selectedDiagram);
-    window.location.replace("http://localhost:3000/edit="+selectedDiagram);
+    window.location.replace("http://localhost:3000/edit=" + selectedDiagram);
   } catch (e) {
     var placeholder = document.getElementById("removeBR");
     placeholder.remove();
@@ -19,7 +18,7 @@ function deleteDiagram() {
   var selectedDiagram = element.options[element.selectedIndex].value;
   console.log("The selected Diagram is " + selectedDiagram);
 
-  window.location.replace("http://localhost:3000/delete="+selectedDiagram);
+  window.location.replace("http://localhost:3000/delete=" + selectedDiagram);
 }
 
 
@@ -39,16 +38,16 @@ for (var i = 0; i < array.length; i++) {
 }
 
 
-function test(){
+function createDiagram() {
 
   var diagramName = document.getElementById("diagramName").value;
   const errorMsg = document.getElementById('errorMsg');
-  if ( diagramName == '') {
+  if (diagramName == '') {
     errorMsg.innerHTML = 'A name is required to create a Diagram';
     document.getElementById("diagramName").focus();
-} else {
-  console.log(diagramName + " created." );
-  window.location.replace("http://localhost:3000/new="+diagramName);
-}
+  } else {
+    console.log(diagramName + " created.");
+    window.location.replace("http://localhost:3000/new=" + diagramName);
+  }
 
 }
