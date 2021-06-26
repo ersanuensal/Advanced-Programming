@@ -37,7 +37,7 @@
         console.log('Connected to Database');
       }).on('error', function(error) {
         console.log('error is', error);
-        connectionBoolean = false;
+        // connectionBoolean = false;
       });
     }
 
