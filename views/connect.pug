@@ -1,0 +1,25 @@
+extends template.pug
+
+block scripts
+  script(src='./js/databaseConnection.js' defer)
+block content
+  div(style="display: grid; margin: auto; width: 50%; padding: 10px;")
+    h4 Connection
+    div(class="alert alert-primary hide" role="alert" id="connectAlert") Connecting to Database...
+    div(class="form-group")
+      label Domain/IP: &nbsp;
+      input(id="databaseEndpoint" class="form-control" value=loadedEndpoint)
+    div(class="form-group")
+      label Username: &nbsp;&nbsp;
+      input(id="databaseUsername" class="form-control" value=loadedUsername)
+    div(class="form-group")
+      label Password: &nbsp;&nbsp;&nbsp;
+      input(id="databasePassword" type="password" class="form-control" value=loadedPassword)
+    div(class="form-group")
+      label Port: &nbsp;&nbsp;&nbsp;
+      input(id="databasePort" class="form-control" value=loadedPort)
+    div(class="form-group")
+      label Database: &nbsp;&nbsp;&nbsp;
+      input(id="databaseName" class="form-control" value=loadedDatabase)
+    div(class="form-group")
+      button( type="submit" onclick="saveDatabaseConnectionString()" class="btn btn-primary") Connect

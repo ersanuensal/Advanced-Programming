@@ -8,7 +8,9 @@ block scripts
   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
 block content
   #mySidebar.leftMenu
-    a(href='#') About
+    form(action='/', method='get', id='settingsForm')
+      a(href="javascript:{}" onclick="document.getElementById('settingsForm').submit();") &nbsp; Settings
+        i(class='fa fa-wrench', style='position:relative;float:left;padding:6px 2px;')
     a(href='#') Services
     a(href='#') Clients
     a(href='#') Contact
@@ -41,5 +43,34 @@ block content
               br
               div(class="CancelSubmit")
                 button(type="button" class="btn btn-danger" data-dismiss="modal") Cancel 
-                button(style="margin-left: 2.5em;" type="submit" onclick="test()" class="btn btn-primary" margin-left="5px") Create
+                button(style="margin-left: 2.5em;" type="submit" onclick="createDiagram()" class="btn btn-primary" margin-left="5px") Create
+      #changeDatabaseModal(class="modal fade")
+        div(class="modal-dialog modal-dialog-centered")
+          div(class="modal-content")
+            div(class="modal-header")
+              h4(style="justify-self: center;" class="modal-title") Settings
+              button( type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+            div(class="modal-body")
+              label(class="errorMsg" id='errorMsg')
+              br
+              h5 Change Connection
+              div(class="form-group")
+                label Domain/IP: &nbsp;
+                input(id="databaseEndpoint" class="form-control")
+              div(class="form-group")
+                label Username: &nbsp;&nbsp;
+                input(id="databaseUsername" class="form-control")
+              div(class="form-group")
+                label Password: &nbsp;&nbsp;&nbsp;
+                input(id="databasePassword" type="password" class="form-control")
+              div(class="form-group")
+                label Port: &nbsp;&nbsp;&nbsp;
+                input(id="databasePort" class="form-control" value="27017")
+              div(class="form-group")
+                label Database: &nbsp;&nbsp;&nbsp;
+                input(id="databaseName" class="form-control")
+              div(class="CancelSubmit")
+                button(type="button" class="btn btn-danger" data-dismiss="modal") Cancel 
+                button(style="margin-left: 2.5em;" type="submit" onclick="saveDatabaseConnectionString()" class="btn btn-primary" margin-left="5px") Save
+                    
           
