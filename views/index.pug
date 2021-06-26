@@ -102,9 +102,29 @@ block content
                       select.bigselector(size="5", id='selectDataObj')
                     br
                     br
-                    button.btn(type='button' onclick='selectDataObjFromTable()') Load Data Object
+                    button.btn(type='button' onclick='selectDataObjFromTable()') Edit
                     button.btn.cancel(type='button' onclick='showEditDataObj(0)') Close
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                  form#showEditDataObjForm.form-container(action='')
+                    h1 Edit a Data Object
+                    input#hiddenDataObjID(type="hidden")
+                    div(class="form-group")
+                      label#dataObjNameEditLabel(for='dataObjNameEdit')
+                        b Name
+                      input#dataObjNameEdit(type='text' required='')
+                    div(class="form-group")
+                      label(for='desc')
+                        b Description
+                      input#dataObjDesEdit(type='text' required='')
+                    div(class="form-group")
+                      label(for='color')
+                        b Color
+                      input#dataObjColorEdit(type='color' required='')
+                    div(class="form-group")
+                      label(for='checkbox')
+                        b PersonalData &nbsp;
+                      input#dataObjPerEdit(type='checkbox' class="form-check-input" style="margin-left: 10px;")
+                    button.btn(type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog modal-dialog-centered modal-dialog-scrollable")

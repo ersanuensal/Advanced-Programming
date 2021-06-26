@@ -2,6 +2,8 @@ window.onload = function() {
 
   document.getElementById("showCreateDataObj").style.display = "none";
   document.getElementById("showEditDataObj").style.display = "none";
+  //document.getElementById("showEditDataObjForm").style.display = "none";
+
 };
 
 
@@ -135,6 +137,7 @@ function showEditDataObj(a) {
 
   if (a == 1) {
     document.getElementById("showEditDataObj").style.display = "block";
+    document.getElementById("selectDataObj").style.display = "block";
     document.getElementById("showCreateDataObj").style.display = "none";
 
     // diagramId = document.getElementById('diagramId').value
@@ -178,4 +181,32 @@ function selectDataObjFromTable() {
     var selectedDataObj = element.options[element.selectedIndex].value;
 
     console.log(selectedDataObj);
+    // document.getElementById("selectDataObj").style.display = "none";
+    document.getElementById("showEditDataObjForm").style.display = "block";
+
+    for (var i = 0; i < presetList.length; i++) {
+      if (presetList[i]._id == selectedDataObj) {
+        document.getElementById("hiddenDataObjID").value = selectedDataObj;
+        document.getElementById("dataObjNameEdit").value = presetList[i].Name;
+        document.getElementById("dataObjDesEdit").value = presetList[i].Description;
+        document.getElementById("dataObjColorEdit").value = presetList[i].Color;
+        document.getElementById("dataObjPerEdit").checked = presetList[i].PersonalData;
+      }
+    }
+}
+
+function SaveEditedDataObj(){
+  var dataObjID = document.getElementById("hiddenDataObjID").value;
+
+  for (var i = 0; i < presetList.length; i++) {
+    if (presetList[i]._id == dataObjID) {
+      presetList[i].Name = document.getElementById("dataObjNameEdit").value;
+      presetList[i].Description = document.getElementById("dataObjDesEdit").value;
+      presetList[i].Color = document.getElementById("dataObjColorEdit").value;
+      presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
+    }
+  }
+  document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
+  document.getElementById('uploadDBForm').submit();
+  // createTableForEdit();
 }
