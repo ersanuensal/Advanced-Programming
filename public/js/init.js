@@ -120,8 +120,8 @@ function init() {
   myDiagram.linkTemplate =
     $(go.Link, {
       toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-      //curve: go.Link.Bezier,
-      routing: go.Link.AvoidsNodes,
+      curve: go.Link.Bezier,
+      //routing: go.Link.AvoidsNodes,
       relinkableFrom: true,
       relinkableTo: true,
       reshapable: true,
@@ -146,7 +146,7 @@ function init() {
         toShortLength: 8
       }),
 
-      $(go.Shape, { // the real drwan path default
+      $(go.Shape, { // the real drawn path default
         isPanelMain: true,
         strokeWidth: 4
       },
@@ -162,81 +162,86 @@ function init() {
         new go.Binding("stroke", "Color").makeTwoWay(),
         new go.Binding("fill", "Color").makeTwoWay(),
       ),
-
+      $(go.TextBlock, {
+        segmentOffset: new go.Point(0, -10),
+        segmentOrientation: go.Link.OrientUpright,
+            font: "bold 16px sans-serif"
+          },
+          new go.Binding("text", "Name"))
       // Link Label
       /*
       link label is not just a simple text, it#s a node like object
       */
 
-      $(go.Panel, "Auto", // this whole Panel is a link label
-        $(go.Shape, "RoundedRectangle", {
-          fill: 'white',
-          stroke: "#eeeeee",
-          strokeWidth: 3
-        }),
-        $(go.Panel, "Table", {
-          margin: 8,
-          stretch: go.GraphObject.Fill
-        },
-          $(go.TextBlock, {
-            row: 0,
-            alignment: go.Spot.Center,
-            margin: new go.Margin(3, 24, 3, 2), // leave room for Button
-            font: "bold 16px sans-serif"
-          },
-            new go.Binding("text", "Name")
-          ),
-          $("PanelExpanderButton", "HIDEN", // the name of the element whose visibility this button toggles
-            {
-              row: 0,
-              alignment: go.Spot.TopRight
-            }
-          ),
-          $(go.RowColumnDefinition, {
-            row: 1,
-            separatorStrokeWidth: 1.5,
-            separatorStroke: "#eeeeee"
-          }),
-          $(go.Panel, "Table", {
-            name: "HIDEN",
-            width: 150,
-            row: 1
-          },
-            $(go.RowColumnDefinition, {
-              row: 1,
-              separatorStrokeWidth: 1.5,
-              separatorStroke: "#eeeeee"
-            }),
-            $(go.TextBlock, {
-              row: 0,
-              alignment: go.Spot.Left,
-              font: "bold 13px sans-serif",
-              wrap: go.TextBlock.WrapFit,
-              width: 150,
-              textAlign: "left",
-            },
-              new go.Binding("text", "Description"),
-            ),
+      // $(go.Panel, "Auto", // this whole Panel is a link label
+      //   $(go.Shape, "RoundedRectangle", {
+      //     fill: 'white',
+      //     stroke: "#eeeeee",
+      //     strokeWidth: 3
+      //   })
+        // $(go.Panel, "Table", {
+        //   margin: 8,
+        //   stretch: go.GraphObject.Fill
+        // },
+        //   $(go.TextBlock, {
+        //     row: 0,
+        //     alignment: go.Spot.Center,
+        //     margin: new go.Margin(3, 24, 3, 2), // leave room for Button
+        //     font: "bold 16px sans-serif"
+        //   },
+        //     new go.Binding("text", "Name")
+        //   )
+          // $("PanelExpanderButton", "HIDEN", // the name of the element whose visibility this button toggles
+          //   {
+          //     row: 0,
+          //     alignment: go.Spot.TopRight
+          //   }
+          // ),
+          // $(go.RowColumnDefinition, {
+          //   row: 1,
+          //   separatorStrokeWidth: 1.5,
+          //   separatorStroke: "#eeeeee"
+          // }),
+          // $(go.Panel, "Table", {
+          //   name: "HIDEN",
+          //   width: 150,
+          //   row: 1
+          // },
+          //   $(go.RowColumnDefinition, {
+          //     row: 1,
+          //     separatorStrokeWidth: 1.5,
+          //     separatorStroke: "#eeeeee"
+          //   }),
+          //   $(go.TextBlock, {
+          //     row: 0,
+          //     alignment: go.Spot.Left,
+          //     font: "bold 13px sans-serif",
+          //     wrap: go.TextBlock.WrapFit,
+          //     width: 150,
+          //     textAlign: "left",
+          //   },
+          //     new go.Binding("text", "Description"),
+          //   ),
+          //
+          //   /**personal Data: true or false*/
+          //   $(go.TextBlock, {
+          //     row: 1,
+          //     alignment: go.Spot.Left,
+          //     margin: new go.Margin(3, 2, 3, 2),
+          //     font: "bold 13px sans-serif",
+          //     text: "Personal Data: "
+          //   }),
+          //   $(go.TextBlock, {
+          //     row: 1,
+          //     alignment: go.Spot.Right,
+          //     margin: new go.Margin(3, 2, 3, 2),
+          //     font: "bold 13px sans-serif",
+          //   },
+          //     new go.Binding("text", "PersonalData")
+          //   ),
+          // )
 
-            /**personal Data: true or false*/
-            $(go.TextBlock, {
-              row: 1,
-              alignment: go.Spot.Left,
-              margin: new go.Margin(3, 2, 3, 2),
-              font: "bold 13px sans-serif",
-              text: "Personal Data: "
-            }),
-            $(go.TextBlock, {
-              row: 1,
-              alignment: go.Spot.Right,
-              margin: new go.Margin(3, 2, 3, 2),
-              font: "bold 13px sans-serif",
-            },
-              new go.Binding("text", "PersonalData")
-            ),
-          )
-        )
-      )
+
     );
 
 
@@ -285,12 +290,14 @@ function init() {
     includesOwnProperties: false,
     properties: {
       // Application properties - properties window
-      "Name": {},
+      "Name": {
+        show: Inspector.showIfNode
+      },
       "Version": {
         show: Inspector.showIfNode
       },
       "Description": {
-        // show: Inspector.showIfNode
+        show: Inspector.showIfNode,
         type: "field"
       },
       "COTS": {
@@ -309,15 +316,7 @@ function init() {
         show: Inspector.showIfNode,
         type: "date"
       },
-      "Color": {
-        show: Inspector.showIfLink,
-        type: 'color',
-      },
-      "PersonalData": {
-        show: Inspector.showIfLink,
-        default: false,
-        type: "checkbox"
-      }
+
 
     }
   }
@@ -330,6 +329,7 @@ function init() {
     nodeList = [];
     linkList = [];
     let selectedPart = myDiagram.selection.first();
+
 
 
     if (selectedPart == null) {
@@ -473,46 +473,9 @@ function init() {
 
     }
 
-
 }
 
-  function autolayout() {
 
-      console.log(JSON.stringify(myDiagram.model));
-
-      // Create a new dagre graph , note: this graph is only used for layout.
-      var dagreGraph = new dagre.graphlib.Graph();
-      dagreGraph.setGraph({
-        rankdir: 'LR',
-        nodesep: 100,
-        ranksep: 20,
-        edgesep: 20,
-      });
-
-      // Default to assigning a new object as a label for each new edge.
-      dagreGraph.setDefaultEdgeLabel(function() { return {label: 'label'}; });
-      var nodes = myDiagram.model.nodeDataArray;
-      for (n in nodes) {
-        dagreGraph.setNode(n,{width: nodes[n].width, height: nodes[n].height})
-      };
-
-      var links = myDiagram.model.linkDataArray;
-      links.forEach(function(link){
-        dagreGraph.setEdge(link.from, link.to, {minlen: 2});
-      });
-
-      dagre.layout(dagreGraph);
-
-      dagreGraph.nodes().forEach(function(v){
-        var node = dagreGraph.node(v);
-        console.log("Node " + v + ": " + JSON.stringify(node));
-  //      myModel.nodeDataArray[n.id].loc = n.x+' '+n.y;
-        nodes[v].x = node.x;
-        nodes[v].y = node.y;
-
-      });
-
-  }
 
   // save link data to Modal
   function saveLinkProperties(node) {
