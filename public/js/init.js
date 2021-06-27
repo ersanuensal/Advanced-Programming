@@ -22,7 +22,7 @@ function init() {
   myDiagram =
     $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
       {
-        initialContentAlignment: go.Spot.Left,
+        // initialContentAlignment: go.Spot.Left,
         initialAutoScale: go.Diagram.UniformToFill,
         layout: $(go.LayeredDigraphLayout, {
           linkSpacing: 80,
@@ -436,7 +436,27 @@ myDiagram.addDiagramListener("ObjectContextClicked",
       });
 
     }
+    if (reuseselected instanceof go.Node) {
+      console.log("Rightclick on Node with key:  " + reuseselected.data.key);
+
+      loadNodeModal();
+      myDiagram.commit(function(d) {
+        d.nodes.each(function(node) {
+          if (reuseselected.data.key == node.data.key) {
+            document.getElementById("nodeID").value = node.data.key;
+            document.getElementById("nodeName").value = node.data.Name;
+            document.getElementById("nodeVersion").value = node.data.Version;
+            document.getElementById("nodeDescription").value = node.data.Description;
+            document.getElementById("nodeCots").value = node.data.COTS;
+            document.getElementById("nodeReleaseDate").value = node.data.Release;
+            document.getElementById("nodeShutdownDate").value = node.data.Shutdown;
+            console.log("loaded node")
+          }
+        });
+      });
+    }
   });
+
 
 }
 // save link data to Modal
@@ -449,6 +469,23 @@ function saveLinkProperties(node) {
         myDiagram.model.setDataProperty(link.data, "Color", document.getElementById("linkColor").value);
         myDiagram.model.setDataProperty(link.data, "PersonalData", document.getElementById("linkPersonalData").checked);
         console.log("saved link");
+      }
+    });
+  });
+}
+
+// save link data to Modal
+function saveNodeProperties(node) {
+  myDiagram.commit(function(d) {
+    d.nodes.each(function(node) {
+      if (node.data.key == document.getElementById("nodeID").value) {
+        myDiagram.model.setDataProperty(node.data, "Name", document.getElementById("nodeName").value);
+        myDiagram.model.setDataProperty(node.data, "Version", document.getElementById("nodeVersion").value);
+        myDiagram.model.setDataProperty(node.data, "Description", document.getElementById("nodeDescription").value);
+        myDiagram.model.setDataProperty( node.data, "COTS", document.getElementById("nodeCots").value);
+        myDiagram.model.setDataProperty( node.data, "Release", document.getElementById("nodeReleaseDate").value);
+        myDiagram.model.setDataProperty( node.data, "Shutdown", document.getElementById("nodeShutdownDate").value);
+        console.log("saved node");
       }
     });
   });

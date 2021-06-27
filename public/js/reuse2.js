@@ -141,6 +141,14 @@ function loadDataObjModal() {
   myModal.show()
 }
 
+function loadNodeModal() {
+
+  var myModal = new bootstrap.Modal(document.getElementById('nodeInspector'), {
+  keyboard: false
+  })
+  myModal.show()
+}
+
 function showEditDataObj(a) {
 
   if (a == 1) {

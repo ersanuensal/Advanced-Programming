@@ -9,7 +9,7 @@ body {
   width: 100%;
   background: ghostwhite;
   background-repeat: no-repeat;
-  display: fixed;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -20,7 +20,7 @@ body {
   margin-left: 60px;
   margin-right: auto;
   height: 93.89vh;
-  width: 100vh;
+  width: 100%;
 }
 
 .palette {
@@ -49,15 +49,15 @@ body {
   border: solid 2px darkgrey;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
-  height: 90%;
-  width: 80vw;
-  position: absolute;
+  height: 90vh;
+  width: 80%;
+  position: relative;
   margin-left: 230px;
 
 }
 
 .inspector {
-  position: absolute;
+  position: fixed;
   margin-top: 3vh;
   margin-left: 75vw;
   z-index: 2;
@@ -218,9 +218,12 @@ modal {
     text-align: center;
 }
 
+
 .bigselector{
   height: 50vh;
   width: 50vh;
+  max-height: 350px;
+  max-width: 450px;
   border: 3px solid black;
   border-radius: 10px;
   font-family: sans serif;
