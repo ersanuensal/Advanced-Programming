@@ -292,40 +292,40 @@ function init() {
 
 
 
-  var inspector = new Inspector('myInspectorDiv', myDiagram, {
-    includesOwnProperties: false,
-    properties: {
-      // Application properties - properties window
-      "Name": {
-        show: Inspector.showIfNode
-      },
-      "Version": {
-        show: Inspector.showIfNode
-      },
-      "Description": {
-        show: Inspector.showIfNode,
-        type: "field"
-      },
-      "COTS": {
-        show: Inspector.showIfNode,
-        type: "select",
-        choices: function(node, propName) {
-          if (Array.isArray(node.data.choices)) return node.data.choices;
-          return ["COTS", "Proprietary", "Undefined"];
-        }
-      },
-      "Release": {
-        show: Inspector.showIfNode,
-        type: "date"
-      },
-      "Shutdown": {
-        show: Inspector.showIfNode,
-        type: "date"
-      },
-
-
-    }
-  });
+  // var inspector = new Inspector('myInspectorDiv', myDiagram, {
+  //   includesOwnProperties: false,
+  //   properties: {
+  //     // Application properties - properties window
+  //     "Name": {
+  //       show: Inspector.showIfNode
+  //     },
+  //     "Version": {
+  //       show: Inspector.showIfNode
+  //     },
+  //     "Description": {
+  //       show: Inspector.showIfNode,
+  //       type: "field"
+  //     },
+  //     "COTS": {
+  //       show: Inspector.showIfNode,
+  //       type: "select",
+  //       choices: function(node, propName) {
+  //         if (Array.isArray(node.data.choices)) return node.data.choices;
+  //         return ["COTS", "Proprietary", "Undefined"];
+  //       }
+  //     },
+  //     "Release": {
+  //       show: Inspector.showIfNode,
+  //       type: "date"
+  //     },
+  //     "Shutdown": {
+  //       show: Inspector.showIfNode,
+  //       type: "date"
+  //     },
+  //
+  //
+  //   }
+  // });
 
 
 
