@@ -156,7 +156,7 @@ block content
           div(class="modal-content")
             div(class="modal-header")
               h5.modal-title#ModalLabel Import from Excel
-              button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+              button.btn-close(type='button' class = 'cancelImportBtn' data-bs-dismiss='modal' aria-label='Close')
             div(class="modal-body")
             .container 
               .row.justify-content-md-center
@@ -167,7 +167,7 @@ block content
                     .row.mb-3
                       div
                         button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
-                        button.btn.btn-primary(type='submit') Import now
+                        button.btn.btn-primary(type='submit') Upload now
 
                   form#importForm(hidden = true)
                     input(type='hidden' id = 'filePath' name='filePath')
@@ -201,8 +201,24 @@ block content
 
                     .row.mb-3
                       div
-                        button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+                        button.btn.btn-danger(class = 'cancelImportBtn' type='button', data-bs-dismiss='modal') Cancel
                         button.btn.btn-primary(type='submit') Import now
+                        button.btn.btn-primary(id = 'showResultsModalBtn' data-bs-target='#resultsModal' data-bs-toggle='modal' data-bs-dismiss='modal' hidden)
+
+
+      div#resultsModal.modal.fade(aria-hidden='true' aria-labelledby='resultsModalLabel' tabindex='-1' data-bs-backdrop="static" data-bs-keyboard="false")
+        div.modal-dialog.modal-dialog-centered.modal-dialog-scrollable
+          div.modal-content
+            div.modal-header
+              h5#resultsModalLabel.modal-title Results
+              button.btn-close(class = 'rejectResults' type='button' data-bs-dismiss='modal' aria-label='Close')
+            div.modal-body
+              .ImportResults
+                 #successImport 
+                 #falseImport
+            div.modal-footer
+              button.btn.btn-primary(class = 'acceptResults' data-bs-dismiss="modal") accept the result
+              button.btn.btn-danger(class = 'rejectResults' data-bs-dismiss="modal") reject the result
 
 
         
