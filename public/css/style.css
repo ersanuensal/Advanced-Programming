@@ -5,6 +5,8 @@
 }
 
 body {
+  height: 100%;
+  width: 100%;
   background: ghostwhite;
   background-repeat: no-repeat;
   display: fixed;
@@ -51,6 +53,7 @@ body {
   width: 80vw;
   position: absolute;
   margin-left: 230px;
+
 }
 
 .inspector {

@@ -1,7 +1,7 @@
 function init() {
   // short form for defining templates
   var $ = go.GraphObject.make;
-  var myModel;
+  var nodes
   var dagre = require("dagre");
   //  const today = new Date();
   today2 = getTodayTime().split('T')[0];
@@ -17,14 +17,18 @@ function init() {
   diagramId = document.getElementById('diagramId').value
   reuseselected = null;
 
-
-
   //  console.log(today2);
 
 
   myDiagram =
     $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
       {
+        initialContentAlignment: go.Spot.Left,
+        initialAutoScale: go.Diagram.UniformToFill,
+        layout: $(go.LayeredDigraphLayout,
+          { linkSpacing: 80, layerSpacing: 80,
+        columnSpacing: 80, direction: 0 }),
+
         // create new node with doube click
         "clickCreatingTool.archetypeNodeData": {
           Name: "Application",
@@ -125,6 +129,7 @@ function init() {
       relinkableFrom: true,
       relinkableTo: true,
       reshapable: true,
+
       /**
        * Handling mouse events (mouseover the Link)
        */
@@ -399,6 +404,8 @@ function init() {
 
     });
 
+
+
   myDiagram.addDiagramListener("ObjectSingleClicked",
     function (e) {
 
@@ -435,6 +442,7 @@ function init() {
 
       }
       });
+<<<<<<< Updated upstream
 
     function autolayout() {
 
@@ -476,6 +484,12 @@ function init() {
 }
 
 
+=======
+}
+
+
+
+>>>>>>> Stashed changes
 
   // save link data to Modal
   function saveLinkProperties(node) {
