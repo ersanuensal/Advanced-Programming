@@ -127,7 +127,7 @@ function reload() {
 
 function loadDataObjModal() {
 
-  var myModal = new bootstrap.Modal(document.getElementById('dataObjModal'), {
+  var myModal = new bootstrap.Modal(document.getElementById('linkInspector'), {
   keyboard: false
   })
   myModal.show()

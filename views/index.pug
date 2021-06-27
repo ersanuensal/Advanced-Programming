@@ -62,6 +62,31 @@ block content
       #myOverviewDiv.overview
       #myDiagramDiv.diagram
       #myInspectorDiv.inspector
+      #linkInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
+        .modal-dialog.modal-dialog-centered
+          .modal-content
+            .modal-header
+              h5#exampleModalLabel.modal-title Data Objects
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 250px; width:250px;")
+                input#linkFrom(type='hidden')
+                input#linkTo(type='hidden')
+                div(class="form-group")
+                  label Name: &nbsp;
+                  input#linkName(type='text' class='form-control')
+                div(class="form-group")
+                  label Description: &nbsp;
+                  textarea#linkDescription(class='form-control')
+                div(class="form-group")
+                  label Color: &nbsp;
+                  input#linkColor(type='color' style="border: none;")
+                div(class="form-group")
+                  label Personal Data: &nbsp; &nbsp; &nbsp; &nbsp;
+                  input#linkPersonalData(type='checkbox' class='form-check-input')
+            .modal-footer
+              button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+              button.btn.btn-primary(type='button' onclick='saveLinkProperties()') Save changes
       div(class="modal fade" id="dataObjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog")

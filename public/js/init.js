@@ -317,30 +317,8 @@ function init() {
         show: Inspector.showIfLink,
         default: false,
         type: "checkbox"
-      },
-      "LoadPreset": {
-        show: Inspector.showIfLink,
-        type: "select",
-        choices:
-          function (link, propName) {
-
-            var presetName = [];
-
-            for (var i = 0; i < linkList.length; i++) {
-
-              if (linkList[i].Name === link.data.Name) {
-
-              } else {
-                presetName[i] = linkList[i].Name;
-
-              }
-
-            };
-
-            return [presetName.toString()];
-
-          }
       }
+
     }
   }
   );
@@ -428,7 +406,7 @@ function init() {
       reuseselected = e.subject.part;
 
       if (reuseselected instanceof go.Link) {
-        console.log("Clicked on Single" + reuseselected.data.Name);
+
       }
     });
 
@@ -437,11 +415,33 @@ function init() {
         reuseselected = e.subject.part;
 
         if (reuseselected instanceof go.Link) {
-          console.log("Clicked on Double" + reuseselected.data.Name);
+          console.log("Clicked on Double " + reuseselected.data.from + " " + reuseselected.data.to);
           loadDataObjModal();
+          for (var i = 0; i < linkList.length; i++) {
+            if (reuseselected.data.from == linkList[i].from && reuseselected.data.to == linkList[i].to) {
+              document.getElementById("linkFrom").value = linkList[i].from;
+              document.getElementById("linkTo").value = linkList[i].to;
+              document.getElementById("linkName").value = linkList[i].Name;
+              document.getElementById("linkDescription").value = linkList[i].Description;
+              document.getElementById("linkColor").value = linkList[i].Color;
+              document.getElementById("linkPersonalData").checked = linkList[i].PersonalData;
+            }
+          }
         }
       });
+    function saveLinkProperties() {
 
+      for (var i = 0; i < linkList.length; i++) {
+        if (reuseselected.data.from == linkList[i].from && reuseselected.data.to == linkList[i].to) {
+          document.getElementById("linkFrom").value = linkList[i].from;
+          document.getElementById("linkTo").value = linkList[i].to;
+          document.getElementById("linkName").value = linkList[i].Name;
+          document.getElementById("linkDescription").value = linkList[i].Description;
+          document.getElementById("linkColor").value = linkList[i].Color;
+          document.getElementById("linkPersonalData").checked = linkList[i].PersonalData;
+        }
+      }
+    }
     function autolayout() {
 
         console.log(JSON.stringify(myModel));
