@@ -1,22 +1,27 @@
 
 const uploadForm = document.querySelector('#uploadForm');
 const importForm = document.getElementById('importForm');
-
+const cancelImportBtns = document.querySelectorAll('.cancelImportBtn');
 const endPoint = "/importAppsFromExcel";
+
+for (const btn of cancelImportBtns) {
+    btn.addEventListener('click', async function (e) {
+        const filePath = document.querySelector('#filePath').value;
+        importForm.hidden = true;
+        uploadForm.hidden = false;
+        deleteFileFromServer(filePath);
+    });
+}
 
 
 uploadForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-    uploadToServer()
+    uploadToServer();
 });
 
 importForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-
     getAppsFromExcel(e);
-
-    uploadForm.hidden = false;
-    importForm.hidden = true;
 });
 
 const checkResponse = function (response) {
@@ -24,6 +29,71 @@ const checkResponse = function (response) {
         return response;
     }
     throw Error(response.statusText);
+}
+
+const deleteFileFromServer = async function (filePath) {
+
+    const formData = new FormData()
+    formData.set('filePath', filePath)
+    const options = {
+        method: "delete",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: convertToJson(formData)
+    }
+
+    await fetch(endPoint, options)
+        .then(checkResponse)
+        .then(res => res.json())
+        .then(json => {
+            console.log(json);
+        })
+        .catch(err => console.log(err))
+}
+
+const uploadToServer = async function () {
+
+    const inpFile = document.getElementById('inpFile');
+
+    const formData = new FormData()
+
+    formData.set("inpFile", inpFile.files[0]);
+
+    await fetch(endPoint, {
+        method: "post",
+        body: formData
+
+    })
+        .then(checkResponse)
+        .then(res => res.json())
+        .then(json => { initImputForm(json.data); })
+        .catch(err => console.log(err));
+}
+
+const getAppsFromExcel = async function (ev) {
+
+    const formData = new FormData(ev.target);
+
+    const options = {
+        method: "put",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: convertToJson(formData)
+    }
+
+    await fetch(endPoint, options)
+        .then(checkResponse)
+        .then(res => res.json())
+        .then(json => {
+            console.log(json);
+            document.getElementById('showResultsModalBtn').click()
+        })
+        .catch(err => console.log(err));
+
+    importForm.hidden = true;
+    uploadForm.hidden = false;
 }
 
 const initImputForm = function (data) {
@@ -71,46 +141,6 @@ const changeSelectOptions = function (cols) {
             select.appendChild(new Option(colName, colNum));
         }
     }
-}
-
-const uploadToServer = async function () {
-
-    const inpFile = document.getElementById('inpFile');
-
-    const formData = new FormData()
-
-    formData.set("inpFile", inpFile.files[0]);
-
-    await fetch(endPoint, {
-        method: "post",
-        body: formData
-
-    })
-        .then(checkResponse)
-        .then(res => res.json())
-        .then(json => { initImputForm(json.data); })
-        .catch(err => console.log(err));
-}
-
-const getAppsFromExcel = async function (ev) {
-
-
-    const formData = new FormData(ev.target);
-
-    const options = {
-        method: "put",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: convertToJson(formData)
-    }
-
-    await fetch(endPoint, options)
-        .then(checkResponse)
-        .then(res => res.json())
-        .then(json => console.log(json))
-        .catch(err => console.log(err));
-
 }
 
 const appendNewApps = function (apps) {

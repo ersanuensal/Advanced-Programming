@@ -52,54 +52,125 @@ router.post('/', upload.single('inpFile'), function (req, res) {
 
 });
 
-router.put('/', function (req, res) {
-
-    const sheet = req.body.sheetName;
-    const filePath = req.body.filePath;
-
-    const cols = {
-        Name: Number(req.body.appName),
-        Key: Number(req.body.appKey),
-        Description: Number(req.body.appDescription),
-        COTS: Number(req.body.appCOTS),
-        Release: Number(req.body.appReleaseDate),
-        Shutdown: Number(req.body.appShutdownDate)
-    }
+const getSheetsWithHeaders = function (filePath) {
 
     const parsingOptions = {
+
         cellFormula: false,
         cellHTML: false,
         cellDates: true,
         cellText: false,
+    };
+
+    const wb = XLSX.readFile(filePath, parsingOptions);
+
+    const allSheetNames = wb.SheetNames;
+
+    // const sheets = [];
+
+    const sheets = {};
+
+    for (sheetName of allSheetNames) {
+
+        const ws = wb.Sheets[sheetName]
+        const { rows, cols } = getRowsAndCols(ws)
+
+        sheets[sheetName] = {};
+
+        for (let C = cols.start; C <= cols.end; C++) {
+            const cellRef = encodeCell(0, C);
+
+            let cellValue = '';
+
+            if (ws[cellRef] && ws[cellRef].v) {
+                cellValue = ws[cellRef].v;
+            }
+            sheets[sheetName][C] = cellValue;
+        }
     }
 
-    const workbook = XLSX.readFile(filePath, parsingOptions);
-    const worksheet = workbook.Sheets[sheet];
-    const { json, deletedRows } = converSheetToJsonArray(worksheet, cols);
-    const colNames = getColNames(worksheet, cols);
-    const applications = mapColsToProp(json, colNames);
+    return sheets;
+}
 
-    const ignoredApplication = new Array()
+router.delete('/', function (req, res) {
+    const filePath = req.body.filePath;
+    const data = new Object();
+    let status = 'ok';
 
-    deletedRows.forEach(deletedRow => {
-        ignoredApplication.push({
-            'reason': colNames[deletedRow.reason],
-            'app': mapColsToProp([deletedRow.row], colNames)[0]
+    try {
+
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            data.nessage = 'File is deleted successfully';
+        } else {
+            throw new Error('File not found')
+        }
+
+    } catch (error) {
+        status = '404';
+        data.message = error.message;
+    } finally {
+        res.send({
+            status: status,
+            data: data
+        })
+    }
+
+});
+
+router.put('/', function (req, res) {
+    const sheet = req.body.sheetName;
+    const filePath = req.body.filePath;
+    const data = new Object();
+    let status = 'ok';
+
+    try {
+        const cols = {
+            Name: Number(req.body.appName),
+            Key: Number(req.body.appKey),
+            Description: Number(req.body.appDescription),
+            COTS: Number(req.body.appCOTS),
+            Release: Number(req.body.appReleaseDate),
+            Shutdown: Number(req.body.appShutdownDate)
+        }
+
+        const parsingOptions = {
+            cellFormula: false,
+            cellHTML: false,
+            cellDates: true,
+            cellText: false,
+        }
+
+        const workbook = XLSX.readFile(filePath, parsingOptions);
+        const worksheet = workbook.Sheets[sheet];
+        const { json, deletedRows } = converSheetToJsonArray(worksheet, cols);
+        const colNames = getColNames(worksheet, cols);
+        const applications = mapColsToProp(json, colNames);
+
+        const ignoredApplication = new Array()
+
+        deletedRows.forEach(deletedRow => {
+            ignoredApplication.push({
+                'reason': colNames[deletedRow.reason],
+                'app': mapColsToProp([deletedRow.row], colNames)[0]
+            });
+        })
+
+        data['ignoredApplication'] = ignoredApplication;
+        data['applications'] = applications;
+
+    }
+    catch (error) {
+        status = 409;
+        data.message = 'NO APP WAS IMPORTED. SOME INTERNAL ERROR HAPPENED. IMPORTED FILE IS DELETED PERMANENTLY';
+    }
+    finally {
+        fs.unlinkSync(filePath);
+        res.send({
+            status: status,
+            data: data
         });
-    })
-
-    const data = {
-        'ignoredApplication': ignoredApplication,
-        'applications': applications
     }
-
-    fs.unlinkSync(filePath);
-
-    res.send({
-        status: 'ok',
-        data: data
-    });
-
 })
 
 const converSheetToJsonArray = function (ws, colIndex) {
@@ -204,16 +275,20 @@ const deleteRow = function (ws, rowIndex) {
     const deletedRow = new Object();
 
     for (let C = range.s.c; C <= range.e.c; ++C) {
-        let cellRef = encodeCell(rowIndex, C);
-        if (!ws[cellRef] || [undefined, null, ''].includes(ws[cellRef].v)) {
-            deletedRow[ws[encodeCell(0, C)].v] = '';
-        } else {
-            deletedRow[ws[encodeCell(0, C)].v] = ws[cellRef].v;
+        if (ws[encodeCell(0, C)] && ws[encodeCell(0, C)].v) {
+            let colName = ws[encodeCell(0, C)].v;
+            let cellRef = encodeCell(rowIndex, C);
+            if (!ws[cellRef] || [undefined, null, ''].includes(ws[cellRef].v)) {
+                deletedRow[colName] = '';
+            } else {
+                deletedRow[colName] = ws[cellRef].v;
+            }
         }
     }
 
-    for (var R = rowIndex; R <= range.e.r; ++R) {
-        for (var C = range.s.c; C <= range.e.c; ++C) {
+    for (var C = range.s.c; C <= range.e.c; ++C) {
+        for (var R = rowIndex; R <= range.e.r; ++R) {
+
             ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)];
         }
     }
@@ -225,46 +300,6 @@ const deleteRow = function (ws, rowIndex) {
     ws['!ref'] = XLSX.utils.encode_range(range.s, range.e);
 
     return { ws, deletedRow };
-}
-
-const getSheetsWithHeaders = function (filePath) {
-
-    const parsingOptions = {
-
-        cellFormula: false,
-        cellHTML: false,
-        cellDates: true,
-        cellText: false,
-    };
-
-    const wb = XLSX.readFile(filePath, parsingOptions);
-
-    const allSheetNames = wb.SheetNames;
-
-    // const sheets = [];
-
-    const sheets = {};
-
-    for (sheetName of allSheetNames) {
-
-        const ws = wb.Sheets[sheetName]
-        const { rows, cols } = getRowsAndCols(ws)
-
-        sheets[sheetName] = {};
-
-        for (let C = cols.start; C <= cols.end; C++) {
-            const cellRef = encodeCell(0, C);
-
-            let cellValue = '';
-
-            if (ws[cellRef] && ws[cellRef].v) {
-                cellValue = ws[cellRef].v;
-            }
-            sheets[sheetName][C] = cellValue;
-        }
-    }
-
-    return sheets;
 }
 
 const getColNames = function (ws, cols) {
@@ -297,45 +332,6 @@ const mapColsToProp = function (listOfObjects, colNames) {
     }
 
     return allApps;
-}
-
-const getColIndex = function (colNames, ws) {
-
-    const firstRow = [];
-    const { rows, cols } = getRowsAndCols(ws);
-    const colIndex = {};
-    const newColNames = {};
-
-    for (let C = cols.start; C <= cols.end; C++) {
-        let cellRef = encodeCell(0, C);
-        if (ws[cellRef]) {
-            firstRow.push(ws[cellRef].v);
-        } else {
-            firstRow.push('');
-        }
-    }
-
-    for (const [key, value] of Object.entries(colNames)) {
-        for (let index = 0; index < firstRow.length; index++) {
-            if (firstRow[index].trim().toLowerCase() == value.trim().toLowerCase()) {
-                colIndex[key] = index;
-                newColNames[key] = firstRow[index];
-                break;
-            }
-        }
-    }
-
-    return { newColNames, colIndex };
-}
-
-const findSheetName = function (name, allSheets) {
-
-    for (const sheet of allSheets) {
-        if (sheet.trim().toLowerCase() == name.trim().toLowerCase()) {
-            return sheet;
-        }
-    }
-    return false;
 }
 
 const encodeCell = function (r, c) {
