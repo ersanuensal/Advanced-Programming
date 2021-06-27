@@ -2,7 +2,7 @@ window.onload = function() {
 
   document.getElementById("showCreateDataObj").style.display = "none";
   document.getElementById("showEditDataObj").style.display = "none";
-  //document.getElementById("showEditDataObjForm").style.display = "none";
+  document.getElementById("showEditDataObjForm").style.display = "none";
 
 };
 
@@ -12,8 +12,10 @@ function showCreateDataObj(a) {
   if (a == 1) {
     document.getElementById("showCreateDataObj").style.display = "block";
     document.getElementById("showEditDataObj").style.display = "none";
+    document.getElementById("showEditDataObjForm").style.display = "none";
   } else {
     document.getElementById("showCreateDataObj").style.display = "none";
+
   }
 
 }
@@ -139,12 +141,22 @@ function loadDataObjModal() {
   myModal.show()
 }
 
+function loadNodeModal() {
+
+  var myModal = new bootstrap.Modal(document.getElementById('nodeInspector'), {
+  keyboard: false
+  })
+  myModal.show()
+}
+
 function showEditDataObj(a) {
 
   if (a == 1) {
     document.getElementById("showEditDataObj").style.display = "block";
     document.getElementById("selectDataObj").style.display = "block";
+    document.getElementById("showEditDataObjForm").style.display = "block";
     document.getElementById("showCreateDataObj").style.display = "none";
+
 
     // diagramId = document.getElementById('diagramId').value
     // var url = "http://localhost:3000/dataobjs/" + diagramId;

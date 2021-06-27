@@ -8,8 +8,7 @@ block scripts
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4' crossorigin='anonymous')
   script(src='./js/gojs/release/go.js')
   script(src='./js/gojs/extensions/Figures.js')
-  script(src='./js/gojs/extensions/DataInspector.js')
-  script(src='./js/dagre.js')
+  //- script(src='./js/gojs/extensions/DataInspector.js') 
   script(src='./js/init.js')
   script(src='./js/export.js') 
   script(src='./js/export2.js')
@@ -20,7 +19,6 @@ block scripts
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
   script(src='./js/classes/Preset.js')
-  script(src='./js/collapse.js')
 block content
   #mySidebar.leftMenu
     form(action='/greeter', method='get', id='homeForm')
@@ -66,7 +64,7 @@ block content
         .modal-dialog.modal-dialog-centered
           .modal-content
             .modal-header
-              h5#exampleModalLabel.modal-title Data Objects
+              h5#exampleModalLabel.modal-title Link
               button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
             .modal-body
               div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 250px; width:250px;")
@@ -82,11 +80,44 @@ block content
                   label Color: &nbsp;
                   input#linkColor(type='color' style="border: none;")
                 div(class="form-group")
-                  label Personal Data: &nbsp; &nbsp; &nbsp; &nbsp;
+                  label Personal Data: &nbsp; &nbsp; &nbsp;
                   input#linkPersonalData(type='checkbox' class='form-check-input')
             .modal-footer
               button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
               button.btn.btn-primary(type='button' onclick='saveLinkProperties()') Save changes
+        #nodeInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
+          .modal-dialog.modal-dialog-centered
+            .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title Node
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:250px;")
+                  input#nodeID(type='hidden')
+                  div(class="form-group")
+                    label Name: &nbsp;
+                    input#nodeName(type='text' class='form-control')
+                  div(class="form-group")
+                    label Version: &nbsp;
+                    input#nodeVersion(class='form-control')
+                  div(class="form-group")
+                    label Description: &nbsp;
+                    textarea#nodeDescription(class='form-control')
+                  div(class="form-group")
+                    label COTS: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    select#nodeCots
+                      option COTS
+                      option Proprietary
+                      option Undefined
+                  div(class="form-group")
+                    label Release Date: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    input#nodeReleaseDate(type='date' )
+                  div(class="form-group")
+                    label Shutdown Date: &nbsp; 
+                    input#nodeShutdownDate(type='date' )
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                button.btn.btn-primary(type='button' onclick='saveNodeProperties()') Save changes
       div(class="modal fade" id="dataObjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog")
@@ -103,24 +134,25 @@ block content
                 div
                 #saveDataObj.form-popup
                   form#showCreateDataObj.form-container(action='')
-                    h1 Create a Data Object
-                    div(class="form-group")
-                      label#dataObjNameLabel(for='dataObjName')
-                        b Name
-                      input#dataObjName(type='text' placeholder='Enter Name' required='')
-                    div(class="form-group")
-                      label(for='desc')
-                        b Description
-                      input#dataObjDes(type='text' placeholder='Enter Description' required='')
-                    div(class="form-group")
-                      label(for='color')
-                        b Color
-                      input#dataObjColor(type='color' value='#000000' required='')
-                    div(class="form-group")
-                      label(for='checkbox')
-                        b PersonalData &nbsp;
-                      input#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                    button.btn(type='button' onclick='resave()' class="btn btn-primary") Save Data Object
+                    div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:350px;")
+                      h1 Create a Data Object
+                      div(class="form-group")
+                        label#dataObjNameLabel(for='dataObjName')
+                          b Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        input#dataObjName(type='text' placeholder='Enter Name' required='')
+                      div(class="form-group")
+                        label(for='desc')
+                          b Description:&nbsp;&nbsp;
+                        input#dataObjDes(type='text' placeholder='Enter Description' required='')
+                      div(class="form-group")
+                        label(for='color')
+                          b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        input#dataObjColor(type='color' value='#000000' required='')
+                      div(class="form-group")
+                        label(for='checkbox')
+                          b PersonalData: &nbsp;&nbsp;&nbsp;&nbsp;
+                        input#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
+                    button.btn(style="margin-left: 100px;" type='button' onclick='resave()' class="btn btn-primary") Save Data Object
                     button.btn.cancel(type='button' class="btn btn-danger" onclick='showCreateDataObj(0)') Close
                   form#showEditDataObj.form-container(action='')
                     div
@@ -131,25 +163,26 @@ block content
                     button.btn.cancel(type='button' onclick='showEditDataObj(0)') Close
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
                   form#showEditDataObjForm.form-container(action='')
-                    h1 Edit a Data Object
-                    input#hiddenDataObjID(type="hidden")
-                    div(class="form-group")
-                      label#dataObjNameEditLabel(for='dataObjNameEdit')
-                        b Name
-                      input#dataObjNameEdit(type='text' required='')
-                    div(class="form-group")
-                      label(for='desc')
-                        b Description
-                      input#dataObjDesEdit(type='text' required='')
-                    div(class="form-group")
-                      label(for='color')
-                        b Color
-                      input#dataObjColorEdit(type='color' required='')
-                    div(class="form-group")
-                      label(for='checkbox')
-                        b PersonalData &nbsp;
-                      input#dataObjPerEdit(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                    button.btn(type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
+                    div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:350px;")
+                      h1 Edit a Data Object
+                      input#hiddenDataObjID(type="hidden")
+                      div(class="form-group")
+                        label#dataObjNameEditLabel(for='dataObjNameEdit')
+                          b Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        input#dataObjNameEdit(type='text' required='')
+                      div(class="form-group")
+                        label(for='desc')
+                          b Description:&nbsp;&nbsp;
+                        input#dataObjDesEdit(type='text' required='')
+                      div(class="form-group")
+                        label(for='color')
+                          b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        input#dataObjColorEdit(type='color' required='')
+                      div(class="form-group")
+                        label(for='checkbox')
+                          b PersonalData &nbsp;&nbsp;&nbsp;&nbsp;
+                        input#dataObjPerEdit(type='checkbox' class="form-check-input" style="margin-left: 10px;")
+                    button.btn(style="margin-left: 150px" type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog modal-dialog-centered modal-dialog-scrollable")
