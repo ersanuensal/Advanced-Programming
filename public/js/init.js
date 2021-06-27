@@ -417,31 +417,25 @@ function init() {
         if (reuseselected instanceof go.Link) {
           console.log("Clicked on Double " + reuseselected.data.from + " " + reuseselected.data.to);
           loadDataObjModal();
-          for (var i = 0; i < linkList.length; i++) {
-            if (reuseselected.data.from == linkList[i].from && reuseselected.data.to == linkList[i].to) {
-              document.getElementById("linkFrom").value = linkList[i].from;
-              document.getElementById("linkTo").value = linkList[i].to;
-              document.getElementById("linkName").value = linkList[i].Name;
-              document.getElementById("linkDescription").value = linkList[i].Description;
-              document.getElementById("linkColor").value = linkList[i].Color;
-              document.getElementById("linkPersonalData").checked = linkList[i].PersonalData;
-            }
-          }
-        }
-      });
-    function saveLinkProperties() {
 
-      for (var i = 0; i < linkList.length; i++) {
-        if (reuseselected.data.from == linkList[i].from && reuseselected.data.to == linkList[i].to) {
-          document.getElementById("linkFrom").value = linkList[i].from;
-          document.getElementById("linkTo").value = linkList[i].to;
-          document.getElementById("linkName").value = linkList[i].Name;
-          document.getElementById("linkDescription").value = linkList[i].Description;
-          document.getElementById("linkColor").value = linkList[i].Color;
-          document.getElementById("linkPersonalData").checked = linkList[i].PersonalData;
-        }
+          // load link data to Modal
+          myDiagram.commit(function (d) {
+            d.links.each(function (link) {
+              if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
+                    document.getElementById("linkFrom").value = link.data.from;
+                    document.getElementById("linkTo").value = link.data.to;
+                    document.getElementById("linkName").value = link.data.Name;
+                    document.getElementById("linkDescription").value = link.data.Description;
+                    document.getElementById("linkColor").value = link.data.Color;
+                    document.getElementById("linkPersonalData").checked = link.data.PersonalData;
+                console.log("loaded link")
+              }
+            });
+        });
+
       }
-    }
+      });
+
     function autolayout() {
 
         console.log(JSON.stringify(myModel));
@@ -520,8 +514,22 @@ function init() {
 
   }
 
+  // save link data to Modal
+  function saveLinkProperties(node) {
+    myDiagram.commit(function (d) {
+      d.links.each(function (link) {
+        if (link.data.from == document.getElementById("linkFrom").value && link.data.to == document.getElementById("linkTo").value) {
+          myDiagram.model.setDataProperty(link.data, "Name", document.getElementById("linkName").value);
+          myDiagram.model.setDataProperty(link.data, "Description", document.getElementById("linkDescription").value);
+          myDiagram.model.setDataProperty(link.data, "Color", document.getElementById("linkColor").value);
+          myDiagram.model.setDataProperty(link.data, "PersonalData", document.getElementById("linkPersonalData").checked);
+          console.log("saved link")
+        }
+      });
+    });
 
 
+  }
 
 function showData() {
 

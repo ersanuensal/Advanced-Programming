@@ -18,6 +18,12 @@ function showCreateDataObj(a) {
 
 }
 
+// testfunktion zum debuggen
+// function saveLinkProperties() {
+//     reuseselected = e.subject.part;
+//     console.log(reuseselected.data.from)
+// }
+
 function resave() {
 
   var check = true;
