@@ -51,38 +51,38 @@ function init() {
   // Defining a standard template for the nodes
   myDiagram.nodeTemplate =
     $(go.Node, "Auto", {
-        locationSpot: go.Spot.Center,
-      },
+      locationSpot: go.Spot.Center,
+    },
       new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Shape, "Subroutine", {
-          width: 200,
-          height: 100,
-          margin: 4,
-          fill: "#29292a",
-          stroke: "gray",
-          strokeWidth: 3.5,
-          portId: "",
-          fromLinkable: true,
-          toLinkable: true,
-          fromLinkableDuplicates: false,
-          toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
-          fromLinkableSelfNode: false,
-          toLinkableSelfNode: false //disabling links from a node to it self
-        },
+        width: 200,
+        height: 100,
+        margin: 4,
+        fill: "#29292a",
+        stroke: "gray",
+        strokeWidth: 3.5,
+        portId: "",
+        fromLinkable: true,
+        toLinkable: true,
+        fromLinkableDuplicates: false,
+        toLinkableDuplicates: false, //disabling dublicate Link from Node A to Node B
+        fromLinkableSelfNode: false,
+        toLinkableSelfNode: false //disabling links from a node to it self
+      },
         new go.Binding("stroke", "color").makeTwoWay(),
         new go.Binding("figure")),
       //    new go.Binding("fill", "color")),
       $(go.TextBlock, {
-          margin: new go.Margin(5, 5, 3, 5),
-          font: "bold 16pt sans-serif",
-          stroke: 'ghostwhite',
-          minSize: new go.Size(32, 32),
-          maxSize: new go.Size(120, NaN),
-          textAlign: "center",
-          editable: true,
-          verticalAlignment: go.Spot.Center,
-          margin: 10
-        },
+        margin: new go.Margin(5, 5, 3, 5),
+        font: "bold 16pt sans-serif",
+        stroke: 'ghostwhite',
+        minSize: new go.Size(32, 32),
+        maxSize: new go.Size(120, NaN),
+        textAlign: "center",
+        editable: true,
+        verticalAlignment: go.Spot.Center,
+        margin: 10
+      },
         new go.Binding("text", "Name").makeTwoWay(),
 
       )
@@ -125,23 +125,23 @@ function init() {
   // The link shape and arrowhead have their stroke brush data bound to the "color" property
   myDiagram.linkTemplate =
     $(go.Link, {
-        toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
-        // curve: go.Link.Bezier,
-        routing: go.Link.AvoidsNodes,
-        relinkableFrom: true,
-        relinkableTo: true,
-        reshapable: true,
-        /**
-         * Handling mouse events (mouseover the Link)
-         */
-        // a mouseover highlights the link by changing the first main path shape's stroke:
-        mouseEnter: function(e, link) {
-          link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
-        },
-        mouseLeave: function(e, link) {
-          link.elt(0).stroke = "transparent";
-        }
+      toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
+      // curve: go.Link.Bezier,
+      routing: go.Link.AvoidsNodes,
+      relinkableFrom: true,
+      relinkableTo: true,
+      reshapable: true,
+      /**
+       * Handling mouse events (mouseover the Link)
+       */
+      // a mouseover highlights the link by changing the first main path shape's stroke:
+      mouseEnter: function (e, link) {
+        link.elt(0).stroke = "rgba(152, 193, 217, 0.8)";
       },
+      mouseLeave: function (e, link) {
+        link.elt(0).stroke = "transparent";
+      }
+    },
       new go.Binding("stroke", "Color"),
       // Link shape
 
@@ -153,26 +153,26 @@ function init() {
       }),
 
       $(go.Shape, { // the real drawn path default
-          isPanelMain: true,
-          strokeWidth: 4
-        },
+        isPanelMain: true,
+        strokeWidth: 4
+      },
         new go.Binding("stroke", "Color").makeTwoWay()
       ),
 
       // Link arrowhead
 
       $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
-          toArrow: "Standard",
-          scale: 2
-        },
+        toArrow: "Standard",
+        scale: 2
+      },
         new go.Binding("stroke", "Color").makeTwoWay(),
         new go.Binding("fill", "Color").makeTwoWay(),
       ),
       $(go.TextBlock, {
-          segmentOffset: new go.Point(0, -10),
-          segmentOrientation: go.Link.OrientUpright,
-          font: "bold 16px sans-serif"
-        },
+        segmentOffset: new go.Point(0, -10),
+        segmentOrientation: go.Link.OrientUpright,
+        font: "bold 16px sans-serif"
+      },
         new go.Binding("text", "Name"))
       // Link Label
       /*
@@ -330,7 +330,7 @@ function init() {
 
 
   // Eventlistener for hiding the Inspector and trafficlight system
-  myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
+  myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
     nodeList = [];
     linkList = [];
     let selectedPart = myDiagram.selection.first();
@@ -344,8 +344,8 @@ function init() {
     }
 
 
-    myDiagram.commit(function(d) {
-      d.links.each(function(link) {
+    myDiagram.commit(function (d) {
+      d.links.each(function (link) {
         var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset, diagramId)
         linkList.push(linkObj);
         document.getElementById('uploadLinks').value = JSON.stringify(linkList);
@@ -371,98 +371,98 @@ function init() {
       });
 
 
-    d.nodes.each(function(node) {
-      if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
-        myDiagram.model.setDataProperty(node.data, "color", "red")
-      } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
-        myDiagram.model.setDataProperty(node.data, "color", "green")
-      } else if (node.data.Release > today2) {
-        myDiagram.model.setDataProperty(node.data, "color", "orange")
-      } else {
-        myDiagram.model.setDataProperty(node.data, "color", "blue")
-      }
+      d.nodes.each(function (node) {
+        if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
+          myDiagram.model.setDataProperty(node.data, "color", "red")
+        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
+          myDiagram.model.setDataProperty(node.data, "color", "green")
+        } else if (node.data.Release > today2) {
+          myDiagram.model.setDataProperty(node.data, "color", "orange")
+        } else {
+          myDiagram.model.setDataProperty(node.data, "color", "blue")
+        }
 
-      if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
-        node.data.Shutdown = "0000-00-00";
-        myDiagram.model.setDataProperty(node.data, "color", "green")
-      }
+        if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
+          node.data.Shutdown = "0000-00-00";
+          myDiagram.model.setDataProperty(node.data, "color", "green")
+        }
 
-      var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
-      nodeList.push(nodeObj);
-      document.getElementById('uploadData').value = JSON.stringify(nodeList);
-      document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
-
-        });
+        var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
+        nodeList.push(nodeObj);
+        document.getElementById('uploadData').value = JSON.stringify(nodeList);
+        document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
 
       });
 
     });
 
-
-
-
-myDiagram.addDiagramListener("ObjectSingleClicked",
-  function(e) {
-
-    var tz = true;
-    reuseselected = e.subject.part;
-
-    if (reuseselected instanceof go.Link) {
-
-    }
   });
 
-myDiagram.addDiagramListener("ObjectContextClicked",
-  function(e) {
-    reuseselected = e.subject.part;
 
-    if (reuseselected instanceof go.Link) {
-      console.log("Clicked on Double " + reuseselected.data.from + " " + reuseselected.data.to);
-      loadDataObjModal();
 
-      // load link data to Modal
-      myDiagram.commit(function(d) {
-        d.links.each(function(link) {
-          if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
-            document.getElementById("linkFrom").value = link.data.from;
-            document.getElementById("linkTo").value = link.data.to;
-            document.getElementById("linkName").value = link.data.Name;
-            document.getElementById("linkDescription").value = link.data.Description;
-            document.getElementById("linkColor").value = link.data.Color;
-            document.getElementById("linkPersonalData").checked = link.data.PersonalData;
-            console.log("loaded link")
-          }
+
+  myDiagram.addDiagramListener("ObjectSingleClicked",
+    function (e) {
+
+      var tz = true;
+      reuseselected = e.subject.part;
+
+      if (reuseselected instanceof go.Link) {
+
+      }
+    });
+
+  myDiagram.addDiagramListener("ObjectContextClicked",
+    function (e) {
+      reuseselected = e.subject.part;
+
+      if (reuseselected instanceof go.Link) {
+        console.log("Clicked on Double " + reuseselected.data.from + " " + reuseselected.data.to);
+        loadDataObjModal();
+
+        // load link data to Modal
+        myDiagram.commit(function (d) {
+          d.links.each(function (link) {
+            if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
+              document.getElementById("linkFrom").value = link.data.from;
+              document.getElementById("linkTo").value = link.data.to;
+              document.getElementById("linkName").value = link.data.Name;
+              document.getElementById("linkDescription").value = link.data.Description;
+              document.getElementById("linkColor").value = link.data.Color;
+              document.getElementById("linkPersonalData").checked = link.data.PersonalData;
+              console.log("loaded link")
+            }
+          });
         });
-      });
 
-    }
-    if (reuseselected instanceof go.Node) {
-      console.log("Rightclick on Node with key:  " + reuseselected.data.key);
+      }
+      if (reuseselected instanceof go.Node) {
+        console.log("Rightclick on Node with key:  " + reuseselected.data.key);
 
-      loadNodeModal();
-      myDiagram.commit(function(d) {
-        d.nodes.each(function(node) {
-          if (reuseselected.data.key == node.data.key) {
-            document.getElementById("nodeID").value = node.data.key;
-            document.getElementById("nodeName").value = node.data.Name;
-            document.getElementById("nodeVersion").value = node.data.Version;
-            document.getElementById("nodeDescription").value = node.data.Description;
-            document.getElementById("nodeCots").value = node.data.COTS;
-            document.getElementById("nodeReleaseDate").value = node.data.Release;
-            document.getElementById("nodeShutdownDate").value = node.data.Shutdown;
-            console.log("loaded node")
-          }
+        loadNodeModal();
+        myDiagram.commit(function (d) {
+          d.nodes.each(function (node) {
+            if (reuseselected.data.key == node.data.key) {
+              document.getElementById("nodeID").value = node.data.key;
+              document.getElementById("nodeName").value = node.data.Name;
+              document.getElementById("nodeVersion").value = node.data.Version;
+              document.getElementById("nodeDescription").value = node.data.Description;
+              document.getElementById("nodeCots").value = node.data.COTS;
+              document.getElementById("nodeReleaseDate").value = node.data.Release;
+              document.getElementById("nodeShutdownDate").value = node.data.Shutdown;
+              console.log("loaded node")
+            }
+          });
         });
-      });
-    }
-  });
+      }
+    });
 
 
 }
 // save link data to Modal
 function saveLinkProperties(node) {
-  myDiagram.commit(function(d) {
-    d.links.each(function(link) {
+  myDiagram.commit(function (d) {
+    d.links.each(function (link) {
       if (link.data.from == document.getElementById("linkFrom").value && link.data.to == document.getElementById("linkTo").value) {
         myDiagram.model.setDataProperty(link.data, "Name", document.getElementById("linkName").value);
         myDiagram.model.setDataProperty(link.data, "Description", document.getElementById("linkDescription").value);
@@ -476,15 +476,15 @@ function saveLinkProperties(node) {
 
 // save link data to Modal
 function saveNodeProperties(node) {
-  myDiagram.commit(function(d) {
-    d.nodes.each(function(node) {
+  myDiagram.commit(function (d) {
+    d.nodes.each(function (node) {
       if (node.data.key == document.getElementById("nodeID").value) {
         myDiagram.model.setDataProperty(node.data, "Name", document.getElementById("nodeName").value);
         myDiagram.model.setDataProperty(node.data, "Version", document.getElementById("nodeVersion").value);
         myDiagram.model.setDataProperty(node.data, "Description", document.getElementById("nodeDescription").value);
-        myDiagram.model.setDataProperty( node.data, "COTS", document.getElementById("nodeCots").value);
-        myDiagram.model.setDataProperty( node.data, "Release", document.getElementById("nodeReleaseDate").value);
-        myDiagram.model.setDataProperty( node.data, "Shutdown", document.getElementById("nodeShutdownDate").value);
+        myDiagram.model.setDataProperty(node.data, "COTS", document.getElementById("nodeCots").value);
+        myDiagram.model.setDataProperty(node.data, "Release", document.getElementById("nodeReleaseDate").value);
+        myDiagram.model.setDataProperty(node.data, "Shutdown", document.getElementById("nodeShutdownDate").value);
         console.log("saved node");
       }
     });

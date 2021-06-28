@@ -288,7 +288,6 @@ const deleteRow = function (ws, rowIndex) {
 
     for (var C = range.s.c; C <= range.e.c; ++C) {
         for (var R = rowIndex; R <= range.e.r; ++R) {
-
             ws[encodeCell(R, C)] = ws[encodeCell(R + 1, C)];
         }
     }

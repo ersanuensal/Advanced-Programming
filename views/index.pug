@@ -243,15 +243,37 @@ block content
         div.modal-dialog.modal-dialog-centered.modal-dialog-scrollable
           div.modal-content
             div.modal-header
-              h5#resultsModalLabel.modal-title Results
+              h2#resultsModalLabel.modal-title Results
               button.btn-close(class = 'rejectResults' type='button' data-bs-dismiss='modal' aria-label='Close')
             div.modal-body
-              .ImportResults
-                 #successImport 
-                 #falseImport
+              .ImportResults.row
+                #successImport.col
+                #falseImport.col
             div.modal-footer
-              button.btn.btn-primary(class = 'acceptResults' data-bs-dismiss="modal") accept the result
-              button.btn.btn-danger(class = 'rejectResults' data-bs-dismiss="modal") reject the result
+              button.btn.btn-primary(id = 'showReslutsTable' data-bs-target='#tableModal' data-bs-toggle='modal' data-bs-dismiss='modal') See ignored Apps
+              button.btn.btn-success(id = 'acceptResults' data-bs-dismiss="modal") accept
+              button.btn.btn-danger(class = 'rejectResults' data-bs-dismiss="modal") discard 
+
+      div#tableModal.modal.fade(aria-hidden='true' aria-labelledby='tableModalLabel' tabindex='-1' data-bs-backdrop="static" data-bs-keyboard="false")
+        div.modal-dialog.modal-dialog-centered.modal-dialog-scrollable.modal-fullscreen
+          div.modal-content
+            div.modal-header
+              h2#tableModalLabel.modal-title Table
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            div.modal-body
+              table.table.table-striped#resultsTable
+                thead
+                  tr
+                tbody
+                  tr
+                    th(scope='row') 1
+                  tr
+                    th(scope='row') 2
+                  tr
+
+
+            div.modal-footer
+              button.btn.btn-secondary(data-bs-target='#resultsModal' data-bs-toggle='modal' data-bs-dismiss='modal') Back
 
 
         
