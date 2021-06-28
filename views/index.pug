@@ -24,6 +24,9 @@ block content
     form(action='/greeter', method='get', id='homeForm')
       a(href="javascript:{}" onclick="document.getElementById('homeForm').submit();") &nbsp;Home 
         i(class='fa fa-home', style='position:relative;float:left;padding:6px 2px;')
+    form(action='/updateDataObj', method='post', id='updateDataObjForm')
+      input#diagramId2(type='hidden', name='diagramId' value=diagramId)
+      input#uploadDataObj2(type='hidden', name="uploadDataObj" value=uploadDataObj2)
     form(action='/upload', method='post', id='uploadDBForm')
       input#diagramId(type='hidden', name='diagramId' value=diagramId)
       input#uploadData(type='hidden', name='uploadData')

@@ -391,6 +391,7 @@ function init() {
       nodeList.push(nodeObj);
       document.getElementById('uploadData').value = JSON.stringify(nodeList);
       document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
+      document.getElementById("uploadDataObj2").value = JSON.stringify(downloadedDataObj);
 
         });
 

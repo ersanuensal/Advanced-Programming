@@ -224,7 +224,7 @@ function SaveEditedDataObj(){
       presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
     }
   }
-  document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
-  document.getElementById('uploadDBForm').submit();
+  document.getElementById("uploadDataObj2").value = JSON.stringify(presetList);
+  document.getElementById('updateDataObjForm').submit();
   // createTableForEdit();
 }

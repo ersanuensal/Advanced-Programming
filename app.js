@@ -216,6 +216,36 @@
       })
     })
 
+    app.post('/updateDataObj', function(req, res) {
+      var diagramId = req.body.diagramId;
+
+      DataObjSchema.deleteMany({
+        diagramId: diagramId
+      }, function(err) {
+        if (err) console.log(err);
+      });
+
+      // upload DataObj to the Database
+      var dataObjUpload = req.body.uploadDataObj;
+      if (dataObjUpload.length > 0) {
+        const dataObj = JSON.parse(dataObjUpload);
+
+        // saving DataObj in the Database
+        for (var i = 0; i < dataObj.length; i++) {
+          const dataObjInDB = new DataObjSchema(dataObj[i]);
+          // dataObjInDB.isNew = false;
+          dataObjInDB.save();
+          console.log("DataObj has been updated")
+        }
+      }
+      if (dataObjUpload.length == 0) {
+        console.log("Nothing to upload...")
+      } else {
+        console.log("Diagram with ID: " + diagramId + " has been updated.")
+      }
+
+      res.redirect('/edit=' + diagramId);
+    } )
 
     // Controller for uploading Diagram Nodes and Links
     app.post('/upload', function(req, res) {
@@ -278,7 +308,7 @@
       } else {
         console.log("Diagram with ID: " + diagramId + " has been updated.")
       }
-      
+
       res.redirect('/edit=' + diagramId);
     });
 
