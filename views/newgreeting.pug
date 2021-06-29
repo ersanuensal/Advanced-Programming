@@ -9,22 +9,18 @@ block scripts
 block content
   #mySidebar.leftMenu
     form(action='/', method='get', id='settingsForm')
-      a(href="javascript:{}" onclick="document.getElementById('settingsForm').submit();") &nbsp; Settings
+      a(href="javascript:{}" onclick="document.getElementById('settingsForm').submit();") &nbsp; Connection Settings
         i(class='fa fa-wrench', style='position:relative;float:left;padding:6px 2px;')
-    a(href='#') Services
-    a(href='#') Clients
-    a(href='#') Contact
   .contentPages
-    h1 Select the Diagram you want to work with:
-    br(id="removeBR")
-    label(class="errorMsg" id='selectMsg')
+    h2 Select the Diagram you want to work with:
+    div(class="alert alert-danger" role="alert" id='selectMsg' aria-label="Close" style="display: none;" ) 
+        i(class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;')
+        span(aria-hidden="true") &nbsp;Please select a Diagram
     div
       input#diagramsList(type='hidden', name='diagramsList' value=diagramsList)
       select.bigselector(size="5", id='selectDiagram')
-    br
-    br
     div(class="inlinediv")
-      button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Load
+      button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Open Diagram
       a.formstogether(style="margin-left: 1em;" data-toggle="modal" href="#normalModal" class="btn btn-success") New Diagram
       button(style="margin-left: 1em;" type="submit" onclick="deleteDiagram()" class="imgbtn")
         i.fa.fa-trash
@@ -44,33 +40,5 @@ block content
               div(class="CancelSubmit")
                 button(type="button" class="btn btn-danger" data-dismiss="modal") Cancel 
                 button(style="margin-left: 2.5em;" type="submit" onclick="createDiagram()" class="btn btn-primary" margin-left="5px") Create
-      #changeDatabaseModal(class="modal fade")
-        div(class="modal-dialog modal-dialog-centered")
-          div(class="modal-content")
-            div(class="modal-header")
-              h4(style="justify-self: center;" class="modal-title") Settings
-              button( type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
-            div(class="modal-body")
-              label(class="errorMsg" id='errorMsg')
-              br
-              h5 Change Connection
-              div(class="form-group")
-                label Domain/IP: &nbsp;
-                input(id="databaseEndpoint" class="form-control")
-              div(class="form-group")
-                label Username: &nbsp;&nbsp;
-                input(id="databaseUsername" class="form-control")
-              div(class="form-group")
-                label Password: &nbsp;&nbsp;&nbsp;
-                input(id="databasePassword" type="password" class="form-control")
-              div(class="form-group")
-                label Port: &nbsp;&nbsp;&nbsp;
-                input(id="databasePort" class="form-control" value="27017")
-              div(class="form-group")
-                label Database: &nbsp;&nbsp;&nbsp;
-                input(id="databaseName" class="form-control")
-              div(class="CancelSubmit")
-                button(type="button" class="btn btn-danger" data-dismiss="modal") Cancel 
-                button(style="margin-left: 2.5em;" type="submit" onclick="saveDatabaseConnectionString()" class="btn btn-primary" margin-left="5px") Save
                     
           

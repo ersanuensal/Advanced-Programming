@@ -6,9 +6,7 @@ function showSelectedItem() {
     console.log("The selected Diagram is " + selectedDiagram);
     window.location.replace("http://localhost:3000/edit=" + selectedDiagram);
   } catch (e) {
-    var placeholder = document.getElementById("removeBR");
-    placeholder.remove();
-    selectMsg.innerHTML = 'Please select a Diagram';
+    selectMsg.style.display = 'flex';
   }
 
 }

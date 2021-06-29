@@ -109,7 +109,7 @@ function asdf(a) {
     var x = document.getElementById("selectNumber");
     for (var i = 0; i < x.length; i++) {
       if (x.length > 1) {
-        x.remove(x.length-1);
+        x.remove(x.length - 1);
       }
     }
 
@@ -136,7 +136,7 @@ function reload() {
 function loadDataObjModal() {
 
   var myModal = new bootstrap.Modal(document.getElementById('linkInspector'), {
-  keyboard: false
+    keyboard: false
   })
   myModal.show()
 }
@@ -144,7 +144,7 @@ function loadDataObjModal() {
 function loadNodeModal() {
 
   var myModal = new bootstrap.Modal(document.getElementById('nodeInspector'), {
-  keyboard: false
+    keyboard: false
   })
   myModal.show()
 }
@@ -170,7 +170,7 @@ function showEditDataObj(a) {
 
 }
 
-function createTableForEdit () {
+function createTableForEdit() {
   var mySelect = document.getElementById("selectDataObj");
   console.log(downloadedDataObj);
   //Create array of options to be added
@@ -178,7 +178,7 @@ function createTableForEdit () {
 
   for (var i = 0; i < array.length; i++) {
     if (mySelect.length > 0) {
-      mySelect.remove(mySelect.length-1);
+      mySelect.remove(mySelect.length - 1);
     }
   }
 
@@ -194,26 +194,26 @@ function createTableForEdit () {
 }
 
 function selectDataObjFromTable() {
-    var element = document.getElementById("selectDataObj");
-    console.log(element);
-    var selectedDataObj = element.options[element.selectedIndex].value;
+  var element = document.getElementById("selectDataObj");
+  console.log(element);
+  var selectedDataObj = element.options[element.selectedIndex].value;
 
-    console.log(selectedDataObj);
-    // document.getElementById("selectDataObj").style.display = "none";
-    document.getElementById("showEditDataObjForm").style.display = "block";
+  console.log(selectedDataObj);
+  // document.getElementById("selectDataObj").style.display = "none";
+  document.getElementById("showEditDataObjForm").style.display = "block";
 
-    for (var i = 0; i < presetList.length; i++) {
-      if (presetList[i]._id == selectedDataObj) {
-        document.getElementById("hiddenDataObjID").value = selectedDataObj;
-        document.getElementById("dataObjNameEdit").value = presetList[i].Name;
-        document.getElementById("dataObjDesEdit").value = presetList[i].Description;
-        document.getElementById("dataObjColorEdit").value = presetList[i].Color;
-        document.getElementById("dataObjPerEdit").checked = presetList[i].PersonalData;
-      }
+  for (var i = 0; i < presetList.length; i++) {
+    if (presetList[i]._id == selectedDataObj) {
+      document.getElementById("hiddenDataObjID").value = selectedDataObj;
+      document.getElementById("dataObjNameEdit").value = presetList[i].Name;
+      document.getElementById("dataObjDesEdit").value = presetList[i].Description;
+      document.getElementById("dataObjColorEdit").value = presetList[i].Color;
+      document.getElementById("dataObjPerEdit").checked = presetList[i].PersonalData;
     }
+  }
 }
 
-function SaveEditedDataObj(){
+function SaveEditedDataObj() {
   var dataObjID = document.getElementById("hiddenDataObjID").value;
 
   for (var i = 0; i < presetList.length; i++) {

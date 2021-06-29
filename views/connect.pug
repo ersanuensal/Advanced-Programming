@@ -3,10 +3,10 @@ extends template.pug
 block scripts
   script(src='./js/databaseConnection.js' defer)
 block content
-  div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 30vh; width:400px;")
-    h4 Connection
+  div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 800px; width:400px;")
+    h2 Connection
     div(class="alert alert-primary hide" role="alert" id="connectAlert") Connecting to Database...
-        div(class="spinner-border spinner-border-sm ms-auto" style='position:relative;float:right;padding:6px;'  role="status")
+      div(class="spinner-border spinner-border-sm ms-auto" style='position:relative;float:right;padding:6px;'  role="status")
     div(class="form-group")
       label Domain/IP: &nbsp;
       input(id="databaseEndpoint" class="form-control" value=loadedEndpoint)
