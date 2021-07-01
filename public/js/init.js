@@ -125,7 +125,7 @@ function init() {
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
         $(go.Link, {
-                toShortLength: 8, // avoid interfering with arrowhead or ovverreiding the arrowhead,
+                toShortLength: 1, // avoid interfering with arrowhead or ovverreiding the arrowhead,
                 // curve: go.Link.Bezier,
                 routing: go.Link.AvoidsNodes,
                 relinkableFrom: true,
@@ -154,7 +154,7 @@ function init() {
 
             $(go.Shape, { // the real drawn path default
                     isPanelMain: true,
-                    strokeWidth: 4
+                    strokeWidth: 2.2 //binding thickness
                 },
                 new go.Binding("stroke", "Color").makeTwoWay()
             ),
@@ -162,8 +162,8 @@ function init() {
             // Link arrowhead
 
             $(go.Shape, { // make the arrowhead more visibile and clear by scaling it
-                    toArrow: "Standard",
-                    scale: 2
+                    toArrow: "Triangle", //"Standart", "Triangle"
+                    scale: 0.7 //arrow thickness
                 },
                 new go.Binding("stroke", "Color").makeTwoWay(),
                 new go.Binding("fill", "Color").makeTwoWay(),
