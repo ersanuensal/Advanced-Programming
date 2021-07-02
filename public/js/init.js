@@ -427,7 +427,7 @@ function init() {
                         if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
                             document.getElementById("linkFrom").value = link.data.from;
                             document.getElementById("linkTo").value = link.data.to;
-                            document.getElementById("linkName").value = link.data.Name;
+                            document.getElementById("linkName").innerHTML = link.data.Name;
                             document.getElementById("linkDescription").value = link.data.Description;
                             document.getElementById("linkColor").value = link.data.Color;
                             document.getElementById("linkPersonalData").checked = link.data.PersonalData;
@@ -491,6 +491,41 @@ function saveNodeProperties(node) {
         });
     });
 }
+
+function createTableForLinks() {
+  var table = document.getElementById("linkTable");
+  var row = table.insertRow()
+  row.setAttribute("class", "collapsed")
+  row.setAttribute("data-bs-toggle", "collapse")
+  row.setAttribute("data-bs-target", "#demo2")
+  row.setAttribute("aria-expanded", "true")
+
+  let nameCell = row.insertCell();
+  let personalDataCell = row.insertCell();
+  nameText = document.createTextNode("Name")
+  personalDataText = document.createTextNode("personal")
+  nameCell.appendChild(nameText);
+  personalDataCell.appendChild(personalDataText);
+
+
+  var hiddenRow = table.insertRow();
+  hiddenRow.setAttribute("class", "collapsed");
+  let hiddenPanel = hiddenRow.insertCell();
+  hiddenPanel.setAttribute("class", "hiddenRow");
+  hiddenPanel.setAttribute("colspan", "6"); // String oder Integer?
+  var panelDiv = document.createElement('div');
+  panelDiv.setAttribute("id", "demo2");
+  panelDiv.setAttribute("class", "collapse");
+  hiddenPanel.appendChild(panelDiv);
+  descriptionText = document.createTextNode("Description");
+  panelDiv.appendChild(descriptionText);
+
+
+
+
+
+}
+
 
 function showData() {
     var json = myDiagram.model.toJson();

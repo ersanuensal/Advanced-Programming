@@ -12,8 +12,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 12pt;
 }
 
+.democlass {
+  color: red;
+}
+
+.hiddenRow {
+    padding: 0 !important;
+}
 .centercontainer {
   margin-top: 30px;
   margin-bottom: auto;

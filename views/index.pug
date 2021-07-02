@@ -19,6 +19,7 @@ block scripts
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
   script(src='./js/classes/Preset.js')
+  script(src='./js/classes/instanceOfPreset.js')
 block content
   #mySidebar.leftMenu
     form(action='/greeter', method='get', id='homeForm')
@@ -70,21 +71,26 @@ block content
               h5#exampleModalLabel.modal-title Link
               button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
             .modal-body
-              div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 250px; width:250px;")
-                input#linkFrom(type='hidden')
-                input#linkTo(type='hidden')
-                div(class="form-group")
-                  label Name: &nbsp;
-                  input#linkName(type='text' class='form-control')
-                div(class="form-group")
-                  label Description: &nbsp;
-                  textarea#linkDescription(class='form-control')
-                div(class="form-group")
-                  label Color: &nbsp;
-                  input#linkColor(type='color' style="border: none;")
-                div(class="form-group")
-                  label Personal Data: &nbsp; &nbsp; &nbsp;
-                  input#linkPersonalData(type='checkbox' class='form-check-input')
+              div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 450px; width:450px;")
+                  table.table.table-condensed(style='border-collapse:collapse;' id="linkTable")
+                    thead
+                      tr
+                        th Name
+                        th Personal Data
+                    tbody
+                        tr.collapsed(data-bs-toggle='collapse' data-bs-target='#demo1' aria-expanded='true')
+                            td 
+                                a#linkName
+                            td 
+                                input#linkPersonalData(type='checkbox' class='form-check-input' onclick="return false;")
+                        tr.collapsed
+                            td.hiddenRow(colspan='6')
+                              div#demo1.collapse
+                                textarea#linkDescription
+                    input#linkFrom(type='hidden')
+                    input#linkTo(type='hidden')
+                    div(class="form-group")
+                    input#linkColor(type='hidden' style="border: none;")
             .modal-footer
               button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
               button.btn.btn-primary(type='button' onclick='saveLinkProperties()') Save changes
