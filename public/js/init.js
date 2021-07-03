@@ -10,7 +10,7 @@
     downloadedData = [];
     downloadedLinks = [];
     downloadedDataObj = [];
-    downloadedInstanceOfPreset[];
+    downloadedInstanceOfPreset = [];
     instanceOfPresetList = [];
     presetList = downloadedDataObj;
     loadcheck = false;

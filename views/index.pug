@@ -69,7 +69,9 @@ block content
         .modal-dialog.modal-dialog-centered
           .modal-content
             .modal-header
-              h5#exampleModalLabel.modal-title Link
+              div.headerTableLinks
+                label Link:&nbsp;
+                a#linkName()
               button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
             .modal-body
               div.linkTable
@@ -79,9 +81,6 @@ block content
                         th Name
                         th Personal Data
                     tbody#tbody
-                    label Link label:&nbsp;
-                    div.formstogether
-                      a#linkName()
                     input#linkFrom(type='hidden')
                     input#linkTo(type='hidden')
                     div(class="form-group")

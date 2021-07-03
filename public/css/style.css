@@ -196,3 +196,8 @@ modal {
   margin-bottom: 1.07vh;
   margin-right: 0.52vw;
 }
+
+.headerTableLinks {
+  font: bold 0.875em helvetica, sans-serif;
+  font-colour: blue;
+}
