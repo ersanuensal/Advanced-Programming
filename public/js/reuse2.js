@@ -195,14 +195,10 @@ function createTableForEdit() {
 
 function createTableForAddDataObj() {
   var mySelect = document.getElementById("addDataObjectSelect");
-  console.log(downloadedDataObj);
-  //Create array of options to be added
   var array = downloadedDataObj;
-
-  for (var i = 0; i < array.length; i++) {
-    if (mySelect.length > 0) {
-      mySelect.remove(mySelect.length - 1);
-    }
+  var selectLength = mySelect.options.length;
+  for (i = selectLength-1; i  >= 0; i--) {
+      mySelect.options[i] = null;
   }
 
   var initialOpt = document.createElement('option')
@@ -256,6 +252,10 @@ function selectDataObjFromAddTable() {
   var instance = new InstanceOfPreset(instanceFrom, instanceTo, instanceName, diagramId)
   instanceOfPresetList.push(instance);
   saveLinkProperties();
+  var from = document.getElementById("linkFrom").value
+  var to = document.getElementById("linkTo").value
+  createTableForLinks(from, to)
+  saveLinkProperties()
 
 }
 

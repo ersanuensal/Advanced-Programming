@@ -199,8 +199,6 @@ function init() {
 
     // now add the initial contents of the Palette
     myPalette.model.nodeDataArray = [
-        // { Name: "Square", color: "purple", figure: "Square" },
-        // { Name: "Rectangle", color: "red", figure: "Rectangle" },
         {
             Name: "Application",
             Version: "",
@@ -212,76 +210,84 @@ function init() {
             figure: "Subroutine",
             dateToday: "",
         },
-        // { Name: "Triangle", color: "purple", figure: "Triangle" },
     ];
 
+    myDiagram.addModelChangedListener(function(e) {
+        if (e.change === go.ChangedEvent.Transaction) {
+            if(e.propertyName === "CommittingTransaction" || e.modelChange === "SourceChanged"){
+                console.log("changed")
+                nodeList = [];
+                linkList = [];
+                let selectedPart = myDiagram.selection.first();
+
+
+
+                if (selectedPart == null) {
+                    document.getElementById("myInspectorDiv").style.display = "none";
+                } else {
+                    document.getElementById("myInspectorDiv").style.display = "initial";
+                }
+
+
+                myDiagram.commit(function(d) {
+                    d.links.each(function(link) {
+                        var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset, diagramId)
+                        linkList.push(linkObj);
+                        document.getElementById('uploadLinks').value = JSON.stringify(linkList);
+
+                        if (loadcheck && reuseselected != null && reuseselected instanceof go.Link) {
+
+                            if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
+                                for (var i = 0; i < presetList.length; i++) {
+                                    if (loadname == presetList[i].Name) {
+                                        //link.data.Name = presetList[i].Name;
+                                        myDiagram.model.setDataProperty(link.data, "Name", presetList[i].Name);
+                                        myDiagram.model.setDataProperty(link.data, "Description", presetList[i].Description);
+                                        myDiagram.model.setDataProperty(link.data, "Color", presetList[i].Color);
+                                        myDiagram.model.setDataProperty(link.data, "PersonalData", presetList[i].PersonalData);
+                                        loadcheck = false;
+                                        reuseselected = null;
+                                    }
+                                }
+                            }
+
+                        }
+
+                    });
+
+
+                    d.nodes.each(function(node) {
+                        if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
+                            myDiagram.model.setDataProperty(node.data, "color", "red")
+                        } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
+                            myDiagram.model.setDataProperty(node.data, "color", "green")
+                        } else if (node.data.Release > today2) {
+                            myDiagram.model.setDataProperty(node.data, "color", "orange")
+                        } else {
+                            myDiagram.model.setDataProperty(node.data, "color", "blue")
+                        }
+
+                        if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
+                            node.data.Shutdown = "0000-00-00";
+                            myDiagram.model.setDataProperty(node.data, "color", "green")
+                        }
+
+                        var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
+                        nodeList.push(nodeObj);
+                        document.getElementById('uploadData').value = JSON.stringify(nodeList);
+                        document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
+                        document.getElementById("uploadDataObj2").value = JSON.stringify(downloadedDataObj);
+
+                    });
+
+                });
+            }
+
+        }
+    })
     // Eventlistener for hiding the Inspector and trafficlight system
     myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
-        nodeList = [];
-        linkList = [];
-        let selectedPart = myDiagram.selection.first();
 
-
-
-        if (selectedPart == null) {
-            document.getElementById("myInspectorDiv").style.display = "none";
-        } else {
-            document.getElementById("myInspectorDiv").style.display = "initial";
-        }
-
-
-        myDiagram.commit(function(d) {
-            d.links.each(function(link) {
-                var linkObj = new Link(link.data.from, link.data.to, link.data.Name, link.data.Description, link.data.Color, link.data.PersonalData, link.data.LoadPreset, diagramId)
-                linkList.push(linkObj);
-                document.getElementById('uploadLinks').value = JSON.stringify(linkList);
-
-                if (loadcheck && reuseselected != null && reuseselected instanceof go.Link) {
-
-                    if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
-                        for (var i = 0; i < presetList.length; i++) {
-                            if (loadname == presetList[i].Name) {
-                                //link.data.Name = presetList[i].Name;
-                                myDiagram.model.setDataProperty(link.data, "Name", presetList[i].Name);
-                                myDiagram.model.setDataProperty(link.data, "Description", presetList[i].Description);
-                                myDiagram.model.setDataProperty(link.data, "Color", presetList[i].Color);
-                                myDiagram.model.setDataProperty(link.data, "PersonalData", presetList[i].PersonalData);
-                                loadcheck = false;
-                                reuseselected = null;
-                            }
-                        }
-                    }
-
-                }
-
-            });
-
-
-            d.nodes.each(function(node) {
-                if (node.data.Shutdown <= today2 && node.data.Shutdown >= "0000-00-00") {
-                    myDiagram.model.setDataProperty(node.data, "color", "red")
-                } else if ((node.data.Release <= today2 && node.data.Shutdown > today2) || (node.data.Release <= today2 && node.data.Shutdown === "" && node.data.Release != "")) {
-                    myDiagram.model.setDataProperty(node.data, "color", "green")
-                } else if (node.data.Release > today2) {
-                    myDiagram.model.setDataProperty(node.data, "color", "orange")
-                } else {
-                    myDiagram.model.setDataProperty(node.data, "color", "blue")
-                }
-
-                if ((node.data.Shutdown < node.data.Release) && (node.data.Shutdown > "0000-00-00")) {
-                    node.data.Shutdown = "0000-00-00";
-                    myDiagram.model.setDataProperty(node.data, "color", "green")
-                }
-
-                var nodeObj = new Node(node.data.Name, node.data.Version, node.data.Description, node.data.COTS, node.data.Release, node.data.Shutdown, node.data.color, node.data.figure, node.data.key, node.data.location, diagramId)
-                nodeList.push(nodeObj);
-                document.getElementById('uploadData').value = JSON.stringify(nodeList);
-                document.getElementById("uploadDataObj").value = JSON.stringify(downloadedDataObj);
-                document.getElementById("uploadDataObj2").value = JSON.stringify(downloadedDataObj);
-
-            });
-
-        });
 
     });
 
@@ -377,15 +383,13 @@ function createTableForLinks(from, to) {
   createTableForAddDataObj()
   var localinstances = []
 
-  // Data for Debugging
-  // instance1 = new InstanceOfPreset("-2", "-4", "Customers", diagramId)
-
-  // instanceOfPresetList.push(instance3)
   console.log(from +":" + to)
 
   nameCounter = 0;
   nameString = "";
 
+  // generating a Link Label depending on DataObj's
+  // then pushes this element in a local List
   instanceOfPresetList.forEach((elem) => {
     if (elem.linkFrom == from && elem.linkTo == to) {
       if (nameCounter == 0) {
@@ -401,10 +405,8 @@ function createTableForLinks(from, to) {
 
   document.getElementById("linkName").value = nameString;
   localinstances.forEach((item) => {
-    console.log("localinstances:"+ item.presetID);
+    // console.log("localinstances:"+ item.presetID);
   });
-
-  testPreset1 = new Preset("Customers", "Description", "Color", true, "10", 1)
 
   var localPresets = [];
   localinstances.forEach((item) => {
@@ -415,17 +417,19 @@ function createTableForLinks(from, to) {
       }
     });
   });
-  localPresets.forEach((item) => {
-    console.log("localPresets:"+ item.Name);
-  });
+  // localPresets.forEach((item) => {
+  //   console.log("localPresets:"+ item.Name);
+  // });
 
-  var table = document.getElementById("linkTable");
+var tableHeaderRowCount = 1;
+var table = document.getElementById("linkTable");
+var rowCount = table.rows.length;
+for (var i = tableHeaderRowCount; i < rowCount; i++) {
+table.deleteRow(tableHeaderRowCount);
+}
   var index = 0;
 
   localPresets.forEach((elem) => {
-    if (elem.name in instanceOfPresetList) {
-
-    }
     index = index + 1;
     var row = table.insertRow()
     row.setAttribute("class", "collapsed")
