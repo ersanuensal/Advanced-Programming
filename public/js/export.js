@@ -1,37 +1,38 @@
 function save() {
 
-  var json = myDiagram.model.toJson();
+  // var json = myDiagram.model.toJson();
   var str = "";
   var pe = false;
+  var dataObjListExport = presetList;
 
   //  console.log(json);
   //window.alert(myDiagram.model.toJson());
 
   console.log("Hier kommt die CSV");
-  var obj = JSON.parse(json);
+  // var obj = JSON.parse(json);
   //console.log(obj.nodeDataArray);
 
-  str += "\"name\",\"description\",\"personalData\",\"from\",\"to\"\n";
-  console.log(obj.linkDataArray);
+  str += "\"name\",\"description\",\"personalData\"\n";
+  console.log(dataObjListExport);
 
-  for (var i = 0; i < obj.linkDataArray.length; i++) {
-    str += "\"" + obj.linkDataArray[i].Name + "\"" + ",";
-    str += "\"" + obj.linkDataArray[i].Description + "\"" + ",";
-    str += "\"" + obj.linkDataArray[i].PersonalData + "\"" + ",";
+  for (var i = 0; i < dataObjListExport.length; i++) {
+    str += "\"" + dataObjListExport[i].Name + "\"" + ",";
+    str += "\"" + dataObjListExport[i].Description + "\"" + ",";
+    str += "\"" + dataObjListExport[i].PersonalData + "\"" + ",";
 
-    for (var j = 0; j < obj.nodeDataArray.length; j++) {
-      if (obj.linkDataArray[i].from == obj.nodeDataArray[j].key) {
-        str += "\"" + obj.nodeDataArray[j].Name + "\"" + ",";
-      }
+    // for (var j = 0; j < obj.nodeDataArray.length; j++) {
+    //   if (obj.linkDataArray[i].from == obj.nodeDataArray[j].key) {
+    //     str += "\"" + obj.nodeDataArray[j].Name + "\"" + ",";
+    //   }
+    //
+    // }
 
-    }
-
-    for (var k = 0; k < obj.nodeDataArray.length; k++) {
-      if (obj.linkDataArray[i].to == obj.nodeDataArray[k].key) {
-        str += "\"" + obj.nodeDataArray[k].Name + "\"";
-      }
-
-    }
+    // for (var k = 0; k < obj.nodeDataArray.length; k++) {
+    //   if (obj.linkDataArray[i].to == obj.nodeDataArray[k].key) {
+    //     str += "\"" + obj.nodeDataArray[k].Name + "\"";
+    //   }
+    //
+    // }
 
 
     str += "\n";
@@ -42,7 +43,7 @@ function save() {
   filename += getTodayTime().split(".")[0] + "_" + "DataObj.csv";
 
   download(str, filename);
-  //  console.log(str);
+  console.log(str);
 
 }
 
