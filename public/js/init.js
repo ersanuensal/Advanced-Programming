@@ -1,4 +1,4 @@
-function init() {
+ function init() {
     // short form for defining templates
     var $ = go.GraphObject.make;
     var myModel;
@@ -10,15 +10,13 @@ function init() {
     downloadedData = [];
     downloadedLinks = [];
     downloadedDataObj = [];
+    downloadedInstanceOfPreset[];
     instanceOfPresetList = [];
     presetList = downloadedDataObj;
     loadcheck = false;
     loadname = null;
     diagramId = document.getElementById('diagramId').value
     reuseselected = null;
-
-    //  console.log(today2);
-
 
     myDiagram =
         $(go.Diagram, "myDiagramDiv", // create Diagramm in HTML
@@ -353,7 +351,7 @@ function saveLinkProperties(node) {
     myDiagram.commit(function(d) {
         d.links.each(function(link) {
             if (link.data.from == document.getElementById("linkFrom").value && link.data.to == document.getElementById("linkTo").value) {
-                myDiagram.model.setDataProperty(link.data, "Name", document.getElementById("linkName").value);
+                myDiagram.model.setDataProperty(link.data, "Name", document.getElementById("linkName").innerHTML);
                 console.log("saved link");
             }
         });
@@ -403,7 +401,7 @@ function createTableForLinks(from, to) {
     }
   });
 
-  document.getElementById("linkName").value = nameString;
+  document.getElementById("linkName").text = nameString;
   localinstances.forEach((item) => {
     // console.log("localinstances:"+ item.presetID);
   });
