@@ -10,6 +10,7 @@ function init() {
     downloadedData = [];
     downloadedLinks = [];
     downloadedDataObj = [];
+    instanceOfPresetList = [];
     presetList = downloadedDataObj;
     loadcheck = false;
     loadname = null;
@@ -174,80 +175,6 @@ function init() {
                     font: "bold 16px sans-serif"
                 },
                 new go.Binding("text", "Name"))
-            // Link Label
-            /*
-            link label is not just a simple text, it#s a node like object
-            */
-
-            // $(go.Panel, "Auto", // this whole Panel is a link label
-            //   $(go.Shape, "RoundedRectangle", {
-            //     fill: 'white',
-            //     stroke: "#eeeeee",
-            //     strokeWidth: 3
-            //   })
-            // $(go.Panel, "Table", {
-            //   margin: 8,
-            //   stretch: go.GraphObject.Fill
-            // },
-            //   $(go.TextBlock, {
-            //     row: 0,
-            //     alignment: go.Spot.Center,
-            //     margin: new go.Margin(3, 24, 3, 2), // leave room for Button
-            //     font: "bold 16px sans-serif"
-            //   },
-            //     new go.Binding("text", "Name")
-            //   )
-            // $("PanelExpanderButton", "HIDEN", // the name of the element whose visibility this button toggles
-            //   {
-            //     row: 0,
-            //     alignment: go.Spot.TopRight
-            //   }
-            // ),
-            // $(go.RowColumnDefinition, {
-            //   row: 1,
-            //   separatorStrokeWidth: 1.5,
-            //   separatorStroke: "#eeeeee"
-            // }),
-            // $(go.Panel, "Table", {
-            //   name: "HIDEN",
-            //   width: 150,
-            //   row: 1
-            // },
-            //   $(go.RowColumnDefinition, {
-            //     row: 1,
-            //     separatorStrokeWidth: 1.5,
-            //     separatorStroke: "#eeeeee"
-            //   }),
-            //   $(go.TextBlock, {
-            //     row: 0,
-            //     alignment: go.Spot.Left,
-            //     font: "bold 13px sans-serif",
-            //     wrap: go.TextBlock.WrapFit,
-            //     width: 150,
-            //     textAlign: "left",
-            //   },
-            //     new go.Binding("text", "Description"),
-            //   ),
-            //
-            //   /**personal Data: true or false*/
-            //   $(go.TextBlock, {
-            //     row: 1,
-            //     alignment: go.Spot.Left,
-            //     margin: new go.Margin(3, 2, 3, 2),
-            //     font: "bold 13px sans-serif",
-            //     text: "Personal Data: "
-            //   }),
-            //   $(go.TextBlock, {
-            //     row: 1,
-            //     alignment: go.Spot.Right,
-            //     margin: new go.Margin(3, 2, 3, 2),
-            //     font: "bold 13px sans-serif",
-            //   },
-            //     new go.Binding("text", "PersonalData")
-            //   ),
-            // )
-
-
         );
 
 
@@ -287,47 +214,6 @@ function init() {
         },
         // { Name: "Triangle", color: "purple", figure: "Triangle" },
     ];
-
-
-
-
-
-    // var inspector = new Inspector('myInspectorDiv', myDiagram, {
-    //   includesOwnProperties: false,
-    //   properties: {
-    //     // Application properties - properties window
-    //     "Name": {
-    //       show: Inspector.showIfNode
-    //     },
-    //     "Version": {
-    //       show: Inspector.showIfNode
-    //     },
-    //     "Description": {
-    //       show: Inspector.showIfNode,
-    //       type: "field"
-    //     },
-    //     "COTS": {
-    //       show: Inspector.showIfNode,
-    //       type: "select",
-    //       choices: function(node, propName) {
-    //         if (Array.isArray(node.data.choices)) return node.data.choices;
-    //         return ["COTS", "Proprietary", "Undefined"];
-    //       }
-    //     },
-    //     "Release": {
-    //       show: Inspector.showIfNode,
-    //       type: "date"
-    //     },
-    //     "Shutdown": {
-    //       show: Inspector.showIfNode,
-    //       type: "date"
-    //     },
-    //
-    //
-    //   }
-    // });
-
-
 
     // Eventlistener for hiding the Inspector and trafficlight system
     myDiagram.addDiagramListener("ChangedSelection", function(diagramEvent) {
@@ -427,15 +313,11 @@ function init() {
                         if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
                             document.getElementById("linkFrom").value = link.data.from;
                             document.getElementById("linkTo").value = link.data.to;
-                            document.getElementById("linkName").innerHTML = link.data.Name;
-                            document.getElementById("linkDescription").value = link.data.Description;
-                            document.getElementById("linkColor").value = link.data.Color;
-                            document.getElementById("linkPersonalData").checked = link.data.PersonalData;
                             console.log("loaded link")
                         }
                     });
                 });
-
+                createTableForLinks(reuseselected.data.from, reuseselected.data.to)
             }
             if (reuseselected instanceof go.Node) {
                 console.log("Rightclick on Node with key:  " + reuseselected.data.key);
@@ -466,9 +348,6 @@ function saveLinkProperties(node) {
         d.links.each(function(link) {
             if (link.data.from == document.getElementById("linkFrom").value && link.data.to == document.getElementById("linkTo").value) {
                 myDiagram.model.setDataProperty(link.data, "Name", document.getElementById("linkName").value);
-                myDiagram.model.setDataProperty(link.data, "Description", document.getElementById("linkDescription").value);
-                myDiagram.model.setDataProperty(link.data, "Color", document.getElementById("linkColor").value);
-                myDiagram.model.setDataProperty(link.data, "PersonalData", document.getElementById("linkPersonalData").checked);
                 console.log("saved link");
             }
         });
@@ -492,34 +371,90 @@ function saveNodeProperties(node) {
     });
 }
 
-function createTableForLinks() {
+
+
+function createTableForLinks(from, to) {
+  createTableForAddDataObj()
+  var localinstances = []
+
+  // Data for Debugging
+  // instance1 = new InstanceOfPreset("-2", "-4", "Customers", diagramId)
+
+  // instanceOfPresetList.push(instance3)
+  console.log(from +":" + to)
+
+  nameCounter = 0;
+  nameString = "";
+
+  instanceOfPresetList.forEach((elem) => {
+    if (elem.linkFrom == from && elem.linkTo == to) {
+      if (nameCounter == 0) {
+        nameString = elem.presetID;
+      }
+      if (nameCounter > 0) {
+        nameString += ", " + elem.presetID;
+      }
+      nameCounter++;
+      localinstances.push(elem);
+    }
+  });
+
+  document.getElementById("linkName").value = nameString;
+  localinstances.forEach((item) => {
+    console.log("localinstances:"+ item.presetID);
+  });
+
+  testPreset1 = new Preset("Customers", "Description", "Color", true, "10", 1)
+
+  var localPresets = [];
+  localinstances.forEach((item) => {
+    var nameToCheck = item.presetID;
+    presetList.forEach((elem) => {
+      if (elem.Name == nameToCheck) {
+        localPresets.push(elem);
+      }
+    });
+  });
+  localPresets.forEach((item) => {
+    console.log("localPresets:"+ item.Name);
+  });
+
   var table = document.getElementById("linkTable");
-  var row = table.insertRow()
-  row.setAttribute("class", "collapsed")
-  row.setAttribute("data-bs-toggle", "collapse")
-  row.setAttribute("data-bs-target", "#demo2")
-  row.setAttribute("aria-expanded", "true")
+  var index = 0;
 
-  let nameCell = row.insertCell();
-  let personalDataCell = row.insertCell();
-  nameText = document.createTextNode("Name")
-  personalDataText = document.createTextNode("personal")
-  nameCell.appendChild(nameText);
-  personalDataCell.appendChild(personalDataText);
+  localPresets.forEach((elem) => {
+    if (elem.name in instanceOfPresetList) {
+
+    }
+    index = index + 1;
+    var row = table.insertRow()
+    row.setAttribute("class", "collapsed")
+    row.setAttribute("data-bs-toggle", "collapse")
+    var toggleAddress = "#toggleDescription" + index
+    row.setAttribute("data-bs-target", toggleAddress)
+    row.setAttribute("aria-expanded", "true")
+
+    let nameCell = row.insertCell();
+    let personalDataCell = row.insertCell();
+    nameText = document.createTextNode(elem.Name)
+    personalDataText = document.createTextNode(elem.PersonalData)
+    nameCell.appendChild(nameText);
+    personalDataCell.appendChild(personalDataText);
 
 
-  var hiddenRow = table.insertRow();
-  hiddenRow.setAttribute("class", "collapsed");
-  let hiddenPanel = hiddenRow.insertCell();
-  hiddenPanel.setAttribute("class", "hiddenRow");
-  hiddenPanel.setAttribute("colspan", "6"); // String oder Integer?
-  var panelDiv = document.createElement('div');
-  panelDiv.setAttribute("id", "demo2");
-  panelDiv.setAttribute("class", "collapse");
-  hiddenPanel.appendChild(panelDiv);
-  descriptionText = document.createTextNode("Description");
-  panelDiv.appendChild(descriptionText);
-
+    var hiddenRow = table.insertRow();
+    hiddenRow.setAttribute("class", "collapsed");
+    let hiddenPanel = hiddenRow.insertCell();
+    hiddenPanel.setAttribute("class", "hiddenRow");
+    hiddenPanel.setAttribute("colspan", "6"); // String oder Integer?
+    var panelDiv = document.createElement('div');
+    var toggleValue = "toggleDescription" + index
+    panelDiv.setAttribute("id", toggleValue);
+    panelDiv.setAttribute("class", "collapse");
+    hiddenPanel.appendChild(panelDiv);
+    descriptionText = document.createTextNode(elem.Description);
+    panelDiv.appendChild(descriptionText);
+    });
 
 
 

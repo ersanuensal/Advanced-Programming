@@ -193,6 +193,31 @@ function createTableForEdit() {
 
 }
 
+function createTableForAddDataObj() {
+  var mySelect = document.getElementById("addDataObjectSelect");
+  console.log(downloadedDataObj);
+  //Create array of options to be added
+  var array = downloadedDataObj;
+
+  for (var i = 0; i < array.length; i++) {
+    if (mySelect.length > 0) {
+      mySelect.remove(mySelect.length - 1);
+    }
+  }
+
+  var initialOpt = document.createElement('option')
+  initialOpt.innerHTML = "Select a Data Object"
+  mySelect.appendChild(initialOpt);
+  //Create and append the options
+  for (var i = 0; i < array.length; i++) {
+    var opt = document.createElement('option');
+    opt.value = array[i]._id;
+    opt.innerHTML = array[i].Name;
+    mySelect.appendChild(opt);
+  }
+
+}
+
 function selectDataObjFromTable() {
   var element = document.getElementById("selectDataObj");
   console.log(element);
@@ -211,6 +236,27 @@ function selectDataObjFromTable() {
       document.getElementById("dataObjPerEdit").checked = presetList[i].PersonalData;
     }
   }
+}
+
+function selectDataObjFromAddTable() {
+  var element = document.getElementById("addDataObjectSelect");
+  console.log(element);
+  var selectedDataObj = element.options[element.selectedIndex].value;
+
+  console.log(selectedDataObj);
+  var instanceFrom = document.getElementById("linkFrom").value;
+  var instanceTo = document.getElementById("linkTo").value;
+  var instanceName;
+  for (var i = 0; i < presetList.length; i++) {
+    if (presetList[i]._id == selectedDataObj) {
+      instanceName = presetList[i].Name;
+    }
+  }
+
+  var instance = new InstanceOfPreset(instanceFrom, instanceTo, instanceName, diagramId)
+  instanceOfPresetList.push(instance);
+  saveLinkProperties();
+
 }
 
 function SaveEditedDataObj() {

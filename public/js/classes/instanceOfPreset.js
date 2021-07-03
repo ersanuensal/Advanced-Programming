@@ -1,9 +1,11 @@
-class  instanceOfPreset{
+class InstanceOfPreset {
 
-  constructor(linkID, presetID) {
+  constructor(linkFrom, linkTo, presetID, diagramId) {
 
-      this.linkID = linkID;
+      this.linkFrom = linkFrom;
+      this.linkTo = linkTo;
       this.presetID = presetID;
+      this.diagramId = diagramId
 
   }
 

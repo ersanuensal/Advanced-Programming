@@ -71,22 +71,21 @@ block content
               h5#exampleModalLabel.modal-title Link
               button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
             .modal-body
-              div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 450px; width:450px;")
+              div(style="display: box; margin: auto; width: 50%; padding: 10px; height: 450px; width:450px;")
                   table.table.table-condensed(style='border-collapse:collapse;' id="linkTable")
                     thead
                       tr
                         th Name
                         th Personal Data
                     tbody
-                        tr.collapsed(data-bs-toggle='collapse' data-bs-target='#demo1' aria-expanded='true')
-                            td 
-                                a#linkName
-                            td 
-                                input#linkPersonalData(type='checkbox' class='form-check-input' onclick="return false;")
-                        tr.collapsed
-                            td.hiddenRow(colspan='6')
-                              div#demo1.collapse
-                                textarea#linkDescription
+                    label Link label:
+                    div.formstogether
+                      input#linkName(readonly="true")
+                    div.formstogether
+                      select#addDataObjectSelect(class="form-select form-select-sm" aria-label=".form-select-sm example")
+                        option Select a Data Object
+                      button.btn.btn-success(type="button", onclick='selectDataObjFromAddTable()')
+                        i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
                     input#linkFrom(type='hidden')
                     input#linkTo(type='hidden')
                     div(class="form-group")
