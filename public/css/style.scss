@@ -198,6 +198,48 @@ modal {
 }
 
 .headerTableLinks {
-  font: bold 0.875em helvetica, sans-serif;
-  font-colour: blue;
+  font: bold 1em helvetica, sans-serif;
+  color: blue;
+}
+
+.nodeModalBody {
+  display: inline-table;
+  margin: auto;
+  width: 50%;
+  padding: 0.25vw;
+  height: 67vh;
+  width:35vw;
+}
+
+.textareaNodeDescription {
+
+  display: block;
+  border-radius: 0;
+  width: 100%;
+  height: 16vh;
+  resize: none;
+  border: $input-btn-border-width solid $input-border-color;
+  @if $enable-rounded {
+    // Manually use the if/else instead of the mixin to account for iOS override
+    border-radius: $input-border-radius;
+  } @else {
+    // Otherwise undo the iOS default
+    border-radius: 0;
+  }
+
+  @include box-shadow($input-box-shadow);
+  @include transition($input-transition);
+  &:focus::-ms-value {
+    // Suppress the nested default white text on blue background highlight given to
+    // the selected option text when the (still closed) <select> receives focus
+    // in IE and (under certain conditions) Edge, as it looks bad and cannot be made to
+    // match the appearance of the native widget.
+    // See https://github.com/twbs/bootstrap/issues/19398.
+    color: $input-color;
+    background-color: $input-bg;
+  }
+}
+
+.nodeModalFooter {
+  padding: 0.25vh;
 }
