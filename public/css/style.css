@@ -12,7 +12,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12pt;
+  font-size: 1em;
 }
 
 .democlass {
@@ -23,53 +23,47 @@ body {
     padding: 0 !important;
 }
 .centercontainer {
-  margin-top: 30px;
+  margin-top: 3.2vh;
   margin-bottom: auto;
-  margin-left: 60px;
+  margin-left: 3.125vw;
   margin-right: auto;
-  height: 93.89vh;
+  height: 100%;
   width: 100%;
 }
 
 .palette {
+  display: flex;
   background: ghostwhite;
-  border: solid 3px darkgrey;
+  border: solid 0.1875em darkgrey;
   border-top-left-radius: 2rem;
   height: 70vh;
-  width: 8vw;
-  min-width: 230px;
+  width: 14vw;
+  min-width: 12vw;
   position: absolute;
   z-index: 1;
 }
 
 .overview {
+  display: flex;
   background: ghostwhite;
-  border: solid 2px darkgrey;
+  border: solid 0.125em darkgrey;
   border-bottom-left-radius: 2rem;
   height: 20vh;
-  width: 8vw;
-  min-width: 230px;
+  width: 14vw;
+  min-width: 12vw;
   position: absolute;
   margin-top: 70vh;
 }
 
 .diagram {
-  border: solid 2px darkgrey;
+  border: solid 0.125em darkgrey;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
   height: 90vh;
   width: 80%;
   position: relative;
-  margin-left: 230px;
+  margin-left: 14vw;
 
-}
-
-.inspector {
-  position: fixed;
-  margin-top: 3vh;
-  margin-left: 75vw;
-  z-index: 2;
-  color: white;
 }
 
 .Descriptor {
@@ -85,17 +79,6 @@ body {
   color: black;
 }
 
-.inspector textarea {
-  background-color: #424242;
-  /* Grey 800 */
-  color:  white;
-  /* Grey 100 */
-  font: bold 12px helvetica, sans-serif;
-  border: 0px;
-  padding: 2px;
-  min-height: 10vh;
-  width: 170px;
-}
 
 /*
 Default CSS for the Data inspector
@@ -114,76 +97,30 @@ see also: DataInspector.js, DataInspector.html
 /*   #616161; /* Grey 700 */
 /*   #424242; /* Grey 800 */
 /*   #212121; /* Grey 900 */
-.inspector {
-  display: inline-block;
-  font: bold 14px helvetica, sans-serif;
-  background-color: #212121;
-  cursor: default;
-}
-
-.inspector table {
-  border-collapse: separate;
-  border-spacing: 2px;
-}
-
-.inspector td, th {
-  padding: 2px;
-}
-
-.inspector input {
-  background-color: #424242;
-  color: white;
-  font: bold 12px helvetica, sans-serif;
-  border: 0px;
-  padding: 2px;
-}
-
-.inspector input:disabled {
-  background-color: #424242;
-  color: white;
-}
-
-.inspector select {
-  background-color: #424242;
-  color: white;
-}
-.inspector select {
-  background-color: #424242;
-  color: white;
-}
-
-.inspector td {
-  color: white;
-}
-
-.inspector .td input {
-  background-color: #424242;
-  color: white;
-}
-
-
-
 /* width */
-::-webkit-scrollbar {
-  width: 10px;
 
+::-webkit-scrollbar {
+  display: none;
+  width: 0.52vw;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #888;
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
+} */
+
+
 .formstogether{
   display:inline-block;
   margin-right:5px;
@@ -216,9 +153,9 @@ modal {
 
 .CancelSubmit {
   display:inline-block;
-  margin-right:5px;
-  margin-top: 5px;
-  margin-bottom: 10px;
+  margin-right:0.26vw;
+  margin-top:  0.53vh;
+  margin-bottom: 1.07vh;
 }
 
 .inlinediv {
@@ -230,13 +167,32 @@ modal {
 .bigselector{
   height: 50vh;
   width: 50vh;
-  max-height: 350px;
-  max-width: 450px;
-  border: 3px solid black;
-  border-radius: 10px;
+  max-height: 37.35vh;
+  max-width: 23.44vw;
+  border: 0.1875em solid black;
+  border-radius: 0.625em;
   font-family: sans serif;
-  font-size: 30px;
+  font-size: 1.8em;
   outline: none;
   display: flex;
   justify-content: center;
+}
+
+.linkTable {
+  display: inline-block;
+  margin: auto;
+  padding: 10px;
+  height: 48vh;
+  width:23.5vw;
+  font: bold 0.875em helvetica, sans-serif;
+}
+
+.linkTableFooter1 {
+  display: inline-block;
+}
+
+.linkTableFooter2 {
+  display: inline-block;
+  margin-bottom: 1.07vh;
+  margin-right: 0.52vw;
 }

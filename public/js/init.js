@@ -56,9 +56,9 @@ function init() {
             },
             new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
             $(go.Shape, "Subroutine", {
-                    width: 200,
+                    width: 150,
                     height: 100,
-                    margin: 4,
+                    margin: 3,
                     fill: "#29292a",
                     stroke: "gray",
                     strokeWidth: 3.5,

@@ -1,6 +1,7 @@
 extends template.pug
 
 block scripts
+  meta(name='viewport' content='width=device-width')
   link(rel='stylesheet', href='./bootstrap-5.0.1-dist/css/bootstrap.min.css')
   link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
   link(rel='stylesheet', href='./css/style.css')
@@ -71,7 +72,7 @@ block content
               h5#exampleModalLabel.modal-title Link
               button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
             .modal-body
-              div(style="display: box; margin: auto; width: 50%; padding: 10px; height: 450px; width:450px;")
+              div.linkTable
                   table.table.table-condensed(style='border-collapse:collapse;' id="linkTable")
                     thead
                       tr
@@ -80,19 +81,18 @@ block content
                     tbody#tbody
                     label Link label:
                     div.formstogether
-                      input#linkName(readonly="true")
-                    div.formstogether
-                      select#addDataObjectSelect(class="form-select form-select-sm" aria-label=".form-select-sm example")
-                        option Select a Data Object
-                      button.btn.btn-success(type="button", onclick='selectDataObjFromAddTable()')
-                        i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
+                      a#linkName()
                     input#linkFrom(type='hidden')
                     input#linkTo(type='hidden')
                     div(class="form-group")
                     input#linkColor(type='hidden' style="border: none;")
             .modal-footer
-              button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
-              button.btn.btn-primary(type='button' onclick='saveLinkProperties()') Save changes
+              div.linkTableFooter1
+                select#addDataObjectSelect(class="form-select form-select-sm" aria-label=".form-select-sm example")
+                  option Select a Data Object
+              div.linkTableFooter2
+                button.btn.btn-success(type="button", onclick='selectDataObjFromAddTable()')
+                  i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
         #nodeInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
           .modal-dialog.modal-dialog-centered
             .modal-content
