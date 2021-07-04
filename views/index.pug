@@ -5,6 +5,7 @@ block scripts
   link(rel='stylesheet', href='./bootstrap-5.0.1-dist/css/bootstrap.min.css')
   link(rel='stylesheet', href='./js/gojs/assets/css/style.css')
   link(rel='stylesheet', href='./css/style.scss')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js')
   script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4' crossorigin='anonymous')
   script(src='./js/gojs/release/go.js')
@@ -97,7 +98,7 @@ block content
                 div.linkTableFooter2
                   button.btn-sm.btn-success(type="button", onclick='selectDataObjFromAddTable()')
                     i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
-        #nodeInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
+        #nodeInspector.modal.fade(tabindex='-1' aria-labelledby='nodeInspectorLabel' aria-hidden='true')
           .modal-dialog.modal-dialog-centered
             div.nodeModal
               .modal-content
@@ -132,72 +133,87 @@ block content
                   div.nodeModalFooter
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' onclick='saveNodeProperties()') Save changes
-      div(class="modal fade" id="dataObjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="ModalLabel" aria-hidden="true")
-        div(class="modal-dialog")
-          div(class="modal-content")
-            div(class="modal-header")
-              h5.modal-title#ModalLabel Data Objects
-              button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
-            div(class="modal-body")
-              <div class="row mb-3">
-                div
-                  button#resave(onclick='showCreateDataObj(1)')  Create Data Object 
-                  button#reload(onclick='showEditDataObj(1)')  Edit Data Object
-                div
-                #saveDataObj.form-popup
-                  form#showCreateDataObj.form-container(action='')
-                    div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:350px;")
-                      h1 Create a Data Object
-                      div(class="form-group")
-                        label#dataObjNameLabel(for='dataObjName')
-                          b Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        input#dataObjName(type='text' placeholder='Enter Name' required='')
-                      div(class="form-group")
-                        label(for='desc')
-                          b Description:&nbsp;&nbsp;
-                        input#dataObjDes(type='text' placeholder='Enter Description' required='')
-                      div(class="form-group")
-                        label(for='color')
-                          b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        input#dataObjColor(type='color' value='#000000' required='')
-                      div(class="form-group")
-                        label(for='checkbox')
-                          b PersonalData: &nbsp;&nbsp;&nbsp;&nbsp;
-                        input#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                    button.btn(style="margin-left: 100px;" type='button' onclick='resave()' class="btn btn-primary") Save Data Object
-                    button.btn.cancel(type='button' class="btn btn-danger" onclick='showCreateDataObj(0)') Close
-                  form#showEditDataObj.form-container(action='')
-                    div
-                      select.dataobjselector(size="5", id='selectDataObj')
-                    br
-                    div(class="form-group" style="display: flex; justify-content: center; align-items: center;")    
-                        button.btn.btn-danger#reedit(onclick='deleteDataObjFromTable()')  Delete
-                        button.btn.btn-success(type='button' onclick='selectDataObjFromTable()') Edit         
-                    //- button.btn.cancel(type='button' onclick='showEditDataObj(0)') Close
-                    //- button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                  form#showEditDataObjForm.form-container(action='')
-                    div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:350px;")
-                      h1 Edit a Data Object
-                      input#hiddenDataObjID(type="hidden")
-                      div(class="form-group")
-                        label#dataObjNameEditLabel(for='dataObjNameEdit')
-                          b Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        input#dataObjNameEdit(type='text' required='')
-                      div(class="form-group")
-                        label(for='desc')
-                          b Description:&nbsp;&nbsp;
-                        input#dataObjDesEdit(type='text' required='')
-                      div(class="form-group")
-                        //- label(for='color')
-                        //-   b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        input#dataObjColorEdit(type='hidden' required='')
-                      div(class="form-group")
-                        label(for='checkbox')
-                          b PersonalData &nbsp;&nbsp;&nbsp;&nbsp;
-                        input#dataObjPerEdit(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                    br
-                    button.btn(style="margin-left: 150px" type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
+        #dataObjModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='dataObjModalLabel' aria-hidden='true')
+          .modal-dialog.modal-dialog-centered
+            div.dataObjModal
+              .modal-content
+                .modal-header
+                  h5(style="font: bold 1.2em helvetica, sans-serif;")#exampleModalLabel.modal-title Manage Data Objects
+                  button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                  div(role='tabpanel')
+                    ul.nav.nav-tabs(role='tablist')
+                      li.active(role='presentation')
+                        a(href='#uploadTab' aria-controls='uploadTab' role='tab' data-bs-toggle='tab') Upload
+                      li(role='presentation')
+                        a(href='#browseTab' aria-controls='browseTab' role='tab' data-bs-toggle='tab') Browse
+                    .tab-content
+                      #uploadTab.tab-pane.active(role='tabpanel') upload Tab
+                      #browseTab.tab-pane(role='tabpanel') browseTab
+                .modal-footer
+                  button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                  button.btn.btn-primary.save(type='button') Save changes      
+                //- ul.nav.nav-tabs
+                //-   li.nav-item
+                //-     button.nav-link.active(id="home" data-bs-toggle='tab' data-bs-target='#createTab' type='button' role='tab' aria-controls='home' aria-selected='true')  New Data Object
+                //-   li.nav-item
+                //-     button.nav-link(id="profile" data-bs-toggle='tab' data-bs-target='#editTab' type='button' role='tab' aria-controls='profile' aria-selected='false') Edit Data Object                      
+                //- .tab-content
+                  //- #createTab.tab-pane.active(role='tabpanel' aria-labelledby='home-tab')
+                  //-   form#showCreateDataObj.form-container(action='')
+                  //-     div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:350px;")
+                  //-       h1 Create a Data Object
+                  //-       div(class="form-group")
+                  //-         label#dataObjNameLabel(for='dataObjName')
+                  //-           b Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  //-         input#dataObjName(type='text' placeholder='Enter Name' required='')
+                  //-       div(class="form-group")
+                  //-         label(for='desc')
+                  //-           b Description:&nbsp;&nbsp;
+                  //-         input#dataObjDes(type='text' placeholder='Enter Description' required='')
+                  //-       div(class="form-group")
+                  //-         label(for='color')
+                  //-           b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  //-         input#dataObjColor(type='color' value='#000000' required='')
+                  //-       div(class="form-group")
+                  //-         label(for='checkbox')
+                  //-           b PersonalData: &nbsp;&nbsp;&nbsp;&nbsp;
+                  //-         input#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
+                  //-     button.btn(style="margin-left: 100px;" type='button' onclick='resave()' class="btn btn-primary") Save Data Object
+                  //-     button.btn.cancel(type='button' class="btn btn-danger" onclick='showCreateDataObj(0)') Close
+                  //- #editTab.tab-pane(role='tabpanel' aria-labelledby='profile-tab')
+                  //-   form#showEditDataObj.form-container(action='')
+                  //-     div
+                  //-       select.dataobjselector(size="5", id='selectDataObj')
+                  //-     br
+                  //-     div(class="form-group" style="display: flex; justify-content: center; align-items: center;")    
+                  //-         button.btn.btn-danger#reedit(onclick='deleteDataObjFromTable()')  Delete
+                  //-         button.btn.btn-success(type='button' onclick='selectDataObjFromTable()') Edit         
+                  //-     //- button.btn.cancel(type='button' onclick='showEditDataObj(0)') Close
+                  //-     //- button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                  //-   form#showEditDataObjForm.form-container(action='')
+                  //-     div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 350px; width:350px;")
+                  //-       h1 Edit a Data Object
+                  //-       input#hiddenDataObjID(type="hidden")
+                  //-       div(class="form-group")
+                  //-         label#dataObjNameEditLabel(for='dataObjNameEdit')
+                  //-           b Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  //-         input#dataObjNameEdit(type='text' required='')
+                  //-       div(class="form-group")
+                  //-         label(for='desc')
+                  //-           b Description:&nbsp;&nbsp;
+                  //-         input#dataObjDesEdit(type='text' required='')
+                  //-       div(class="form-group")
+                  //-         //- label(for='color')
+                  //-         //-   b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  //-         input#dataObjColorEdit(type='hidden' required='')
+                  //-       div(class="form-group")
+                  //-         label(for='checkbox')
+                  //-           b PersonalData &nbsp;&nbsp;&nbsp;&nbsp;
+                  //-         input#dataObjPerEdit(type='checkbox' class="form-check-input" style="margin-left: 10px;")
+                  //-     br
+                  //-     button.btn(style="margin-left: 150px" type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object                  
+                  //- #saveDataObj.form-popup  
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
         div(class="modal-dialog modal-dialog-centered modal-dialog-scrollable")
