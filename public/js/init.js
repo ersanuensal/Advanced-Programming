@@ -215,7 +215,7 @@
    myDiagram.addModelChangedListener(function(e) {
      if (e.change === go.ChangedEvent.Transaction) {
        if (e.propertyName === "CommittingTransaction" || e.modelChange === "SourceChanged") {
-         console.log("changed")
+         console.log("Changed Event triggered")
          nodeList = [];
          linkList = [];
          let selectedPart = myDiagram.selection.first();
@@ -326,7 +326,7 @@
        reuseselected = e.subject.part;
 
        if (reuseselected instanceof go.Link) {
-         console.log("Clicked on Double " + reuseselected.data.from + " " + reuseselected.data.to);
+         console.log("Right-Clicked on " + reuseselected.data.from + " " + reuseselected.data.to);
          loadDataObjModal();
 
          // load link data to Modal
@@ -335,7 +335,6 @@
              if (reuseselected.data.from == link.data.from && reuseselected.data.to == link.data.to) {
                document.getElementById("linkFrom").value = link.data.from;
                document.getElementById("linkTo").value = link.data.to;
-               console.log("loaded link")
              }
            });
          });
@@ -355,7 +354,6 @@
                document.getElementById("nodeCots").value = node.data.COTS;
                document.getElementById("nodeReleaseDate").value = node.data.Release;
                document.getElementById("nodeShutdownDate").value = node.data.Shutdown;
-               console.log("loaded node")
              }
            });
          });
@@ -370,7 +368,7 @@
      d.links.each(function(link) {
        if (link.data.from == document.getElementById("linkFrom").value && link.data.to == document.getElementById("linkTo").value) {
          myDiagram.model.setDataProperty(link.data, "Name", document.getElementById("linkName").innerHTML);
-         console.log("saved link");
+         console.log("Link updated");
        }
      });
    });
@@ -387,7 +385,7 @@
          myDiagram.model.setDataProperty(node.data, "COTS", document.getElementById("nodeCots").value);
          myDiagram.model.setDataProperty(node.data, "Release", document.getElementById("nodeReleaseDate").value);
          myDiagram.model.setDataProperty(node.data, "Shutdown", document.getElementById("nodeShutdownDate").value);
-         console.log("saved node");
+         console.log("Node updated");
        }
      });
    });
@@ -397,10 +395,9 @@
    var id = id;
    var from = from;
    var to = to;
-   console.log("deleted item from Array "+  id + " from Link " + from + ":" + to)
    instanceOfPresetList.forEach((item, i) => {
      if(item.presetID == id && item.linkFrom == from && item.linkTo == to){
-       console.log("deleted item " + i +" from Array "+  id + " from Link " + from + ":" + to)
+       console.log("Deleted item " + i +" from Array "+  id + " from Link " + from + ":" + to)
        instanceOfPresetList.splice(i, 1);
       }
    });
@@ -421,8 +418,6 @@
  function createTableForLinks(from, to) {
    createTableForAddDataObj()
    var localinstances = []
-
-   console.log(from + ":" + to)
 
    nameCounter = 0;
    nameString = "";
@@ -475,6 +470,7 @@
      var toggleAddress = "#toggleDescription" + index
      row.setAttribute("data-bs-target", toggleAddress)
      row.setAttribute("aria-expanded", "true")
+     row.setAttribute("style", "font: helvetica, sans-serif;  font-size: 1.3em;")
 
      let nameCell = row.insertCell();
      let personalDataCell = row.insertCell();
@@ -485,8 +481,7 @@
      var presetId = "\"" + elem._id + "\""
      var fromId = from
      var toId = to
-     var buttonString = "<button class='btn' onclick='deleteInstance(" + presetId + ", " + fromId + ", " + toId + ")'><i class='fa fa-trash'></i></button>"
-     console.log(buttonString)
+     var buttonString = "<button class='btn' style='margin-bottom: -15px; margin-top: -5px;' onclick='deleteInstance(" + presetId + ", " + fromId + ", " + toId + ")'><i class='fa fa-trash' style='max-height:15px'></i></button>"
      deleteLink.innerHTML = buttonString;
      nameCell.appendChild(nameText);
      personalDataCell.appendChild(personalDataText);
@@ -502,6 +497,7 @@
      var toggleValue = "toggleDescription" + index
      panelDiv.setAttribute("id", toggleValue);
      panelDiv.setAttribute("class", "collapse");
+     panelDiv.setAttribute("style", "margin-left:15px; padding-top:10px; padding-bottom:10px; font: helvetica, sans-serif; font-style: italic; font-size: 1.3em;")
      hiddenPanel.appendChild(panelDiv);
      descriptionText = document.createTextNode(elem.Description);
      panelDiv.appendChild(descriptionText);
