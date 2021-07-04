@@ -1,8 +1,8 @@
 window.onload = function() {
 
-  document.getElementById("showCreateDataObj").style.display = "none";
-  document.getElementById("showEditDataObj").style.display = "none";
-  document.getElementById("showEditDataObjForm").style.display = "none";
+  // document.getElementById("showCreateDataObj").style.display = "block";
+  // document.getElementById("showEditDataObj").style.display = "none";
+  // document.getElementById("showEditDataObjForm").style.display = "none";
 
 };
 
@@ -156,7 +156,8 @@ function showEditDataObj(a) {
     document.getElementById("selectDataObj").style.display = "block";
     document.getElementById("showEditDataObjForm").style.display = "block";
     document.getElementById("showCreateDataObj").style.display = "none";
-
+    document.getElementById("editTab").setAttribute("aria-selected", "true");
+    document.getElementById("createTab").removeAttribute("aria-selected", "false");
 
     createTableForEdit();
   } else {
