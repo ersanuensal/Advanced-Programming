@@ -179,11 +179,11 @@ modal {
 }
 
 .linkTable {
-  display: inline-block;
+  display: inline-table;
   margin: auto;
-  padding: 10px;
-  height: 48vh;
-  width:23.5vw;
+  padding: 0.25vw;
+  height: 55vh;
+  width:35vw;
   font: bold 0.875em helvetica, sans-serif;
 }
 
@@ -205,9 +205,8 @@ modal {
 .nodeModalBody {
   display: inline-table;
   margin: auto;
-  width: 50%;
   padding: 0.25vw;
-  height: 67vh;
+  height: 55vh;
   width:35vw;
 }
 

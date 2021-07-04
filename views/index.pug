@@ -69,31 +69,32 @@ block content
       #myDiagramDiv.diagram
       #linkInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
         .modal-dialog.modal-dialog-centered
-          .modal-content
-            .modal-header
-              div.headerTableLinks
-                label Link:&nbsp;
-                a#linkName()
-              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-            .modal-body
-              div.linkTable
-                  table.table.table-condensed(style='border-collapse:collapse;' id="linkTable")
-                    thead
-                      tr
-                        th Name
-                        th Personal Data
-                    tbody#tbody
-                    input#linkFrom(type='hidden')
-                    input#linkTo(type='hidden')
-                    div(class="form-group")
-                    input#linkColor(type='hidden' style="border: none;")
-            .modal-footer
-              div.linkTableFooter1
-                select#addDataObjectSelect(class="form-select form-select-sm" aria-label=".form-select-sm example")
-                  option Select a Data Object
-              div.linkTableFooter2
-                button.btn.btn-success(type="button", onclick='selectDataObjFromAddTable()')
-                  i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
+          div.linkModal
+            .modal-content
+              .modal-header
+                div.headerTableLinks
+                  label Link:&nbsp;
+                  a#linkName()
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                div.linkTable
+                    table.table.table-condensed(style='border-collapse:collapse;' id="linkTable")
+                      thead
+                        tr
+                          th Name
+                          th Personal Data
+                      tbody#tbody
+                      input#linkFrom(type='hidden')
+                      input#linkTo(type='hidden')
+                      div(class="form-group")
+                      input#linkColor(type='hidden' style="border: none;")
+              .modal-footer
+                div.linkTableFooter1
+                  select#addDataObjectSelect(class="form-select form-select-sm" aria-label=".form-select-sm example")
+                    option Select a Data Object
+                div.linkTableFooter2
+                  button.btn.btn-success(type="button", onclick='selectDataObjFromAddTable()')
+                    i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
         #nodeInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
           .modal-dialog.modal-dialog-centered
             div.nodeModal
@@ -121,10 +122,10 @@ block content
                         option Undefined
                     div(class="form-group")
                       label(style="font: bold 1em helvetica, sans-serif; textAlign: center") Release Date: 
-                      input(style="float: right; padding: 0.25vh")#nodeReleaseDate(type='date')
+                      input#nodeReleaseDate(type='date' style="float: right; padding: 0.25vh")
                     div(class="form-group")
                       label(style="font: bold 1em helvetica, sans-serif;") Shutdown Date:  
-                      input(style="float: right; padding: 0.25vh")#nodeShutdownDate(type='date') 
+                      input#nodeShutdownDate(type='date' style="float: right; padding: 0.25vh") 
                 .modal-footer
                   div.nodeModalFooter
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
