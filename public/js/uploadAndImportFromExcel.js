@@ -4,6 +4,7 @@ const importForm = document.getElementById('importForm');
 const cancelImportBtns = document.querySelectorAll('.cancelImportBtn');
 const acceptResultsBtn = document.getElementById('acceptResults');
 const showReslutsTableBtn = document.querySelector('#showReslutsTable');
+const showResultsModalBtn = document.getElementById('showResultsModalBtn');
 
 const sheetName = document.getElementById('sheetName');
 
@@ -15,7 +16,6 @@ const workbooks = new Object();
 const memory = new Object();
 const importedApps = new Array();
 const ignoredApps = new Array();
-
 
 sheetName.addEventListener('change', function (e) {
     const sheet = e.target.value;
@@ -118,19 +118,30 @@ const getAppsFromExcel = async function (ev) {
         .then(res => res.json())
         .then(json => {
             saveImportedApps(json.data.applications);
-            saveIgnoredApps(json.data.ignoredApplication);
-            document.getElementById('showResultsModalBtn').click();
+            saveIgnoredApps(json.data.ignoredApplications);
+            fillMsgBox();
+            importForm.hidden = true;
+            uploadForm.hidden = false;
         })
         .catch(err => console.log(err));
+}
 
-    importForm.hidden = true;
-    uploadForm.hidden = false;
+const fillMsgBox = function () {
+
+    const msgBox = document.getElementById('importMsg');
+    while (msgBox.hasChildNodes()) {
+        msgBox.firstChild.remove();
+    }
+    const p = document.createElement('p');
+    p.className = "fs-5";
+    p.innerHTML = `${importedApps.length} app has been successfully imported and ${ignoredApps.length} app are ignored.`;
+    msgBox.appendChild(p);
+    document.getElementById('showResultsModalBtn').click();
 }
 
 const fillTheResultTable = function () {
     const tableHeader = new Array();
     tableHeader.push('#');
-
 
     if (ignoredApps.length > 0) {
         for (key of Object.keys(ignoredApps[0])) {

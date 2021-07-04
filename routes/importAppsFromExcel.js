@@ -65,22 +65,22 @@ const getSheetsWithHeaders = function (filePath) {
 
     const allSheetNames = wb.SheetNames;
 
-    const sheets = {};
+    const workbook = {};
 
     for (sheetName of allSheetNames) {
         const ws = wb.Sheets[sheetName]
         const { rows, cols } = getRowsAndCols(ws)
-        sheets[sheetName] = {};
+        workbook[sheetName] = {};
         for (let C = cols.start; C <= cols.end; C++) {
             const cellRef = encodeCell(0, C);
             let cellValue = '';
             if (ws[cellRef] && ws[cellRef].v) {
                 cellValue = ws[cellRef].v;
             }
-            sheets[sheetName][C] = cellValue;
+            workbook[sheetName][C] = cellValue;
         }
     }
-    return sheets;
+    return workbook;
 }
 
 router.delete('/', function (req, res) {
@@ -141,16 +141,16 @@ router.put('/', function (req, res) {
         const colNames = getColNames(worksheet, cols);
         const applications = mapColsToProp(json, colNames);
 
-        const ignoredApplication = new Array()
+        const ignoredApplications = new Array()
 
         deletedRows.forEach(deletedRow => {
-            ignoredApplication.push({
+            ignoredApplications.push({
                 'reason': colNames[deletedRow.reason],
                 'app': mapColsToProp([deletedRow.row], colNames)[0]
             });
         })
 
-        data['ignoredApplication'] = ignoredApplication;
+        data['ignoredApplications'] = ignoredApplications;
         data['applications'] = applications;
 
         fs.unlinkSync(filePath);
