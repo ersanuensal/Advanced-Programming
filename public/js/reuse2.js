@@ -149,20 +149,13 @@ function loadNodeModal() {
   myModal.show()
 }
 
-function showEditDataObj(a) {
-
-  if (a == 1) {
-    document.getElementById("showEditDataObj").style.display = "block";
-    document.getElementById("selectDataObj").style.display = "block";
-    document.getElementById("showEditDataObjForm").style.display = "block";
-    document.getElementById("showCreateDataObj").style.display = "none";
-    document.getElementById("editTab").setAttribute("aria-selected", "true");
-    document.getElementById("createTab").removeAttribute("aria-selected", "false");
-
+function showEditDataObj() {
+  var myModal = new bootstrap.Modal(document.getElementById('editDataObject'), {
+    keyboard: false
+  })
+  myModal.show()
     createTableForEdit();
-  } else {
-    document.getElementById("showEditDataObj").style.display = "none";
-  }
+
 
 }
 
