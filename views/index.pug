@@ -68,7 +68,7 @@ block content
       #myOverviewDiv.overview
       #myDiagramDiv.diagram
       #linkInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
-        .modal-dialog.modal-dialog-centered
+        .modal-dialog.modal-dialog-scrollable.modal-dialog-centered
           div.linkModal
             .modal-content
               .modal-header
@@ -93,7 +93,7 @@ block content
                   select#addDataObjectSelect(class="form-select form-select-sm" aria-label=".form-select-sm example")
                     option Select a Data Object
                 div.linkTableFooter2
-                  button.btn.btn-success(type="button", onclick='selectDataObjFromAddTable()')
+                  button.btn-sm.btn-success(type="button", onclick='selectDataObjFromAddTable()')
                     i(class="fa fa-plus" style='position:relative;float:left;padding:6px 2px;')
         #nodeInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
           .modal-dialog.modal-dialog-centered
