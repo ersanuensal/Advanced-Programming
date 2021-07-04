@@ -238,7 +238,11 @@ const initImputForm = function (data) {
     }
 
     for (let sheet of Object.keys(workbook)) {
-        sheetName.appendChild(new Option(sheet, sheet));
+        const option = new Option(sheet, sheet);
+        if (memory.hasOwnProperty(sheet)) {
+            option.defaultSelected = true;
+        }
+        sheetName.appendChild(option);
     }
 
     sheetName.dispatchEvent(new Event('change'));
