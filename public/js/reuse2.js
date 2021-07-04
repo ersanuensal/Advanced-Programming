@@ -20,11 +20,6 @@ function showCreateDataObj(a) {
 
 }
 
-// testfunktion zum debuggen
-// function saveLinkProperties() {
-//     reuseselected = e.subject.part;
-//     console.log(reuseselected.data.from)
-// }
 
 function resave() {
 
@@ -66,13 +61,10 @@ function resave() {
       document.getElementById("dataObjPer").checked = false;
       showCreateDataObj(0);
     }
-    // input#diagramId(type='hidden', name='diagramId' value=diagramId)
-    // input#uploadData(type='hidden', name='uploadData')
-    // input#uploadLinks(type='hidden', name='uploadLinks')
-    // input#uploadDataObj(type='hidden', name="uploadDataObj")
+
     document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
     document.getElementById('uploadDBForm').submit();
-    // test();
+
   }
 }
 
@@ -154,7 +146,7 @@ function showEditDataObj() {
     keyboard: false
   })
   myModal.show()
-    createTableForEdit();
+  createTableForEdit();
 
 
 }
@@ -245,7 +237,6 @@ function deleteDataObjFromTable() {
     });
   });
 
-
   createTableForEdit()
 }
 
@@ -286,8 +277,6 @@ function selectDataObjFromAddTable() {
       createTableForLinks(from, to);
       saveLinkProperties();
   }
-
-
 }
 
 function SaveEditedDataObj() {
@@ -301,9 +290,6 @@ function SaveEditedDataObj() {
       presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
     }
   }
-  // document.getElementById("uploadDataObj2").value = JSON.stringify(presetList);
-  // document.getElementById('updateDataObjForm').submit();
   document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
   document.getElementById('uploadDBForm').submit();
-  // createTableForEdit();
 }
