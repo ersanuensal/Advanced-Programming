@@ -470,6 +470,7 @@
      var toggleAddress = "#toggleDescription" + index
      row.setAttribute("data-bs-target", toggleAddress)
      row.setAttribute("aria-expanded", "true")
+     row.setAttribute("style", "font: helvetica, sans-serif;  font-size: 1.3em;")
 
      let nameCell = row.insertCell();
      let personalDataCell = row.insertCell();
@@ -480,7 +481,7 @@
      var presetId = "\"" + elem._id + "\""
      var fromId = from
      var toId = to
-     var buttonString = "<button class='btn' onclick='deleteInstance(" + presetId + ", " + fromId + ", " + toId + ")'><i class='fa fa-trash'></i></button>"
+     var buttonString = "<button class='btn' style='margin-bottom: -15px; margin-top: -5px;' onclick='deleteInstance(" + presetId + ", " + fromId + ", " + toId + ")'><i class='fa fa-trash' style='max-height:15px'></i></button>"
      deleteLink.innerHTML = buttonString;
      nameCell.appendChild(nameText);
      personalDataCell.appendChild(personalDataText);
@@ -496,6 +497,7 @@
      var toggleValue = "toggleDescription" + index
      panelDiv.setAttribute("id", toggleValue);
      panelDiv.setAttribute("class", "collapse");
+     panelDiv.setAttribute("style", "margin-left:15px; padding-top:10px; padding-bottom:10px; font: helvetica, sans-serif; font-style: italic; font-size: 1.3em;")
      hiddenPanel.appendChild(panelDiv);
      descriptionText = document.createTextNode(elem.Description);
      panelDiv.appendChild(descriptionText);

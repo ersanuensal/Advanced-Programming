@@ -85,7 +85,7 @@ block content
                 div.linkTable
                     table.table.table-condensed(style='border-collapse:collapse;' id="linkTable")
                       thead
-                        tr
+                        tr(style='font: bold 0.875em helvetica, sans-serif; font-size: 1.8em;')
                           th Name
                           th Personal Data
                       tbody#tbody
@@ -163,12 +163,13 @@ block content
                         b Description:&nbsp;&nbsp;
                       input.border.border-2.form-control#dataObjDes(type='text' placeholder='Enter Description' required='')
                     div(class="form-group")
+                      input#dataObjColor(type='hidden' required='')
+                    div(class="form-group")
                       label(for='checkbox')
                         b PersonalData: &nbsp;&nbsp;&nbsp;&nbsp;
                       input.border.border-2#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                  div.buttonsCreateDataObj
-                    button.btn(type='button' onclick='resave()' class="btn btn-primary" style='margin-right: 7vw;') Save Data Object
-                    button.btn.btn-danger.btn-primary(type='button' data-bs-dismiss='modal' aria-label='Close' style='margin-right: 3vw;') Close
+                  div(class="form-group" style="display: flex; justify-content: center; align-items: center;")
+                    button.btn.btn-primary(onclick='resave()') Save Data Object
               .modal-footer
                 button.btn.btn-primary(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal') Back to menu
         a.btn.btn-primary(data-bs-toggle='modal' href='#dataObjModal' role='button') Open first modal
@@ -188,7 +189,6 @@ block content
                       button.btn.btn-danger#reedit(onclick='deleteDataObjFromTable()')  Delete
                     form#showEditDataObjForm.form-container(action='')
                       div
-                        h1 Edit a Data Object
                         input#hiddenDataObjID(type="hidden")
                         div(class="form-group")
                           label#dataObjNameEditLabel(for='dataObjNameEdit')

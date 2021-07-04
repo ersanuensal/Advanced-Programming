@@ -198,6 +198,12 @@ modal {
   height: 55vh;
   width:35vw;
   font: bold 0.875em helvetica, sans-serif;
+  font-size: 1.8em;
+}
+
+.linkTable .th{
+  font: bold 0.875em helvetica, sans-serif !important;
+  font-size: 1.8em !important;
 }
 
 .linkTableFooter1 {
@@ -242,7 +248,7 @@ modal {
   display: inline-table;
   margin: auto;
   padding: 5vh;
-  height: 55vh;
+  height: 35vh;
   width:35vw
 }
 
@@ -263,6 +269,9 @@ modal {
     display: inline-block;
     margin: auto;
     justify-content: center;
+}
 
-
+p {
+  font: bold 0.7em helvetica, sans-serif;
+  font-size: 1.8em;
 }
