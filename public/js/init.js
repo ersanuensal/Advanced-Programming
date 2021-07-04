@@ -394,6 +394,10 @@
  }
 
  function deleteInstance(id, from, to){
+   var id = id;
+   var from = from;
+   var to = to;
+   console.log("deleted item from Array "+  id + " from Link " + from + ":" + to)
    instanceOfPresetList.forEach((item, i) => {
      if(item.presetID == id && item.linkFrom == from && item.linkTo == to){
        console.log("deleted item " + i +" from Array "+  id + " from Link " + from + ":" + to)
@@ -478,10 +482,12 @@
      nameText = document.createTextNode(elem.Name)
      personalDataText = document.createTextNode(elem.PersonalData)
      deleteLink = document.createElement('p');
-     presetId = elem._id
-     fromId = from
-     toId = to
-     deleteLink.innerHTML = "<button class='btn' onclick='deleteInstance(presetId, fromId, toId)'><i class='fa fa-trash'></i></button>";
+     var presetId = "\"" + elem._id + "\""
+     var fromId = from
+     var toId = to
+     var buttonString = "<button class='btn' onclick='deleteInstance(" + presetId + ", " + fromId + ", " + toId + ")'><i class='fa fa-trash'></i></button>"
+     console.log(buttonString)
+     deleteLink.innerHTML = buttonString;
      nameCell.appendChild(nameText);
      personalDataCell.appendChild(personalDataText);
      deleteCell.appendChild(deleteLink)
