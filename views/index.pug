@@ -22,7 +22,7 @@ block scripts
   script(src='./js/classes/Link.js')
   script(src='./js/classes/Preset.js')
   script(src='./js/classes/InstanceOfPreset.js')
-  script(src='./js/jqueryTest')
+  //- script(src='./js/jqueryTest')
 block content
   #mySidebar.leftMenu
     form(action='/greeter', method='get', id='homeForm')
@@ -176,7 +176,7 @@ block content
             div.dialogedit
               .modal-content
                 .modal-header
-                  h5#exampleModalToggleLabel2.modal-title Edit Data Object
+                  h5#exampleModalToggleLabel2.modal-title.modalcustom Edit Data Object
                   button.btn-close(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal')
                 .modal-body
                   div.editBodyModal
@@ -196,11 +196,11 @@ block content
                         div(class="form-group")
                           label#dataObjNameEditLabel(for='dataObjNameEdit')
                             b Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          input.border.border-2#dataObjNameEdit(type='text' required='')
+                          input.border.border-2.form-control#dataObjNameEdit(type='text' required='')
                         div(class="form-group")
                           label(for='desc')
                             b Description:&nbsp;&nbsp;
-                          input.border.border-2#dataObjDesEdit(type='text' required='')
+                          input.border.border-2.form-control#dataObjDesEdit(type='text' required='')
                         div(class="form-group")
                           //- label(for='color')
                           //-   b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
