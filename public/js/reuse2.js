@@ -242,14 +242,14 @@ function selectDataObjFromAddTable() {
   console.log(selectedDataObj);
   var instanceFrom = document.getElementById("linkFrom").value;
   var instanceTo = document.getElementById("linkTo").value;
-  var instanceName;
+  var instanceId;
   for (var i = 0; i < presetList.length; i++) {
     if (presetList[i]._id == selectedDataObj) {
-      instanceName = presetList[i].Name;
+      instanceId = presetList[i]._id;
     }
   }
 
-  var instance = new InstanceOfPreset(instanceFrom, instanceTo, instanceName, diagramId)
+  var instance = new InstanceOfPreset(instanceFrom, instanceTo, instanceId, diagramId)
   instanceOfPresetList.push(instance);
   saveLinkProperties();
   var from = document.getElementById("linkFrom").value
@@ -270,7 +270,9 @@ function SaveEditedDataObj() {
       presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
     }
   }
-  document.getElementById("uploadDataObj2").value = JSON.stringify(presetList);
-  document.getElementById('updateDataObjForm').submit();
+  // document.getElementById("uploadDataObj2").value = JSON.stringify(presetList);
+  // document.getElementById('updateDataObjForm').submit();
+  document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
+  document.getElementById('uploadDBForm').submit();
   // createTableForEdit();
 }

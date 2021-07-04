@@ -47,6 +47,7 @@
     var LinkSchema = require('./models/link_db');
     var DiagramSchema = require('./models/diagram_db');
     var DataObjSchema = require('./models/dataobj_db');
+    var InstanceOfPresetSchema = require('./models/instanceOfPreset_db')
 
     // Initialize express
     let app = express();
@@ -135,6 +136,9 @@
       const dataObjInDB = await DataObjSchema.find({
         diagramId: diagramId
       }, function(err, data) {});
+      const instnceOfPresetInDB = await InstanceOfPresetSchema.find({
+        diagramId: diagramId
+      }, function(err, data) {});
 
       console.log("Diagram with ID: " + diagramId + " has been loaded.");
 
@@ -144,26 +148,13 @@
         downloadData: nodesInDB,
         downloadLinks: linksInDB,
         downloadDataObj: dataObjInDB,
+        downloadInstanceOfPreset: instnceOfPresetInDB,
         diagramId: diagramId
       })
 
     })
 
-    // app.get('/dataobjs/:diagramId', async function(req, res){
-    //   var diagramId = req.params.diagramId;
-    //   try {
-    //     const dataObjInDB = await DataObjSchema.find({
-    //       diagramId: diagramId
-    //     }, function(err, data) {});
-    //
-    //     res.send({
-    //       downloadDataObj: dataObjInDB
-    //     })
-    //
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // })
+
 
     app.get('/delete=:diagramId', async function(req, res) {
       var diagramId = req.params.diagramId;
@@ -271,6 +262,11 @@
         }, function(err) {
           if (err) console.log(err);
         });
+        InstanceOfPresetSchema.deleteMany({
+          diagramId: diagramId
+        }, function(err) {
+          if (err) console.log(err);
+        });
 
         // Saving nodes in the Database
         for (var i = 0; i < myObj.length; i++) {
@@ -300,6 +296,18 @@
         for (var i = 0; i < dataObj.length; i++) {
           const dataObjInDB = new DataObjSchema(dataObj[i]);
           dataObjInDB.save();
+        }
+      }
+
+      // upload instances to the Database
+      var instanceOfPresetUpload = req.body.uploadInstanceOfPreset;
+      if (instanceOfPresetUpload.length > 0) {
+        const instanceObjs = JSON.parse(instanceOfPresetUpload);
+
+        // saving instances in the Database
+        for (var i = 0; i < instanceObjs.length; i++) {
+          const instanceObjsInDB = new InstanceOfPresetSchema(instanceObjs[i]);
+          instanceObjsInDB.save();
         }
       }
 

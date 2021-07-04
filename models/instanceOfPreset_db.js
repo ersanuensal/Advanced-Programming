@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var InstanceOfPreset = new Schema({
+var InstanceOfPresetSchema = new Schema({
   linkFrom: {
     type: String
   },

@@ -20,7 +20,7 @@ block scripts
   script(src='./js/classes/Node.js')
   script(src='./js/classes/Link.js')
   script(src='./js/classes/Preset.js')
-  script(src='./js/classes/instanceOfPreset.js')
+  script(src='./js/classes/InstanceOfPreset.js')
 block content
   #mySidebar.leftMenu
     form(action='/greeter', method='get', id='homeForm')
@@ -34,6 +34,7 @@ block content
       input#uploadData(type='hidden', name='uploadData')
       input#uploadLinks(type='hidden', name='uploadLinks')
       input#uploadDataObj(type='hidden', name="uploadDataObj")
+      input#uploadInstanceOfPreset(type='hidden', name='uploadInstanceOfPreset')
       a(href="javascript:{}" onclick="document.getElementById('uploadDBForm').submit();") &nbsp;Save
         i(class='fa fa-floppy-o', style='position:relative;float:left;padding:6px 2px;')
       a.collapsed(data-bs-toggle='collapse' data-bs-target='#home-collapse' aria-expanded='true') &nbsp;Export
@@ -60,11 +61,12 @@ block content
     input#downloadData(type='hidden', name='downloadData' value=downloadData)
     input#downloadLinks(type='hidden', name='downloadLinks' value=downloadLinks)
     input#downloadDataObj(type='hidden', name='downloadDataObj' value=downloadDataObj)
+    input#downloadInstanceOfPreset(type='hidden', name='downloadInstanceOfPreset' value=downloadInstanceOfPreset)
+
     .centercontainer
       #myPaletteDiv.palette
       #myOverviewDiv.overview
       #myDiagramDiv.diagram
-      #myInspectorDiv.inspector
       #linkInspector.modal.fade(tabindex='-1' aria-labelledby='linkInspectorLabel' aria-hidden='true')
         .modal-dialog.modal-dialog-centered
           .modal-content
