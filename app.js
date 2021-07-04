@@ -170,6 +170,11 @@
       }, function(err) {
         if (err) console.log(err);
       });
+      InstanceOfPresetSchema.deleteMany({
+        diagramId: diagramId
+      }, function(err) {
+        if (err) console.log(err);
+      });
       DiagramSchema.findByIdAndDelete(diagramId, function(err) {
         if (err) console.log(err);
       });

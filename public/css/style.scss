@@ -178,6 +178,19 @@ modal {
   justify-content: center;
 }
 
+.dataobjselector{
+  height: 24vh;
+  width: 100%;
+  max-height: 37.35vh;
+  border: 0.1875em solid black;
+  border-radius: 0.625em;
+  font-family: sans serif;
+  font-size: 1.8em;
+  outline: none;
+  display: flex;
+  justify-content: center;
+}
+
 .linkTable {
   display: inline-flex;
   margin: auto;

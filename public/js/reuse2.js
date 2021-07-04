@@ -158,11 +158,6 @@ function showEditDataObj(a) {
     document.getElementById("showCreateDataObj").style.display = "none";
 
 
-    // diagramId = document.getElementById('diagramId').value
-    // var url = "http://localhost:3000/dataobjs/" + diagramId;
-    // var getNewList;
-    // fetch(url).then(res => res.json()).then(data => getNewList = data).then(() => console.log(getNewList));
-    // loadDataObjFromDB();
     createTableForEdit();
   } else {
     document.getElementById("showEditDataObj").style.display = "none";
@@ -172,16 +167,11 @@ function showEditDataObj(a) {
 
 function createTableForEdit() {
   var mySelect = document.getElementById("selectDataObj");
-  console.log(downloadedDataObj);
+  console.log(presetList);
   //Create array of options to be added
-  var array = downloadedDataObj;
+  var array = presetList;
 
-  for (var i = 0; i < array.length; i++) {
-    if (mySelect.length > 0) {
-      mySelect.remove(mySelect.length - 1);
-    }
-  }
-
+  mySelect.options.length = 0;
 
   //Create and append the options
   for (var i = 0; i < array.length; i++) {
@@ -234,14 +224,44 @@ function selectDataObjFromTable() {
   }
 }
 
-function selectDataObjFromAddTable() {
-  var element = document.getElementById("addDataObjectSelect");
-  console.log(element);
+// For deleting a Data Object completly
+function deleteDataObjFromTable() {
+  var element = document.getElementById("selectDataObj");
+
   var selectedDataObj = element.options[element.selectedIndex].value;
 
   console.log(selectedDataObj);
+
+  instanceOfPresetList.forEach((item, i) => {
+      if (item.presetID == selectedDataObj) {
+        instanceOfPresetList.splice(i, 1);
+      }
+  });
+  presetList.forEach((item, i) =>{
+      if(item._id == selectedDataObj){
+          presetList.splice(i, 1);
+      }
+  })
+
+  // Just for triggering rename with ChangedEvent
+  myDiagram.commit(function(d) {
+    d.links.each(function(link) {
+      var renaming = "updating ..."
+      myDiagram.model.setDataProperty(link.data, "Name", renaming);
+    });
+  });
+
+
+  createTableForEdit()
+}
+
+function selectDataObjFromAddTable() {
+  var element = document.getElementById("addDataObjectSelect");
+  var selectedDataObj = element.options[element.selectedIndex].value;
   var instanceFrom = document.getElementById("linkFrom").value;
   var instanceTo = document.getElementById("linkTo").value;
+  var checkInstanceDouble = false
+
   var instanceId;
   for (var i = 0; i < presetList.length; i++) {
     if (presetList[i]._id == selectedDataObj) {
@@ -249,13 +269,30 @@ function selectDataObjFromAddTable() {
     }
   }
 
-  var instance = new InstanceOfPreset(instanceFrom, instanceTo, instanceId, diagramId)
-  instanceOfPresetList.push(instance);
-  saveLinkProperties();
-  var from = document.getElementById("linkFrom").value
-  var to = document.getElementById("linkTo").value
-  createTableForLinks(from, to)
-  saveLinkProperties()
+  instanceOfPresetList.forEach((item) => {
+      if (item.presetID == instanceId && item.linkFrom == instanceFrom && item.linkTo == instanceTo) {
+          checkInstanceDouble = true;
+      }
+  });
+
+  if (selectedDataObj == "Select a Data Object") {
+      console.log("Please select a Valid Data Object");
+      console.log("\"" + selectedDataObj + "\" is not a Option to add");
+      validDataObject.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Please select a valid Data Object </span>"
+      validDataObject.style.display = 'flex';
+  } else if (checkInstanceDouble){
+      validDataObject.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;This Data Object is already part of this Link </span>"
+      validDataObject.style.display = 'flex';
+  } else {
+      var instance = new InstanceOfPreset(instanceFrom, instanceTo, instanceId, diagramId);
+      instanceOfPresetList.push(instance);
+      saveLinkProperties();
+      var from = document.getElementById("linkFrom").value;
+      var to = document.getElementById("linkTo").value;
+      createTableForLinks(from, to);
+      saveLinkProperties();
+  }
+
 
 }
 
