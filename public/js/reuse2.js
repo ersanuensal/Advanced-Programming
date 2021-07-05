@@ -171,7 +171,10 @@ function createTableForEdit() {
 
 function createTableForAddDataObj() {
   var mySelect = document.getElementById("addDataObjectSelect");
-  var array = downloadedDataObj;
+  var from = document.getElementById("linkFrom").value;
+  var to = document.getElementById("linkTo").value;
+  // var array = downloadedDataObj;
+  var array = presetList;
   var selectLength = mySelect.options.length;
   for (i = selectLength-1; i  >= 0; i--) {
       mySelect.options[i] = null;
@@ -182,11 +185,23 @@ function createTableForAddDataObj() {
   mySelect.appendChild(initialOpt);
   //Create and append the options
   for (var i = 0; i < array.length; i++) {
-    var opt = document.createElement('option');
-    opt.value = array[i]._id;
-    opt.innerHTML = array[i].Name;
-    mySelect.appendChild(opt);
+      var checkOption = false;
+      instanceOfPresetList.forEach((elem) => {
+          if (elem.presetID == array[i]._id && elem.linkFrom == from && elem.linkTo == to) {
+              console.log("ignoring option")
+              checkOption = true;
+          }
+      });
+      if (checkOption == false) {
+          var opt = document.createElement('option');
+          opt.value = array[i]._id;
+          opt.innerHTML = array[i].Name;
+          mySelect.appendChild(opt);
+      }
+
   }
+
+
 
 }
 
