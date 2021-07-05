@@ -132,7 +132,7 @@ block content
                       input.border.border-2#nodeShutdownDate(type='date' style="float: right; padding: 0.25vh") 
                 .modal-footer
                   div.nodeModalFooter
-                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    button.btn.btn-danger.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' onclick='saveNodeProperties()') Save changes
         #dataObjModal.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel' tabindex='-1')
           .modal-dialog.modal-dialog-centered
@@ -144,7 +144,7 @@ block content
                 button.btn.btn-primary(data-bs-target='#createDataObject' data-bs-toggle='modal' data-bs-dismiss='modal') Create Data Object
                 button.btn.btn-primary(onclick='showEditDataObj()') Edit Data Object
               .modal-footer
-                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                button.btn.btn-danger.btn-secondary(type='button' data-bs-dismiss='modal') Close
         #createDataObject.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel2' tabindex='-1')
           .modal-dialog.modal-dialog-centered
             .modal-content
