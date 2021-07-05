@@ -1,16 +1,26 @@
 const uploadForm = document.querySelector('#uploadForm');
 const importForm = document.getElementById('importForm');
+
 const cancelImportBtns = document.querySelectorAll('.cancelImportBtn');
 const acceptResultsBtn = document.getElementById('acceptResults');
 const showReslutsTableBtn = document.querySelector('#showReslutsTable');
-const resultsTable = document.querySelector('#resultsTable');
+const showResultsModalBtn = document.getElementById('showResultsModalBtn');
 
+const sheetName = document.getElementById('sheetName');
+
+const resultsTable = document.querySelector('#resultsTable');
 
 const endPoint = "/importAppsFromExcel";
 
+const workbooks = new Object();
 const memory = new Object();
 const importedApps = new Array();
 const ignoredApps = new Array();
+
+sheetName.addEventListener('change', function (e) {
+    const sheet = e.target.value;
+    changeSelectOptions(sheet);
+});
 
 for (const btn of cancelImportBtns) {
     btn.addEventListener('click', async function (e) {
@@ -21,7 +31,6 @@ for (const btn of cancelImportBtns) {
     });
 }
 
-
 uploadForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     uploadToServer();
@@ -31,7 +40,6 @@ importForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     getAppsFromExcel(e);
 });
-
 
 acceptResultsBtn.addEventListener('click', function () {
     appendNewApps();
@@ -97,8 +105,6 @@ const getAppsFromExcel = async function (ev) {
 
     saveSelectNames();
 
-    console.log(memory);
-
     const options = {
         method: "put",
         headers: {
@@ -111,21 +117,31 @@ const getAppsFromExcel = async function (ev) {
         .then(checkResponse)
         .then(res => res.json())
         .then(json => {
-            console.log(json);
-            document.getElementById('showResultsModalBtn').click();
             saveImportedApps(json.data.applications);
-            saveIgnoredApps(json.data.ignoredApplication);
+            saveIgnoredApps(json.data.ignoredApplications);
+            fillMsgBox();
+            importForm.hidden = true;
+            uploadForm.hidden = false;
         })
         .catch(err => console.log(err));
+}
 
-    importForm.hidden = true;
-    uploadForm.hidden = false;
+const fillMsgBox = function () {
+
+    const msgBox = document.getElementById('importMsg');
+    while (msgBox.hasChildNodes()) {
+        msgBox.firstChild.remove();
+    }
+    const p = document.createElement('p');
+    p.className = "fs-5";
+    p.innerHTML = `${importedApps.length} app has been successfully imported and ${ignoredApps.length} app are ignored.`;
+    msgBox.appendChild(p);
+    document.getElementById('showResultsModalBtn').click();
 }
 
 const fillTheResultTable = function () {
     const tableHeader = new Array();
     tableHeader.push('#');
-
 
     if (ignoredApps.length > 0) {
         for (key of Object.keys(ignoredApps[0])) {
@@ -170,12 +186,22 @@ const fillTheResultTable = function () {
 }
 
 const saveImportedApps = function (listOfApps) {
+
+    while (importedApps.length > 0) {
+        importedApps.pop();
+    }
+
     listOfApps.forEach(app => {
         importedApps.push(app);
     })
 }
 
 const saveIgnoredApps = function (listOfApps) {
+
+    while (ignoredApps.length > 0) {
+        ignoredApps.pop();
+    }
+
     for (const [index, app] of listOfApps.entries()) {
         if (index >= 99) {
             break;
@@ -186,21 +212,21 @@ const saveIgnoredApps = function (listOfApps) {
 }
 
 const saveSelectNames = function () {
+
     const selects = document.querySelectorAll('.selectOptions');
 
+    const selectedOptions = new Object();
+
     for (let select of selects) {
-        if (select.options.length > 0) {
-            for (option of select.options) {
-                if (option.selected == true) {
-                    if (memory.hasOwnProperty(select.name)) {
-                        memory[select.name].add(option.text);
-                    } else {
-                        memory[select.name] = new Set().add(option.text);
-                    }
-                }
+        for (let option of select.options) {
+            if (option.selected == true) {
+                selectedOptions[select.name] = option.text;
             }
         }
     }
+
+    memory[sheetName.value] = selectedOptions;
+
 }
 
 const initImputForm = function (data) {
@@ -208,11 +234,13 @@ const initImputForm = function (data) {
     uploadForm.hidden = true;
     importForm.hidden = false;
 
-    const sheets = data.sheets;
-    const file_path = data.filePath;
+    const workbook = data.workbook;
+    const filePath = data.filePath;
+    const fileName = document.getElementById('inpFile').files.item(0).name;
 
-    const sheetName = document.getElementById('sheetName');
-    document.getElementById('filePath').value = file_path;
+    document.getElementById('filePath').value = filePath;
+
+    workbooks[fileName] = { ...workbook };
 
     if (sheetName.options) {
         while (sheetName.options.length > 0) {
@@ -220,35 +248,41 @@ const initImputForm = function (data) {
         }
     }
 
-    for (sheet of Object.keys(sheets)) {
-        sheetName.appendChild(new Option(sheet, sheet));
+    for (let sheet of Object.keys(workbook)) {
+        const option = new Option(sheet, sheet);
+        if (memory.hasOwnProperty(sheet)) {
+            option.defaultSelected = true;
+        }
+        sheetName.appendChild(option);
     }
 
-    sheetName.addEventListener('change', function (e) {
-        const sheet = e.target.value;
-        changeSelectOptions(sheets[sheet]);
-    });
-
     sheetName.dispatchEvent(new Event('change'));
-
 }
 
-const changeSelectOptions = function (cols) {
+const changeSelectOptions = function (sheet) {
 
+    const fileName = document.getElementById('inpFile').files.item(0).name;
     const selects = document.querySelectorAll('.selectOptions');
 
+    const cols = { ...workbooks[fileName][sheet] };
+
     for (let select of selects) {
-        select.disabled = false;
+
+        if (select.disabled) {
+            select.disabled = false;
+        }
+
         if (select.options) {
             while (select.options.length > 0) {
                 select.options.remove(0);
             }
         }
+
         for ([colNum, colName] of Object.entries(cols)) {
             const option = new Option(colName, colNum);
-            if (memory.hasOwnProperty(select.name)) {
-                if (memory[select.name].has(colName)) {
-                    option.selected = true;
+            if (memory.hasOwnProperty(sheet)) {
+                if (memory[sheet][select.name] == colName.trim()) {
+                    option.defaultSelected = true;
                 }
             }
             select.appendChild(option);
@@ -265,6 +299,5 @@ const convertToJson = function (fd) {
     fd.forEach((value, key) => object[key] = value);
     const json = JSON.stringify(object);
 
-    console.log(json);
     return json;
 }

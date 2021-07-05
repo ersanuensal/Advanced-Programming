@@ -11,7 +11,6 @@ const multer = require('multer');
 const express = require('express');
 const Router = express.Router;
 const XLSX = require('xlsx');
-const { List } = require('gojs');
 
 const router = new Router();
 
@@ -29,33 +28,33 @@ const upload = multer({ storage: storage });
 
 router.post('/', upload.single('inpFile'), function (req, res) {
 
-    const filePath = req.file.path;
+    let filePath = '';
+    let status = 'ok';
+    const data = new Object();
 
-    const data = {};
-
-    const parsingOptions = {
-        cellFormula: false,
-        cellHTML: false,
-        cellDates: true,
-        cellText: false,
-    };
-
-    const workbook = XLSX.readFile(filePath, parsingOptions);
-
-    data.filePath = filePath;
-    data.sheets = getSheetsWithHeaders(filePath);
-
-    res.send({
-        status: 'ok',
-        data: data
-    });
-
+    try {
+        if (fs.existsSync(req.file.path)) {
+            filePath = req.file.path;
+        } else {
+            throw new Error("File (path) not found");
+        }
+        data.filePath = filePath;
+        data.workbook = getSheetsWithHeaders(filePath);
+    } catch (error) {
+        status = "500";
+        data.message = "Some internal error has occured";
+        data.error = error.message;
+    } finally {
+        res.send({
+            status: status,
+            data: data
+        });
+    }
 });
 
 const getSheetsWithHeaders = function (filePath) {
 
     const parsingOptions = {
-
         cellFormula: false,
         cellHTML: false,
         cellDates: true,
@@ -66,46 +65,36 @@ const getSheetsWithHeaders = function (filePath) {
 
     const allSheetNames = wb.SheetNames;
 
-    // const sheets = [];
-
-    const sheets = {};
+    const workbook = {};
 
     for (sheetName of allSheetNames) {
-
         const ws = wb.Sheets[sheetName]
         const { rows, cols } = getRowsAndCols(ws)
-
-        sheets[sheetName] = {};
-
+        workbook[sheetName] = {};
         for (let C = cols.start; C <= cols.end; C++) {
             const cellRef = encodeCell(0, C);
-
             let cellValue = '';
-
             if (ws[cellRef] && ws[cellRef].v) {
                 cellValue = ws[cellRef].v;
             }
-            sheets[sheetName][C] = cellValue;
+            workbook[sheetName][C] = cellValue;
         }
     }
-
-    return sheets;
+    return workbook;
 }
 
 router.delete('/', function (req, res) {
-    const filePath = req.body.filePath;
+
     const data = new Object();
     let status = 'ok';
 
     try {
-
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
+        if (fs.existsSync(req.body.filePath)) {
+            fs.unlinkSync(req.body.filePath);
             data.nessage = 'File is deleted successfully';
         } else {
             throw new Error('File not found')
         }
-
     } catch (error) {
         status = '404';
         data.message = error.message;
@@ -120,11 +109,16 @@ router.delete('/', function (req, res) {
 
 router.put('/', function (req, res) {
     const sheet = req.body.sheetName;
-    const filePath = req.body.filePath;
+    let filePath = "";
     const data = new Object();
     let status = 'ok';
 
     try {
+        if (fs.existsSync(req.body.filePath)) {
+            filePath = req.body.filePath
+        } else {
+            throw new Error("File (path) not found");
+        }
         const cols = {
             Name: Number(req.body.appName),
             Key: Number(req.body.appKey),
@@ -147,25 +141,28 @@ router.put('/', function (req, res) {
         const colNames = getColNames(worksheet, cols);
         const applications = mapColsToProp(json, colNames);
 
-        const ignoredApplication = new Array()
+        const ignoredApplications = new Array()
 
         deletedRows.forEach(deletedRow => {
-            ignoredApplication.push({
+            ignoredApplications.push({
                 'reason': colNames[deletedRow.reason],
                 'app': mapColsToProp([deletedRow.row], colNames)[0]
             });
         })
 
-        data['ignoredApplication'] = ignoredApplication;
+        data['ignoredApplications'] = ignoredApplications;
         data['applications'] = applications;
+
+        fs.unlinkSync(filePath);
 
     }
     catch (error) {
-        status = 409;
-        data.message = 'NO APP WAS IMPORTED. SOME INTERNAL ERROR HAPPENED. IMPORTED FILE IS DELETED PERMANENTLY';
+        status = '404';
+        data.fileDeleted = fs.existsSync(filePath);
+        data.message = 'NO APP WAS IMPORTED. SOME INTERNAL ERROR HAPPENED.';
+        data.error = error.message;
     }
     finally {
-        fs.unlinkSync(filePath);
         res.send({
             status: status,
             data: data
@@ -174,8 +171,6 @@ router.put('/', function (req, res) {
 })
 
 const converSheetToJsonArray = function (ws, colIndex) {
-    // getting the range of the sheet
-
 
     importantCols = {
         key: colIndex.Key,
