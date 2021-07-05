@@ -207,7 +207,8 @@ block content
                           label(for='checkbox')
                             b PersonalData &nbsp;&nbsp;&nbsp;&nbsp;
                           input.border.border-2#dataObjPerEdit(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                      button.btn(style="margin-left: 150px" type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
+                      div(style="display: flex; justify-content: center; align-items: center;")
+                        button.btn(type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
                       br
                   .modal-footer
                     button.btn.btn-primary(type='button' data-bs-dismiss='modal' aria-label='Close') Back to menu
