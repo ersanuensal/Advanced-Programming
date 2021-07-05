@@ -372,6 +372,7 @@
        }
      });
    });
+   document.getElementById('uploadDBForm').submit();
  }
 
  // save link data to Modal
@@ -389,6 +390,7 @@
        }
      });
    });
+   document.getElementById('uploadDBForm').submit();
  }
 
  function deleteInstance(id, from, to){
