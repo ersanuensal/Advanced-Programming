@@ -147,31 +147,32 @@ block content
                 button.btn.btn-danger.btn-secondary(type='button' data-bs-dismiss='modal') Close
         #createDataObject.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel2' tabindex='-1')
           .modal-dialog.modal-dialog-centered
-            .modal-content
-              .modal-header
-                h5#exampleModalToggleLabel2.modal-title.modalcustom Create Data Object
-                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-              .modal-body
-                div.createBody
-                  form#showCreateDataObj.form-container(action='')
-                    div(class="form-group")
-                      label#dataObjNameLabel(for='dataObjName')
-                        b Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      input.border.border-2.form-control#dataObjName(type='text' placeholder='Enter Name' required='')
-                    div(class="form-group")
-                      label(for='desc')
-                        b Description:&nbsp;&nbsp;
-                      input.border.border-2.form-control#dataObjDes(type='text' placeholder='Enter Description' required='')
-                    div(class="form-group")
-                      input#dataObjColor(type='hidden' required='')
-                    div(class="form-group")
-                      label(for='checkbox')
-                        b PersonalData: &nbsp;&nbsp;&nbsp;&nbsp;
-                      input.border.border-2#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
-                  div(class="form-group" style="display: flex; justify-content: center; align-items: center;")
-                    button.btn.btn-primary(onclick='resave()') Save Data Object
-              .modal-footer
-                button.btn.btn-primary(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal') Back to menu
+            div.createDO
+              .modal-content
+                .modal-header
+                  h5#exampleModalToggleLabel2.modal-title.modalcustom Create Data Object
+                  button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                  div.createBody
+                    form#showCreateDataObj.form-container(action='')
+                      div(class="form-group")
+                        label#dataObjNameLabel(for='dataObjName')
+                          b Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        input.border.border-2.form-control#dataObjName(type='text' placeholder='Enter Name' required='')
+                      div(class="form-group")
+                        label(for='desc')
+                          b Description:&nbsp;&nbsp;
+                        input.border.border-2.form-control#dataObjDes(type='text' placeholder='Enter Description' required='')
+                      div(class="form-group")
+                        input#dataObjColor(type='hidden' required='')
+                      div(class="form-group")
+                        label(for='checkbox')
+                          b PersonalData: &nbsp;&nbsp;&nbsp;&nbsp;
+                        input.border.border-2#dataObjPer(type='checkbox' class="form-check-input" style="margin-left: 10px;")
+                    div(class="form-group" style="display: flex; justify-content: center; align-items: center;")
+                      button.btn.btn-primary(onclick='resave()') Save Data Object
+                .modal-footer
+                  button.btn.btn-primary(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal') Back to menu
         a.btn.btn-primary(data-bs-toggle='modal' href='#dataObjModal' role='button') Open first modal
         #editDataObject.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel3' tabindex='-1')
           .modal-dialog.modal-dialog-centered
