@@ -29,11 +29,15 @@ function resave() {
   var dataObjColor = document.getElementById("dataObjColor").value;
   var dataObjPer = document.getElementById("dataObjPer").checked;
   var dataObjTime = getTodayTime().split(".")[0];
+  var validDataObjectCreate = document.getElementById("validDataObjectCreate");
+  var validDataObjectExist = document.getElementById("validDataObjectExist");
 
   console.log(dataObjPer);
 
-  if (dataObjName == "" || dataObjDes == "") {
-    console.log("Value ist leer");
+  if (dataObjName == "") {
+    console.log("Data Object Name is empty!");
+    validDataObjectCreate.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Please enter an Name for the Data Object </span>"
+    validDataObjectCreate.style.display = 'flex';
   } else {
 
     if (!presetList.length) {
@@ -42,9 +46,12 @@ function resave() {
 
       for (var i = 0; i < presetList.length; i++) {
         if (presetList[i].Name == dataObjName) {
-          console.log("Bereits vorhanden");
+          validDataObjectCreate.style.display = 'none';
+          console.log("Data Object exist already!");
+          validDataObjectCreate.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object exist already! </span>"
+          validDataObjectCreate.style.display = 'flex';
           check = false;
-          break;
+          // break;
         }
       }
 
@@ -60,10 +67,12 @@ function resave() {
       document.getElementById("dataObjColor").value = "#000000";
       document.getElementById("dataObjPer").checked = false;
       showCreateDataObj(0);
-    }
+      validDataObjectCreate.style.display = 'none';
+      validDataObjectExist.style.display = 'none';
 
-    document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
-    document.getElementById('uploadDBForm').submit();
+      document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
+      document.getElementById('uploadDBForm').submit();
+    }
 
   }
 }
