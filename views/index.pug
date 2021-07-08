@@ -170,7 +170,7 @@ block content
                       div(class="form-group")
                         label(for='desc')
                           b Description:&nbsp;&nbsp;
-                        input.border.border-2.form-control#dataObjDes(type='text' placeholder='Enter Description' required='')
+                        textarea.border.border-2.form-control#dataObjDes(class='textareadataObjDes' style='display: block; border-radius: 0.5em; width: 100%; height: 16vh; resize: none;')
                       div(class="form-group")
                         input#dataObjColor(type='hidden' required='')
                       div(class="form-group")
@@ -212,7 +212,7 @@ block content
                         div(class="form-group")
                           label(for='desc')
                             b Description:&nbsp;&nbsp;
-                          input.border.border-2.form-control#dataObjDesEdit(type='text' required='')
+                          textarea.border.border-2.form-control#dataObjDesEdit(class='textareadataObjDesEdit' style='display: block; border-radius: 0.5em; width: 100%; height: 16vh; resize: none;')
                         div(class="form-group")
                           //- label(for='color')
                           //-   b Color: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

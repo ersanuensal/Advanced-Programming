@@ -328,7 +328,7 @@ function SaveEditedDataObj() {
         validDataObjectEditExist.style.display = 'flex';
         checkName = false;
 
-      } else (document.getElementById("dataObjNameEdit").value != presetList[i].Name && document.getElementById("dataObjNameEdit").value != "") {
+      } else {
         presetList[i].Name = document.getElementById("dataObjNameEdit").value;
         presetList[i].Description = document.getElementById("dataObjDesEdit").value;
         presetList[i].Color = document.getElementById("dataObjColorEdit").value;
