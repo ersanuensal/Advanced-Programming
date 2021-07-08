@@ -1,3 +1,14 @@
+class Sheet {
+    constructor(name, appKey, appName, appCOTS, appReleaseDate, appShutdownDate) {
+        this.name = name,
+            this.appKey = appKey,
+            this.appName = appName,
+            this.appCOTS = appCOTS,
+            this.appReleaseDate = appReleaseDate,
+            this.appShutdownDate = appShutdownDate
+    }
+}
+
 const uploadForm = document.querySelector('#uploadForm');
 const importForm = document.getElementById('importForm');
 
@@ -14,6 +25,7 @@ const endPoint = "/importAppsFromExcel";
 
 const workbooks = new Object();
 const memory = new Object();
+
 const importedApps = new Array();
 const ignoredApps = new Array();
 
@@ -217,6 +229,8 @@ const saveSelectNames = function () {
 
     const selectedOptions = new Object();
 
+    let persists = false;
+
     for (let select of selects) {
         for (let option of select.options) {
             if (option.selected == true) {
@@ -225,9 +239,49 @@ const saveSelectNames = function () {
         }
     }
 
+    if (memory.hasOwnProperty(sheetName.value)) {
+        console.log("this sheet exists in memory");
+        const tmp = memory[sheetName.value];
+        if (JSON.stringify(tmp) == JSON.stringify(selectedOptions)) {
+            console.log("memory is up to date");
+        } else {
+            console.log("memory is not up to date");
+            persists = true;
+            // save new memory in the database 
+        }
+    }
+    else {
+        persists = true;
+        // save new memory in the database 
+    }
+
     memory[sheetName.value] = selectedOptions;
 
+    if (persists) {
+        saveMemory(sheetName.value);
+    }
 }
+
+const saveMemory = function () {
+    const tmpList = new Array();
+
+    for (const [sheetName, tmp] of Object.entries(memory)) {
+        tmpList.push(new Sheet(sheetName, tmp.appKey, tmp.appName, tmp.appCOTS, tmp.appReleaseDate, tmp.ShutdownDate))
+    }
+
+    console.log("Liste: ", tmpList);
+
+    saveMemoryInDb(tmpList);
+}
+
+
+const saveMemoryInDb = async function (listOfSheets) {
+
+    document.getElementById('listOfSheets').value = JSON.stringify(listOfSheets);
+    document.getElementById('saveMemoryInDb').submit();
+
+}
+
 
 const initImputForm = function (data) {
 
@@ -297,6 +351,7 @@ const appendNewApps = function () {
 const convertToJson = function (fd) {
     const object = {};
     fd.forEach((value, key) => object[key] = value);
+
     const json = JSON.stringify(object);
 
     return json;
