@@ -36,6 +36,7 @@ function resave() {
 
   if (dataObjName == "") {
     console.log("Data Object Name is empty!");
+    validDataObjectExist.style.display = 'none';
     validDataObjectCreate.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Please enter an Name for the Data Object </span>"
     validDataObjectCreate.style.display = 'flex';
   } else {
@@ -225,11 +226,12 @@ function selectDataObjFromTable() {
 
   for (var i = 0; i < presetList.length; i++) {
     if (presetList[i]._id == selectedDataObj) {
-      document.getElementById("hiddenDataObjID").value = selectedDataObj;
-      document.getElementById("dataObjNameEdit").value = presetList[i].Name;
-      document.getElementById("dataObjDesEdit").value = presetList[i].Description;
-      document.getElementById("dataObjColorEdit").value = presetList[i].Color;
-      document.getElementById("dataObjPerEdit").checked = presetList[i].PersonalData;
+
+        document.getElementById("hiddenDataObjID").value = selectedDataObj;
+        document.getElementById("dataObjNameEdit").value = presetList[i].Name;
+        document.getElementById("dataObjDesEdit").value = presetList[i].Description;
+        document.getElementById("dataObjColorEdit").value = presetList[i].Color;
+        document.getElementById("dataObjPerEdit").checked = presetList[i].PersonalData;
     }
   }
 }
@@ -305,15 +307,43 @@ function selectDataObjFromAddTable() {
 
 function SaveEditedDataObj() {
   var dataObjID = document.getElementById("hiddenDataObjID").value;
+  var validDataObjectEditEmpty = document.getElementById("validDataObjectEditEmpty");
+  var validDataObjectEditExist = document.getElementById("validDataObjectEditExist");
+  var checkName = false;
 
   for (var i = 0; i < presetList.length; i++) {
     if (presetList[i]._id == dataObjID) {
-      presetList[i].Name = document.getElementById("dataObjNameEdit").value;
-      presetList[i].Description = document.getElementById("dataObjDesEdit").value;
-      presetList[i].Color = document.getElementById("dataObjColorEdit").value;
-      presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
+      if (document.getElementById("dataObjNameEdit").value == "") {
+        console.log("Data Object Name is empty!");
+        console.log(presetList[i].Name);
+        validDataObjectEditExist.style.display = 'none';
+        validDataObjectEditEmpty.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name can not be empty! </span>"
+        validDataObjectEditEmpty.style.display = 'flex';
+        checkName = false;
+      } else if (document.getElementById("dataObjNameEdit").value == presetList[i].Name) {
+        console.log("Data Object Name exists already!");
+        console.log(presetList[i].Name);
+        validDataObjectEditEmpty.style.display = 'none';
+        validDataObjectEditExist.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name already exist! </span>"
+        validDataObjectEditExist.style.display = 'flex';
+        checkName = false;
+
+      } else (document.getElementById("dataObjNameEdit").value != presetList[i].Name && document.getElementById("dataObjNameEdit").value != "") {
+        presetList[i].Name = document.getElementById("dataObjNameEdit").value;
+        presetList[i].Description = document.getElementById("dataObjDesEdit").value;
+        presetList[i].Color = document.getElementById("dataObjColorEdit").value;
+        presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
+        validDataObjectEditEmpty.style.display = 'none';
+        validDataObjectEditExist.style.display = 'none';
+        checkName = true;
+      }
+
     }
   }
-  document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
-  document.getElementById('uploadDBForm').submit();
+  if (checkName == true) {
+    document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
+    document.getElementById('uploadDBForm').submit();
+    checkName = false;
+  }
+
 }

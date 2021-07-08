@@ -190,6 +190,12 @@ block content
                   h5#exampleModalToggleLabel2.modal-title.modalcustom Edit Data Object
                   button.btn-close(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal')
                 .modal-body
+                  div(class="alert alert-danger" role="alert" id='validDataObjectEditEmpty' aria-label="Close" style="display: none;" ) 
+                      i(class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;')
+                      span(aria-hidden="true") &nbsp;Data Object Name can not be empty!
+                  div(class="alert alert-danger" role="alert" id='validDataObjectEditExist' aria-label="Close" style="display: none;" ) 
+                      i(class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;')
+                      span(aria-hidden="true") &nbsp;Data Object Name already exist!
                   div.editBodyModal
                     div
                       select.border.border-2.dataobjselector(size="7", id='selectDataObj' onchange="selectDataObjFromTable()")
