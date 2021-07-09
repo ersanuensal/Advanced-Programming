@@ -309,41 +309,53 @@ function SaveEditedDataObj() {
   var dataObjID = document.getElementById("hiddenDataObjID").value;
   var validDataObjectEditEmpty = document.getElementById("validDataObjectEditEmpty");
   var validDataObjectEditExist = document.getElementById("validDataObjectEditExist");
-  var checkName = false;
+  var checkName = true;
+  console.log(presetList);
 
+  if (document.getElementById("dataObjNameEdit").value == "") {
+    console.log("Data Object Name is empty!");
+    validDataObjectEditExist.style.display = 'none';
+    validDataObjectEditEmpty.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name can not be empty! </span>"
+    validDataObjectEditEmpty.style.display = 'flex';
+    checkName = false;
+  }
   for (var i = 0; i < presetList.length; i++) {
-    if (presetList[i]._id == dataObjID) {
-      if (document.getElementById("dataObjNameEdit").value == "") {
-        console.log("Data Object Name is empty!");
-        console.log(presetList[i].Name);
-        validDataObjectEditExist.style.display = 'none';
-        validDataObjectEditEmpty.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name can not be empty! </span>"
-        validDataObjectEditEmpty.style.display = 'flex';
-        checkName = false;
-      } else if (document.getElementById("dataObjNameEdit").value == presetList[i].Name) {
-        console.log("Data Object Name exists already!");
-        console.log(presetList[i].Name);
-        validDataObjectEditEmpty.style.display = 'none';
-        validDataObjectEditExist.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name already exist! </span>"
-        validDataObjectEditExist.style.display = 'flex';
-        checkName = false;
+    if (presetList[i].Name == document.getElementById("dataObjNameEdit").value) {
+      console.log("Data Object Name exists already!");
+      console.log(presetList[i].Name);
+      validDataObjectEditEmpty.style.display = 'none';
+      validDataObjectEditExist.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name already exist! </span>"
+      validDataObjectEditExist.style.display = 'flex';
+      checkName = false;
+    }
 
-      } else {
-        presetList[i].Name = document.getElementById("dataObjNameEdit").value;
-        presetList[i].Description = document.getElementById("dataObjDesEdit").value;
-        presetList[i].Color = document.getElementById("dataObjColorEdit").value;
-        presetList[i].PersonalData = document.getElementById("dataObjPerEdit").checked;
-        validDataObjectEditEmpty.style.display = 'none';
-        validDataObjectEditExist.style.display = 'none';
-        checkName = true;
+  }
+
+
+
+  if (checkName == true) {
+
+    presetList.forEach((item) => {
+
+      if (item._id == dataObjID) {
+
+          //console.log(presetList);
+          item.Name = document.getElementById("dataObjNameEdit").value;
+          item.Description = document.getElementById("dataObjDesEdit").value;
+          item.Color = document.getElementById("dataObjColorEdit").value;
+          item.PersonalData = document.getElementById("dataObjPerEdit").checked;
+          validDataObjectEditEmpty.style.display = 'none';
+          validDataObjectEditExist.style.display = 'none';
+          document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
+          document.getElementById('uploadDBForm').submit();
+          //checkName = true;
       }
 
-    }
-  }
-  if (checkName == true) {
-    document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
-    document.getElementById('uploadDBForm').submit();
-    checkName = false;
+    });
+
+
+
+    checkName = true;
   }
 
 }
