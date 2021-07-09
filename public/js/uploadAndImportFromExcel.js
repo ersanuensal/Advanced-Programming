@@ -1,9 +1,10 @@
 class Sheet {
-    constructor(name, appKey, appName, appCOTS, appReleaseDate, appShutdownDate) {
+    constructor(name, appKey, appName, appDescription, appCOTS, appReleaseDate, appShutdownDate) {
         this.name = name,
             this.appKey = appKey,
             this.appName = appName,
             this.appCOTS = appCOTS,
+            this.appDescription = appDescription,
             this.appReleaseDate = appReleaseDate,
             this.appShutdownDate = appShutdownDate
     }
@@ -19,6 +20,7 @@ const showResultsModalBtn = document.getElementById('showResultsModalBtn');
 
 const sheetName = document.getElementById('sheetName');
 
+
 const resultsTable = document.querySelector('#resultsTable');
 
 const endPoint = "/importAppsFromExcel";
@@ -28,6 +30,27 @@ const memory = new Object();
 
 const importedApps = new Array();
 const ignoredApps = new Array();
+
+const memoryInit = function () {
+    const options = {};
+    fetch("/getMemoryFromDb", options)
+        .then(res => res.json())
+        .then(json => {
+            json.data.listOfSheets.forEach((sheet) => {
+                memory[sheet.name] = {
+                    appName: sheet.appName,
+                    appKey: sheet.appKey,
+                    appDescription: sheet.appDescription,
+                    appCOTS: sheet.appCOTS,
+                    appReleaseDate: sheet.appReleaseDate,
+                    appShutdownDate: sheet.appShutdownDate
+                }
+            })
+        })
+        .catch(err => console.log(err));
+};
+
+memoryInit();
 
 sheetName.addEventListener('change', function (e) {
     const sheet = e.target.value;
@@ -266,7 +289,7 @@ const saveMemory = function () {
     const tmpList = new Array();
 
     for (const [sheetName, tmp] of Object.entries(memory)) {
-        tmpList.push(new Sheet(sheetName, tmp.appKey, tmp.appName, tmp.appCOTS, tmp.appReleaseDate, tmp.ShutdownDate))
+        tmpList.push(new Sheet(sheetName, tmp.appKey, tmp.appName, tmp.appDescription, tmp.appCOTS, tmp.appReleaseDate, tmp.appShutdownDate))
     }
 
     console.log("Liste: ", tmpList);
@@ -277,8 +300,26 @@ const saveMemory = function () {
 
 const saveMemoryInDb = async function (listOfSheets) {
 
-    document.getElementById('listOfSheets').value = JSON.stringify(listOfSheets);
-    document.getElementById('saveMemoryInDb').submit();
+    // document.getElementById('listOfSheets').value = JSON.stringify(listOfSheets);
+    // document.getElementById('saveMemoryInDb').submit();
+
+    const data = { "listOfSheets": listOfSheets };
+
+    const options = {
+        method: "post",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+
+    await fetch("/saveMemoryInDb", options)
+        .then(checkResponse)
+        .then(res => res.json())
+        .then(json => {
+            console.log(json);
+        })
+        .catch(err => console.log(err));
 
 }
 

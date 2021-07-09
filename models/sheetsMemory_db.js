@@ -3,7 +3,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SheetSchema = new Schema({
-  SheetName: {
+  name: {
+    type: String
+  },
+  appKey: {
+    type: String
+  },
+  appName: {
     type: String
   },
   appDescription: {
@@ -16,9 +22,6 @@ var SheetSchema = new Schema({
     type: String
   },
   appShutdownDate: {
-    type: String
-  },
-  appKey: {
     type: String
   }
 });

@@ -211,54 +211,7 @@
       })
     })
 
-    app.post('/saveMemoryInDb', function (req, res) {
 
-      let listOfSheets = req.body.listOfSheets;
-
-      if (listOfSheets.length > 0) {
-        const dataObj = JSON.parse(listOfSheets);
-        for (var i = 0; i < dataObj.length; i++) {
-          console.log(dataObj[i]);
-        }
-      }
-
-      // for (let sheet of listOfSheets) {
-      //   console.log(sheet.name);
-      // }
-
-      // for (let sheet of listOfSheets) {
-      //   for (const [key, value] of Object.entries(sheet)) {
-      //     console.log(`${key}: ${value}`);
-      //   }
-      // }
-
-      // DataObjSchema.deleteMany({
-      //   diagramId: diagramId
-      // }, function(err) {
-      //   if (err) console.log(err);
-      // });
-
-      // // upload DataObj to the Database
-      // var dataObjUpload = req.body.uploadDataObj;
-      // if (dataObjUpload.length > 0) {
-      //   const dataObj = JSON.parse(dataObjUpload);
-
-      //   // saving DataObj in the Database
-      //   for (var i = 0; i < dataObj.length; i++) {
-      //     const dataObjInDB = new DataObjSchema(dataObj[i]);
-      //     // dataObjInDB.isNew = false;
-      //     dataObjInDB.save();
-      //     console.log("DataObj has been updated")
-      //   }
-      // }
-      // if (dataObjUpload.length == 0) {
-      //   console.log("Nothing to upload...")
-      // } else {
-      //   console.log("Diagram with ID: " + diagramId + " has been updated.")
-      // }
-
-      // res.redirect('/edit=' + diagramId);
-    })
 
     app.post('/updateDataObj', function (req, res) {
       var diagramId = req.body.diagramId;
@@ -373,9 +326,69 @@
       res.redirect('/edit=' + diagramId);
     });
 
+
     /**
      * when the user wants o import existing application from a csv file
      */
+
+    app.get('/getMemoryFromDb', async function (req, res) {
+      const sheetsInDb = await SheetSchema.find({}, function (err, data) { });
+
+      const listOfSheets = new Array();
+
+      const sceleton = {
+        name: '',
+        appName: '',
+        appKey: '',
+        appDescription: '',
+        appCOTS: '',
+        appReleaseDate: '',
+        appShutdownDate: ''
+      };
+
+      for (const obj of sheetsInDb) {
+        const tmp = new Object();
+        Object.keys(sceleton).forEach(key => {
+          tmp[key] = obj[key]
+        });
+        listOfSheets.push(tmp);
+      }
+
+      console.log(listOfSheets);
+
+      const data = new Object();
+
+      data['listOfSheets'] = listOfSheets;
+
+      res.send({
+        status: 'ok',
+        data: data
+      });
+
+    });
+
+
+    app.post('/saveMemoryInDb', function (req, res) {
+
+      const listOfSheets = req.body.listOfSheets;
+
+      SheetSchema.deleteMany({
+      }, function (err) {
+        if (err) console.log(err);
+      });
+
+      if (listOfSheets.length > 0) {
+        for (var i = 0; i < listOfSheets.length; i++) {
+          console.log(listOfSheets[i]);
+          const sheetInDb = new SheetSchema(listOfSheets[i]);
+
+          sheetInDb.save();
+          console.log("DataObj has been updated")
+
+        }
+      }
+    });
+
     const excelReader = require('./routes/importAppsFromExcel');
     app.use('/importAppsFromExcel', excelReader);
 
