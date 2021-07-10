@@ -3,6 +3,9 @@ extends template.pug
 block scripts
   script(src='./js/databaseConnection.js' defer)
 block content
+  #mySidebar.leftMenu
+    a(href="javascript:{}" onclick='openLink("https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md")') &nbsp; Documentation
+      i(class='fa fa-book', style='position:relative;float:left;padding:6px 2px;')
   div(style="display: grid; margin: auto; width: 50%; padding: 10px; height: 800px; width:400px;")
     h2 Connection
     div(class="alert alert-primary hide" role="alert" id="connectAlert") Connecting to Database...

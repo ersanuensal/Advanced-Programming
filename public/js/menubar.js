@@ -1,8 +1,14 @@
 const { ipcRenderer } = require('electron')
+const opn = require('opn');
 const maxResBtn = document.getElementById('maxResBtn')
 const mySidebar = document.getElementById('mySidebar')
 const ipc = ipcRenderer
 var isLeftMenuActive = false
+
+
+function openLink(link){
+    opn(link);
+}
 
 
 //// MINIMIZE APP

@@ -8,6 +8,8 @@ block scripts
   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
 block content
   #mySidebar.leftMenu
+    a(href="javascript:{}" onclick='openLink("https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md")') &nbsp; Documentation
+        i(class='fa fa-book', style='position:relative;float:left;padding:6px 2px;')
     form(action='/', method='get', id='settingsForm')
       a(href="javascript:{}" onclick="document.getElementById('settingsForm').submit();") &nbsp; Connection Settings
         i(class='fa fa-wrench', style='position:relative;float:left;padding:6px 2px;')
