@@ -31,12 +31,14 @@ function resave() {
   var dataObjTime = getTodayTime().split(".")[0];
   var validDataObjectCreate = document.getElementById("validDataObjectCreate");
   var validDataObjectExist = document.getElementById("validDataObjectExist");
+  var validDataObjectEditDelete = document.getElementById("validDataObjectEditDelete");
 
   console.log(dataObjPer);
 
   if (dataObjName == "") {
     console.log("Data Object Name is empty!");
     validDataObjectExist.style.display = 'none';
+    validDataObjectEditDelete.style.display = 'none';
     validDataObjectCreate.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Please enter an Name for the Data Object </span>"
     validDataObjectCreate.style.display = 'flex';
   } else {
@@ -48,6 +50,7 @@ function resave() {
       for (var i = 0; i < presetList.length; i++) {
         if (presetList[i].Name == dataObjName) {
           validDataObjectCreate.style.display = 'none';
+          validDataObjectEditDelete.style.display = 'none';
           console.log("Data Object exist already!");
           validDataObjectCreate.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object exist already! </span>"
           validDataObjectCreate.style.display = 'flex';
@@ -70,6 +73,7 @@ function resave() {
       showCreateDataObj(0);
       validDataObjectCreate.style.display = 'none';
       validDataObjectExist.style.display = 'none';
+      validDataObjectEditDelete.style.display = 'none';
 
       document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
       document.getElementById('uploadDBForm').submit();
@@ -239,11 +243,15 @@ function selectDataObjFromTable() {
 // For deleting a Data Object completly
 function deleteDataObjFromTable() {
   var element = document.getElementById("selectDataObj");
+  var validDataObjectEditEmpty = document.getElementById("validDataObjectEditEmpty");
+  var validDataObjectEditExist = document.getElementById("validDataObjectEditExist");
+  var validDataObjectEditDelete = document.getElementById("validDataObjectEditDelete");
 
   try {
     var selectedDataObj = element.options[element.selectedIndex].value;
   } catch (e) {
-    console.log("None selected!");
+    validDataObjectEditDelete.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;No data object selected </span>"
+    validDataObjectEditDelete.style.display = 'flex';
   }
 
 
@@ -251,6 +259,7 @@ function deleteDataObjFromTable() {
   if (selectedDataObj == null) {
     console.log("None selected!");
   } else {
+    validDataObjectEditDelete.style.display = 'none';
     instanceOfPresetList.forEach((item, i) => {
         if (item.presetID == selectedDataObj) {
           instanceOfPresetList.splice(i, 1);
@@ -318,12 +327,14 @@ function SaveEditedDataObj() {
   var dataObjID = document.getElementById("hiddenDataObjID").value;
   var validDataObjectEditEmpty = document.getElementById("validDataObjectEditEmpty");
   var validDataObjectEditExist = document.getElementById("validDataObjectEditExist");
+  var validDataObjectEditDelete = document.getElementById("validDataObjectEditDelete");
   var checkName = true;
   console.log(presetList);
 
   if (document.getElementById("dataObjNameEdit").value == "") {
     console.log("Data Object Name is empty!");
     validDataObjectEditExist.style.display = 'none';
+    validDataObjectEditDelete.style.display = 'none';
     validDataObjectEditEmpty.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name can not be empty! </span>"
     validDataObjectEditEmpty.style.display = 'flex';
     checkName = false;
@@ -333,6 +344,7 @@ function SaveEditedDataObj() {
       console.log("Data Object Name exists already!");
       console.log(presetList[i].Name);
       validDataObjectEditEmpty.style.display = 'none';
+      validDataObjectEditDelete.style.display = 'none';
       validDataObjectEditExist.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Data Object Name already exist! </span>"
       validDataObjectEditExist.style.display = 'flex';
       checkName = false;
@@ -355,6 +367,7 @@ function SaveEditedDataObj() {
           item.PersonalData = document.getElementById("dataObjPerEdit").checked;
           validDataObjectEditEmpty.style.display = 'none';
           validDataObjectEditExist.style.display = 'none';
+          validDataObjectEditDelete.style.display = 'none';
           document.getElementById("uploadDataObj").value = JSON.stringify(presetList);
           document.getElementById('uploadDBForm').submit();
           //checkName = true;

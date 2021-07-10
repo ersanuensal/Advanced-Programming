@@ -196,6 +196,9 @@ block content
                   div(class="alert alert-danger" role="alert" id='validDataObjectEditExist' aria-label="Close" style="display: none;" ) 
                       i(class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;')
                       span(aria-hidden="true") &nbsp;Data Object Name already exist!
+                  div(class="alert alert-danger" role="alert" id='validDataObjectEditDelete' aria-label="Close" style="display: none;" ) 
+                      i(class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;')
+                      span(aria-hidden="true") &nbsp;No data object selected
                   div.editBodyModal
                     div
                       select.border.border-2.dataobjselector(size="7", id='selectDataObj' onchange="selectDataObjFromTable()")
