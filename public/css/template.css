@@ -154,7 +154,7 @@ html, body{
 
 .imgbtn {
  display: inline-block;
- background-color: red; /* Blue background */
+ background-color: rgb(216, 123, 123); /* Blue background */
  border: none; /* Remove borders */
  color: white; /* White text */
  padding: 6px 12px; /* Some padding */
