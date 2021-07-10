@@ -240,30 +240,39 @@ function selectDataObjFromTable() {
 function deleteDataObjFromTable() {
   var element = document.getElementById("selectDataObj");
 
-  var selectedDataObj = element.options[element.selectedIndex].value;
+  try {
+    var selectedDataObj = element.options[element.selectedIndex].value;
+  } catch (e) {
+    console.log("None selected!");
+  }
 
-  console.log(selectedDataObj);
 
-  instanceOfPresetList.forEach((item, i) => {
-      if (item.presetID == selectedDataObj) {
-        instanceOfPresetList.splice(i, 1);
-      }
-  });
-  presetList.forEach((item, i) =>{
-      if(item._id == selectedDataObj){
-          presetList.splice(i, 1);
-      }
-  })
-
-  // Just for triggering rename with ChangedEvent
-  myDiagram.commit(function(d) {
-    d.links.each(function(link) {
-      var renaming = "updating ..."
-      myDiagram.model.setDataProperty(link.data, "Name", renaming);
+  // console.log(selectedDataObj);
+  if (selectedDataObj == null) {
+    console.log("None selected!");
+  } else {
+    instanceOfPresetList.forEach((item, i) => {
+        if (item.presetID == selectedDataObj) {
+          instanceOfPresetList.splice(i, 1);
+        }
     });
-  });
+    presetList.forEach((item, i) =>{
+        if(item._id == selectedDataObj){
+            presetList.splice(i, 1);
+        }
+    })
 
-  createTableForEdit()
+    // Just for triggering rename with ChangedEvent
+    myDiagram.commit(function(d) {
+      d.links.each(function(link) {
+        var renaming = "updating ..."
+        myDiagram.model.setDataProperty(link.data, "Name", renaming);
+      });
+    });
+
+    createTableForEdit()
+  }
+
 }
 
 function selectDataObjFromAddTable() {
