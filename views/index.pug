@@ -111,6 +111,9 @@ block content
                 .modal-body
                   div.nodeModalBody
                     input#nodeID(type='hidden')
+                    div(class="alert alert-danger" role="alert" id='validDates' aria-label="Close" style="display: none;" ) 
+                      i(class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;')
+                      span(aria-hidden="true") &nbsp; Shutdown Date cannot be before the Release Date.
                     div(class="form-group")
                       label(style="font: bold 1em helvetica, sans-serif;") Name: &nbsp;
                       input.border.border-2#nodeName(type='text' class='form-control')
