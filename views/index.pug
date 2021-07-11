@@ -31,8 +31,6 @@ block content
     form(action='/updateDataObj', method='post', id='updateDataObjForm')
       input#diagramId2(type='hidden', name='diagramId' value=diagramId)
       input#uploadDataObj2(type='hidden', name="uploadDataObj" value=uploadDataObj2)
-    form(action='/saveMemoryInDb', method='post', id='saveMemoryInDb')
-      input#listOfSheets(type='hidden', name='listOfSheets')
     form(action='/upload', method='post', id='uploadDBForm')
       input#diagramId(type='hidden', name='diagramId' value=diagramId)
       input#uploadData(type='hidden', name='uploadData')
@@ -309,7 +307,7 @@ block content
                   //- #saveDataObj.form-popup  
       div(class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="ModalLabel" aria-hidden="true")
-        div(class="modal-dialog modal-dialog-centered modal-dialog-scrollable")
+        div(class="modal-dialog modal-dialog-centered")
           div(class="modal-content")
             div(class="modal-header")
               h3.modal-title#ModalLabel Import from Excel

@@ -1,3 +1,5 @@
+const { text } = require("body-parser");
+
 function init() {
 	// short form for defining templates
 	var $ = go.GraphObject.make;
@@ -31,7 +33,7 @@ function init() {
 				direction: 0,
 			}),
 
-			// create new node with doube click
+			// create new node with double click
 			"clickCreatingTool.archetypeNodeData": {
 				Name: "Application",
 				Version: "",
@@ -142,6 +144,7 @@ function init() {
 	myDiagram.linkTemplate = $(
 		go.Link,
 		{
+			zOrder: 1,
 			toShortLength: 1, // avoid interfering with arrowhead or overriding the arrowhead,
 			// curve: go.Link.Bezier,
 			routing: go.Link.AvoidsNodes,
@@ -193,7 +196,7 @@ function init() {
 		),
 
 		// Textblock
-
+		// link label
 		$(
 			go.Panel,
 			"Auto", // the whole node panel
@@ -214,8 +217,6 @@ function init() {
 				stroke: "white",
 				strokeWidth: 3,
 			}),
-
-			// the table header
 			$(go.TextBlock, new go.Binding("text", "Name")) // end Table Panel
 		) // end Node
 

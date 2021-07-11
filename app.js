@@ -377,10 +377,11 @@
 
 	app.get("/getMemoryFromDb", async function (req, res) {
 		const listOfSheets = new Array();
+		const data = new Object();
+		let status = "ok";
 
 		try {
 			const sheetsInDb = await SheetSchema.find({}, function (err, data) {});
-
 			const skeleton = {
 				name: "",
 				appName: "",
@@ -390,43 +391,51 @@
 				appReleaseDate: "",
 				appShutdownDate: "",
 			};
-		} catch (error) {}
-
-		for (const obj of sheetsInDb) {
-			const tmp = new Object();
-			Object.keys(skeleton).forEach((key) => {
-				tmp[key] = obj[key];
+			for (const obj of sheetsInDb) {
+				const tmp = new Object();
+				Object.keys(skeleton).forEach((key) => {
+					tmp[key] = obj[key];
+				});
+				listOfSheets.push(tmp);
+			}
+		} catch (error) {
+			status = "500 Internal error";
+			data.message =
+				"Columns and Properties mapping is not imported from Database. Maybe db error";
+		} finally {
+			data["listOfSheets"] = listOfSheets;
+			data.message =
+				"Columns and Properties mapping is imported successfully from Database";
+			res.send({
+				status: status,
+				data: data,
 			});
-			listOfSheets.push(tmp);
 		}
-
-		console.log(listOfSheets);
-
-		const data = new Object();
-
-		data["listOfSheets"] = listOfSheets;
-
-		res.send({
-			status: "ok",
-			data: data,
-		});
 	});
 
 	app.post("/saveMemoryInDb", function (req, res) {
-		const listOfSheets = req.body.listOfSheets;
-
-		SheetSchema.deleteMany({}, function (err) {
-			if (err) console.log(err);
-		});
-
-		if (listOfSheets.length > 0) {
-			for (var i = 0; i < listOfSheets.length; i++) {
-				console.log(listOfSheets[i]);
-				const sheetInDb = new SheetSchema(listOfSheets[i]);
-
-				sheetInDb.save();
-				console.log("DataObj has been updated");
+		const data = new Object();
+		let status = "ok";
+		try {
+			const listOfSheets = req.body.listOfSheets;
+			SheetSchema.deleteMany({}, function (err) {
+				if (err) throw new Error(err.message);
+			});
+			if (listOfSheets.length > 0) {
+				for (const sheet of listOfSheets) {
+					const sheetInDb = new SheetSchema(sheet);
+					sheetInDb.save();
+				}
 			}
+			data.message = "Columns and Properties mapping is not saved in database";
+		} catch (error) {
+			status = "500";
+			data.message = "Columns and Properties mapping is saved in database";
+		} finally {
+			res.send({
+				status: status,
+				data: data,
+			});
 		}
 	});
 
