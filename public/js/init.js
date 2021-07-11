@@ -199,10 +199,10 @@ function init() {
 		// link label
 		$(
 			go.Panel,
-			"Auto", // the whole node panel
+			"Auto",
+			new go.Binding("visible", "Name", function(t) { return t !== ""; }), // the whole node panel
 			{
-				segmentOffset: new go.Point(0, -15),
-				segmentOrientation: go.Link.OrientUpright,
+
 				mouseEnter: function (e, link) {
 					link.elt(0).fill = "rgba(152, 193, 217, 1)";
 					link.elt(0).stroke = "rgba(152, 193, 217, 1)";
@@ -212,12 +212,14 @@ function init() {
 					link.elt(0).stroke = "white";
 				},
 			},
-			$(go.Shape, "RoundedRectangle", {
+			$(go.Shape, "Rectangle", {
 				fill: "white",
 				stroke: "white",
 				strokeWidth: 3,
 			}),
-			$(go.TextBlock, new go.Binding("text", "Name")) // end Table Panel
+			$(go.TextBlock, "left", { segmentOffset: new go.Point(0, -10) },
+				new go.Binding("visible", "Name", function(t) { return t !== ""; }),
+			 	new go.Binding("text", "Name")) // end Table Panel
 		) // end Node
 
 		// old label
