@@ -349,7 +349,7 @@ function SaveEditedDataObj() {
     checkName = false;
   }
   for (var i = 0; i < presetList.length; i++) {
-    if (presetList[i].Name == document.getElementById("dataObjNameEdit").value) {
+    if (presetList[i].Name == document.getElementById("dataObjNameEdit").value && presetList[i]._id != dataObjID) {
       console.log("Data Object Name exists already!");
       console.log(presetList[i].Name);
       validDataObjectEditEmpty.style.display = 'none';
