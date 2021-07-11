@@ -74,39 +74,39 @@ const template = [
 	// { role: 'appMenu' }
 	...(isMac
 		? [
-				{
-					label: app.name,
-					submenu: [
-						{
-							role: "about",
-						},
-						{
-							type: "separator",
-						},
-						{
-							role: "services",
-						},
-						{
-							type: "separator",
-						},
-						{
-							role: "hide",
-						},
-						{
-							role: "hideothers",
-						},
-						{
-							role: "unhide",
-						},
-						{
-							type: "separator",
-						},
-						{
-							role: "quit",
-						},
-					],
-				},
-		  ]
+			{
+				label: app.name,
+				submenu: [
+					{
+						role: "about",
+					},
+					{
+						type: "separator",
+					},
+					{
+						role: "services",
+					},
+					{
+						type: "separator",
+					},
+					{
+						role: "hide",
+					},
+					{
+						role: "hideothers",
+					},
+					{
+						role: "unhide",
+					},
+					{
+						type: "separator",
+					},
+					{
+						role: "quit",
+					},
+				],
+			},
+		]
 		: []),
 	// { role: 'fileMenu' }
 	{
@@ -114,11 +114,11 @@ const template = [
 		submenu: [
 			isMac
 				? {
-						role: "close",
-				  }
+					role: "close",
+				}
 				: {
-						role: "quit",
-				  },
+					role: "quit",
+				},
 			{
 				label: "New Window",
 				click: function () {
@@ -157,41 +157,41 @@ const template = [
 			},
 			...(isMac
 				? [
-						{
-							role: "pasteAndMatchStyle",
-						},
-						{
-							role: "delete",
-						},
-						{
-							role: "selectAll",
-						},
-						{
-							type: "separator",
-						},
-						{
-							label: "Speech",
-							submenu: [
-								{
-									role: "startSpeaking",
-								},
-								{
-									role: "stopSpeaking",
-								},
-							],
-						},
-				  ]
+					{
+						role: "pasteAndMatchStyle",
+					},
+					{
+						role: "delete",
+					},
+					{
+						role: "selectAll",
+					},
+					{
+						type: "separator",
+					},
+					{
+						label: "Speech",
+						submenu: [
+							{
+								role: "startSpeaking",
+							},
+							{
+								role: "stopSpeaking",
+							},
+						],
+					},
+				]
 				: [
-						{
-							role: "delete",
-						},
-						{
-							type: "separator",
-						},
-						{
-							role: "selectAll",
-						},
-				  ]),
+					{
+						role: "delete",
+					},
+					{
+						type: "separator",
+					},
+					{
+						role: "selectAll",
+					},
+				]),
 		],
 	},
 	// { role: 'viewMenu' }
@@ -239,24 +239,24 @@ const template = [
 			},
 			...(isMac
 				? [
-						{
-							type: "separator",
-						},
-						{
-							role: "front",
-						},
-						{
-							type: "separator",
-						},
-						{
-							role: "window",
-						},
-				  ]
+					{
+						type: "separator",
+					},
+					{
+						role: "front",
+					},
+					{
+						type: "separator",
+					},
+					{
+						role: "window",
+					},
+				]
 				: [
-						{
-							role: "close",
-						},
-				  ]),
+					{
+						role: "close",
+					},
+				]),
 		],
 	},
 	{
