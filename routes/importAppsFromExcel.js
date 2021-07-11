@@ -16,7 +16,10 @@ const router = new Router();
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, "./uploads/appsFromExcel/");
+		if (!fs.existsSync("./uploads")) {
+			fs.mkdirSync("./uploads");
+		}
+		cb(null, "./uploads/");
 	},
 	filename: (req, file, cb) => {
 		const { originalname } = file;

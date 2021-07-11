@@ -16,7 +16,7 @@ function createWindow() {
 			preload: path.join(__dirname, "preload.js"),
 		},
 	});
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 
 	win.loadURL(`http://localhost:3000/`);
 
