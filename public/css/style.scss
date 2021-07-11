@@ -217,7 +217,12 @@ modal {
 }
 
 .headerTableLinks {
+  font: bold 1.1em helvetica, sans-serif;
+}
+
+.linkNamesColor {
   font: bold 1em helvetica, sans-serif;
+  font-style: italic;
   color: blue;
 }
 
