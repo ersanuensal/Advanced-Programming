@@ -1,41 +1,41 @@
 {
-  "name": "Advanced-Programming",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ersanuensal/Advanced-Programming.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ersanuensal/Advanced-Programming/issues"
-  },
-  "homepage": "https://github.com/ersanuensal/Advanced-Programming#readme",
-  "devDependencies": {
-    "electron": "^12.0.7"
-  },
-  "dependencies": {
-    "async": "^3.2.0",
-    "body-parser": "^1.19.0",
-    "bootstrap": "^4.0.0-beta",
-    "express": "^4.17.1",
-    "fast-csv": "^4.3.6",
-    "fs": "*",
-    "gojs": "^2.1.39",
-    "jquery": "^3.6.0",
-    "mongo": "^0.1.0",
-    "mongodb": "^3.6.9",
-    "mongoose": "^5.12.11",
-    "multer": "^1.4.2",
-    "opn": "^6.0.0",
-    "popper.js": "^1.16.1",
-    "pug": "^3.0.2",
-    "xlsx": "^0.17.0"
-  }
+	"name": "Advanced-Programming",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ersanuensal/Advanced-Programming.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ersanuensal/Advanced-Programming/issues"
+	},
+	"homepage": "https://github.com/ersanuensal/Advanced-Programming#readme",
+	"devDependencies": {
+		"electron": "^12.0.7"
+	},
+	"dependencies": {
+		"async": "^3.2.0",
+		"body-parser": "^1.19.0",
+		"bootstrap": "^4.0.0-beta",
+		"express": "^4.17.1",
+		"fast-csv": "^4.3.6",
+		"fs": "*",
+		"gojs": "^2.1.39",
+		"jquery": "^3.6.0",
+		"mongo": "^0.1.0",
+		"mongodb": "^3.6.9",
+		"mongoose": "^5.12.11",
+		"multer": "^1.4.2",
+		"opn": "^6.0.0",
+		"popper.js": "^1.16.1",
+		"pug": "^3.0.2",
+		"xlsx": "^0.17.0"
+	}
 }
