@@ -157,6 +157,8 @@ const getAppsFromExcel = async function (ev) {
 		.then(checkResponse)
 		.then((res) => res.json())
 		.then((json) => {
+			console.log(json.data.applications);
+			console.log(json.data.ignoredApplications);
 			saveImportedApps(json.data.applications);
 			saveIgnoredApps(json.data.ignoredApplications);
 			fillMsgBox();
@@ -171,7 +173,7 @@ const fillMsgBox = function () {
 	while (msgBox.hasChildNodes()) {
 		msgBox.firstChild.remove();
 	}
-	const p = document.createElement("p");
+	const p = document.createElement("h5");
 	p.className = "fs-5";
 	p.innerHTML = `${importedApps.length} app has been successfully imported and ${ignoredApps.length} app are ignored.`;
 	msgBox.appendChild(p);
