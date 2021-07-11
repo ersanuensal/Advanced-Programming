@@ -452,20 +452,28 @@ function saveLinkProperties(node) {
 
 // save link data to Modal
 function saveNodeProperties(node) {
-  myDiagram.commit(function (d) {
-    d.nodes.each(function (node) {
-      if (node.data.key == document.getElementById("nodeID").value) {
-        myDiagram.model.setDataProperty(node.data, "Name", document.getElementById("nodeName").value);
-        myDiagram.model.setDataProperty(node.data, "Version", document.getElementById("nodeVersion").value);
-        myDiagram.model.setDataProperty(node.data, "Description", document.getElementById("nodeDescription").value);
-        myDiagram.model.setDataProperty(node.data, "COTS", document.getElementById("nodeCots").value);
-        myDiagram.model.setDataProperty(node.data, "Release", document.getElementById("nodeReleaseDate").value);
-        myDiagram.model.setDataProperty(node.data, "Shutdown", document.getElementById("nodeShutdownDate").value);
-        console.log("Node updated");
-      }
+  var checkDateRelease = document.getElementById("nodeReleaseDate").value
+  var checkDateShutdown = document.getElementById("nodeShutdownDate").value
+
+  if (checkDateShutdown > checkDateRelease ) {
+    myDiagram.commit(function (d) {
+      d.nodes.each(function (node) {
+        if (node.data.key == document.getElementById("nodeID").value) {
+          myDiagram.model.setDataProperty(node.data, "Name", document.getElementById("nodeName").value);
+          myDiagram.model.setDataProperty(node.data, "Version", document.getElementById("nodeVersion").value);
+          myDiagram.model.setDataProperty(node.data, "Description", document.getElementById("nodeDescription").value);
+          myDiagram.model.setDataProperty(node.data, "COTS", document.getElementById("nodeCots").value);
+          myDiagram.model.setDataProperty(node.data, "Release", document.getElementById("nodeReleaseDate").value);
+          myDiagram.model.setDataProperty(node.data, "Shutdown", document.getElementById("nodeShutdownDate").value);
+          console.log("Node updated");
+        }
+      });
     });
-  });
-  document.getElementById('uploadDBForm').submit();
+    document.getElementById('uploadDBForm').submit();
+  } else {
+   document.getElementById("validDates").style.display = "flex";
+  }
+
 }
 
 function deleteInstance(id, from, to) {

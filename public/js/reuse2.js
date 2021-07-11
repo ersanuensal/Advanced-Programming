@@ -145,6 +145,7 @@ function loadDataObjModal() {
     keyboard: false
   })
   myModal.show()
+  document.getElementById("validDataObject").style.display = "none";
 }
 
 function loadNodeModal() {
@@ -153,6 +154,8 @@ function loadNodeModal() {
     keyboard: false
   })
   myModal.show()
+  document.getElementById("validDates").style.display = "none";
+  
 }
 
 function showEditDataObj() {

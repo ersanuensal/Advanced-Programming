@@ -180,7 +180,7 @@
 
       console.log("Diagram with ID: " + diagramId + " has been deleted.");
 
-      res.redirect('/');
+      res.redirect('/greeter');
 
     })
 

@@ -11,6 +11,18 @@ function showSelectedItem() {
 
 }
 
+function enableButton()
+{
+    var selectelem = document.getElementById('selectDiagram');
+    var btnelemDelete = document.getElementById('deleteBtn');
+    var btnelemOpen = document.getElementById('openBtn');
+    
+    btnelemDelete.style.backgroundColor = "red";
+    btnelemDelete.disabled = !selectelem.value;
+
+    btnelemOpen.disabled = !selectelem.value;
+}
+
 function deleteDiagram() {
   var element = document.getElementById("selectDiagram");
   var selectedDiagram = element.options[element.selectedIndex].value;

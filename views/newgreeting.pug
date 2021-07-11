@@ -20,14 +20,14 @@ block content
         span(aria-hidden="true") &nbsp;Please select a Diagram
     div
       input#diagramsList(type='hidden', name='diagramsList' value=diagramsList)
-      select.bigselector(size="5", id='selectDiagram')
+      select.bigselector(size="5", id='selectDiagram' onchange="enableButton()")
     div(class="inlinediv")
-      button.formstogether(type="submit" onclick="showSelectedItem()" class="btn btn-primary") Open Diagram
+      button.formstogether#openBtn(type="submit" onclick="showSelectedItem()" class="btn btn-primary" disabled) Open Diagram
       a.formstogether(style="margin-left: 1em;" data-toggle="modal" href="#normalModal" class="btn btn-success") New Diagram
-      button(style="margin-left: 1em;" type="submit" onclick="deleteDiagram()" class="imgbtn")
+      button#deleteBtn(style="margin-left: 1em;" data-toggle="modal" href="#deleteWarningModal" class="imgbtn" disabled)
         i.fa.fa-trash
       #normalModal(class="modal fade")
-        div(class="modal-dialog")
+        div(class="modal-dialog modal-dialog-centered")
           div(class="modal-content")
             div(class="modal-header")
               h4(style="justify-self: center;" class="modal-title") New Diagram
@@ -42,5 +42,13 @@ block content
               div(class="CancelSubmit")
                 button(type="button" class="btn btn-danger" data-dismiss="modal") Cancel 
                 button(style="margin-left: 2.5em;" type="submit" onclick="createDiagram()" class="btn btn-primary" margin-left="5px") Create
+      #deleteWarningModal.modal.fade(tabindex='-1' aria-labelledby='deleteWarningModalLabel' aria-hidden='true')
+        .modal-dialog.modal-dialog-centered
+          .modal-content
+            .modal-header
+              h5#exampleModalLabel.modal-title Do You really want to delete this diagram?
+            .modal-footer
+              button.btn.btn-secondary(type='button' data-dismiss='modal') Cancel
+              button.btn.btn-danger(type='button' onclick='deleteDiagram()') Delete
                     
           
