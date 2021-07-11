@@ -155,7 +155,7 @@ function loadNodeModal() {
   })
   myModal.show()
   document.getElementById("validDates").style.display = "none";
-  
+
 }
 
 function showEditDataObj() {
@@ -164,6 +164,12 @@ function showEditDataObj() {
   })
   myModal.show()
   createTableForEdit();
+  try {
+    document.getElementById("toggleEditDataObjModal").click();
+  } catch (e) {
+    console.log("Klappt nciht");
+  }
+
 
 
 }

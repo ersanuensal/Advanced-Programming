@@ -146,6 +146,7 @@ block content
               .modal-body
                 button.btn.btn-primary(data-bs-target='#createDataObject' data-bs-toggle='modal' data-bs-dismiss='modal') Create Data Object
                 button.btn.btn-primary(onclick='showEditDataObj()') Edit Data Object
+                button.btn.btn-success(id='toggleEditDataObjModal' hidden data-bs-target='#editDataObject' data-bs-toggle='modal' data-bs-dismiss='modal') 
               .modal-footer
                 button.btn.btn-danger.btn-secondary(type='button' data-bs-dismiss='modal') Close
         #createDataObject.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel2' tabindex='-1')
@@ -183,6 +184,17 @@ block content
                 .modal-footer
                   button.btn.btn-primary(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal') Back to menu
         a.btn.btn-primary(data-bs-toggle='modal' href='#dataObjModal' role='button') Open first modal
+        #editDataObjDeleteConfirm.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel2' tabindex='-1')
+          .modal-dialog.modal-dialog-centered
+            .modal-content
+              .modal-header
+                h5#editDataObjDeleteConfirm.modal-title.modalcustom Delete Confirmation
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                    h5 Are you sure do delete this?
+              .modal-footer
+                button.btn.btn-success(id='CancelDelete' data-bs-target='#editDataObject' data-bs-toggle='modal' data-bs-dismiss='modal') Cancel
+                button.btn.btn-danger(id='ConfirmDelete' data-bs-target='#editDataObject' data-bs-toggle='modal' data-bs-dismiss='modal' onclick='deleteDataObjFromTable()') Delete
         #editDataObject.modal.fade(aria-hidden='true' aria-labelledby='exampleModalToggleLabel3' tabindex='-1')
           .modal-dialog.modal-dialog-centered
             div.dialogedit
@@ -205,7 +217,7 @@ block content
                       select.border.border-2.dataobjselector(size="7", id='selectDataObj' onchange="selectDataObjFromTable()")
                     br
                     div(class="form-group" style="display: flex; justify-content: center; align-items: center;")    
-                      button.btn.btn-danger#reedit(onclick='deleteDataObjFromTable()')  Delete
+                      button.btn.btn-danger#reedit(data-bs-target="#editDataObjDeleteConfirm" data-bs-toggle="modal" data-bs-dismiss="modal") Delete
                     form#showEditDataObjForm.form-container(action='')
                       div
                         input#hiddenDataObjID(type="hidden")
@@ -229,7 +241,7 @@ block content
                         button.btn(type='button' onclick='SaveEditedDataObj()' class="btn btn-primary") Save Data Object
                       br
                   .modal-footer
-                    button.btn.btn-primary(type='button' data-bs-dismiss='modal' aria-label='Close') Back to menu
+                    button.btn.btn-primary(data-bs-target='#dataObjModal' data-bs-toggle='modal' data-bs-dismiss='modal') Back to menu
         a.btn.btn-primary(data-bs-toggle='modal' href='#dataObjModal' role='button') Open first modal
         //- #dataObjModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='dataObjModalLabel' aria-hidden='true')
         //-   .modal-dialog.modal-dialog-centered
