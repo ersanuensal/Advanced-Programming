@@ -494,7 +494,7 @@ function saveNodeProperties(node) {
 	var checkDateRelease = document.getElementById("nodeReleaseDate").value;
 	var checkDateShutdown = document.getElementById("nodeShutdownDate").value;
 
-	if (checkDateShutdown > checkDateRelease) {
+	if (checkDateShutdown > checkDateRelease || checkDateShutdown == "") {
 		myDiagram.commit(function (d) {
 			d.nodes.each(function (node) {
 				if (node.data.key == document.getElementById("nodeID").value) {
@@ -535,7 +535,7 @@ function saveNodeProperties(node) {
 		document.getElementById("uploadDBForm").submit();
 	} else {
 		document.getElementById("validDates").style.display = "flex";
-	}
+	} 
 }
 
 function deleteInstance(id, from, to) {
