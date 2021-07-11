@@ -75,8 +75,8 @@ block content
             .modal-content
               .modal-header
                 div.headerTableLinks
-                  label Link:&nbsp;
-                  a#linkName()
+                  h1(style='text-decoration: underline;') Dataflow:
+                  a.linkNamesColor#linkName()
                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
               .modal-body
                 div(class="alert alert-danger" role="alert" id='validDataObject' aria-label="Close" style="display: none;" ) 
