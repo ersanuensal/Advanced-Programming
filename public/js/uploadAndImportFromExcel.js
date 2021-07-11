@@ -6,8 +6,7 @@ class Sheet {
 		appDescription,
 		appCOTS,
 		appReleaseDate,
-		appShutdownDate
-	) {
+		appShutdownDate) {
 		(this.name = name),
 			(this.appKey = appKey),
 			(this.appName = appName),
@@ -157,8 +156,8 @@ const getAppsFromExcel = async function (ev) {
 		.then(checkResponse)
 		.then((res) => res.json())
 		.then((json) => {
-			console.log(json.data.applications);
-			console.log(json.data.ignoredApplications);
+			// console.log(json.data.applications);
+			// console.log(json.data.ignoredApplications);
 			saveImportedApps(json.data.applications);
 			saveIgnoredApps(json.data.ignoredApplications);
 			fillMsgBox();
@@ -175,7 +174,7 @@ const fillMsgBox = function () {
 	}
 	const p = document.createElement("h5");
 	p.className = "fs-5";
-	p.innerHTML = `${importedApps.length} app has been successfully imported and ${ignoredApps.length} app are ignored.`;
+	p.innerHTML = `${importedApps.length} app have been successfully imported and ${ignoredApps.length} app are ignored.`;
 	msgBox.appendChild(p);
 	document.getElementById("showResultsModalBtn").click();
 };
@@ -245,17 +244,22 @@ const saveImportedApps = function (listOfApps) {
 		};
 
 		for (const [key, value] of Object.entries(app)) {
-			tmpApp[key] = value;
+			if (["Release", "Shutdown"].includes(key) == false) {
+				tmpApp[key] = value;
+			}
 		}
 
-		if (app.Release && app.Release != "") {
-			tmpApp.Release = new Date(app.Release).toISOString().split("T")[0];
-		}
+		try {
+			if (app.Release && app.Release != "") {
+				tmpApp.Release = new Date(app.Release).toISOString().split("T")[0];
+			}
 
-		if (app.Shutdown && app.Shutdown != "") {
-			tmpApp.Shutdown = new Date(app.Shutdown).toISOString().split("T")[0];
+			if (app.Shutdown && app.Shutdown != "") {
+				tmpApp.Shutdown = new Date(app.Shutdown).toISOString().split("T")[0];
+			}
+		} catch (error) {
+			console.log(error.message);
 		}
-
 		importedApps.push(tmpApp);
 	});
 };
@@ -266,11 +270,12 @@ const saveIgnoredApps = function (listOfApps) {
 	}
 
 	for (const [index, app] of listOfApps.entries()) {
-		if (index >= 99) {
-			break;
-		} else {
-			ignoredApps.push(app.app);
-		}
+		// if (index >= 99) {
+		// 	break;
+		// } else {
+		// 	ignoredApps.push(app.app);
+		// }
+		ignoredApps.push(app.app);
 	}
 };
 
@@ -328,7 +333,7 @@ const saveMemory = function () {
 		);
 	}
 
-	console.log("Liste: ", tmpList);
+	// console.log("Liste: ", tmpList);
 
 	saveMemoryInDb(tmpList);
 };
