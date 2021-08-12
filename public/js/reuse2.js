@@ -41,6 +41,7 @@ function resave() {
     validDataObjectEditDelete.style.display = 'none';
     validDataObjectCreate.innerHTML = "<i class='fa fa-warning', style='position:relative;float:left;padding:6px 2px;'></i><span aria-hidden='true'> &nbsp;Please enter an Name for the Data Object </span>"
     validDataObjectCreate.style.display = 'flex';
+    check = false;
   } else {
 
     if (!presetList.length) {
