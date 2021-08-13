@@ -1,4 +1,4 @@
-
+// opens diagram that is selected
 function showSelectedItem() {
   var element = document.getElementById("selectDiagram");
   try {
@@ -11,6 +11,7 @@ function showSelectedItem() {
 
 }
 
+// enables the button if item from list is selected 
 function enableButton()
 {
     var selectelem = document.getElementById('selectDiagram');
@@ -23,6 +24,8 @@ function enableButton()
     btnelemOpen.disabled = !selectelem.value;
 }
 
+
+// deletes selected diagram if triggered
 function deleteDiagram() {
   var element = document.getElementById("selectDiagram");
   var selectedDiagram = element.options[element.selectedIndex].value;
@@ -32,7 +35,7 @@ function deleteDiagram() {
 }
 
 
-
+// 
 var mySelect = document.getElementById("selectDiagram");
 
 //Create array of options to be added
@@ -47,7 +50,7 @@ for (var i = 0; i < array.length; i++) {
   mySelect.appendChild(opt);
 }
 
-
+// creates new diagram if triggered
 function createDiagram() {
 
   var diagramName = document.getElementById("diagramName").value;

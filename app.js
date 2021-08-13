@@ -10,7 +10,7 @@
 	var mongo = require("mongoose");
 
 	async function connectToDatabase() {
-		// MongoDB connection string
+		// building the MongoDB connection string from our config file
 		var savedConnectionString = fs.readFileSync("./config.json"),
 			connectionObj;
 		try {
@@ -30,7 +30,6 @@
 			console.log(err);
 		}
 
-		// var mongourl = "mongodb://app:Adv4nc3d-Pr0gr4mm1ng@46.101.207.27:27017/advpro"
 		var mongourl = connectionString;
 
 		console.log("trying to connect to " + connectionString + " ...");
@@ -76,6 +75,7 @@
 
 	// Initial controller for the Diagram
 	app.get("/", function (req, res) {
+		// Loading the connection string from the config file
 		var savedConnectionString = fs.readFileSync("./config.json"),
 			connectionObj;
 		try {
@@ -83,6 +83,7 @@
 		} catch (err) {
 			console.log(err);
 		}
+		// filling the input fields with presaved connection strings
 		res.render("connect", {
 			loadedEndpoint: connectionObj.endpoint,
 			loadedUsername: connectionObj.username,
@@ -93,6 +94,8 @@
 		});
 	});
 
+	// Controller for the greeting page 
+	// Here the user sees the list of diagrams stored in the database
 	app.get("/greeter", async function (req, res) {
 		await connectToDatabase();
 		if (connectionBoolean == false) {
@@ -107,14 +110,6 @@
 			});
 			console.log("Diagramlist loaded.");
 		}
-	});
-
-	app.get("/template", function (req, res) {
-		res.render("template", {});
-	});
-
-	app.get("/test", function (req, res) {
-		res.render("newgreeting", {});
 	});
 
 	app.get("/new=:diagramName", async function (req, res) {
@@ -228,6 +223,8 @@
 		});
 	});
 
+
+	// controller to save connection string into a config file
 	app.post("/settings", function (req, res) {
 		var connectionString = JSON.stringify(req.body);
 		fs.writeFile("./config.json", connectionString, function (err) {
@@ -235,7 +232,6 @@
 				console.log(err.message);
 				return;
 			}
-			console.log("New settings saved successful!");
 
 			mongo.disconnect();
 		});
@@ -442,6 +438,7 @@
 	const excelReader = require("./routes/importAppsFromExcel");
 	app.use("/importAppsFromExcel", excelReader);
 
+	// Express server is running on port 3000
 	let server = app.listen(3000, function () {
 		console.log("Express server listening on port " + server.address().port);
 	});

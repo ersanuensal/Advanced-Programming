@@ -11,13 +11,13 @@ function openLink(link){
 }
 
 
-//// MINIMIZE APP
+// minimize app
 minimizeBtn.addEventListener('click', ()=>{
     console.log('minimizing');
     ipc.send('minimizeApp')
 })
 
-//// MAXIMIZE RESTORE APP
+// maximize app
 function changeMaxResBtn(isMaximizedApp){
     if(isMaximizedApp){
         maxResBtn.title = 'Restore'
@@ -35,13 +35,12 @@ maxResBtn.addEventListener('click', ()=>{
 ipc.on('isMaximized', ()=> { changeMaxResBtn(true) })
 ipc.on('isRestored', ()=> { changeMaxResBtn(false) })
 
-//// CLOSE APP
+// close app
 closeBtn.addEventListener('click', ()=>{
     ipc.send('closeApp')
 })
 
-//// TOGGLE MENU
-// Expand and Retract
+// toggle sidebar
 showHideMenus.addEventListener('click', ()=>{
     if(isLeftMenuActive){
         console.log("Left Menu closed");

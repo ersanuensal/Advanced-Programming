@@ -16,17 +16,16 @@ function createWindow() {
 			preload: path.join(__dirname, "preload.js"),
 		},
 	});
-	// win.webContents.openDevTools();
 
 	win.loadURL(`http://localhost:3000/`);
 
-	//// CLOSE APP
+	// Button to close the App
 	ipc.on("minimizeApp", () => {
 		console.log("Clicked on Minimize Btn");
 		win.minimize();
 	});
 
-	//// MAXIMIZE RESTORE APP
+	// Button to maximize the App
 	ipc.on("maximizeRestoreApp", () => {
 		if (win.isMaximized()) {
 			console.log("Clicked on Restore");
@@ -45,7 +44,7 @@ function createWindow() {
 		win.webContents.send("isRestored");
 	});
 
-	//// CLOSE APP
+	// command to close App
 	ipc.on("closeApp", () => {
 		console.log("Clicked on Close Btn");
 		win.close();
@@ -70,210 +69,4 @@ app.on("window-all-closed", () => {
 
 const isMac = process.platform === "darwin";
 
-const template = [
-	// { role: 'appMenu' }
-	...(isMac
-		? [
-			{
-				label: app.name,
-				submenu: [
-					{
-						role: "about",
-					},
-					{
-						type: "separator",
-					},
-					{
-						role: "services",
-					},
-					{
-						type: "separator",
-					},
-					{
-						role: "hide",
-					},
-					{
-						role: "hideothers",
-					},
-					{
-						role: "unhide",
-					},
-					{
-						type: "separator",
-					},
-					{
-						role: "quit",
-					},
-				],
-			},
-		]
-		: []),
-	// { role: 'fileMenu' }
-	{
-		label: "File",
-		submenu: [
-			isMac
-				? {
-					role: "close",
-				}
-				: {
-					role: "quit",
-				},
-			{
-				label: "New Window",
-				click: function () {
-					createWindow();
-				},
-			},
-			{
-				label: "Save",
-				click: function () {
-					createWindow();
-				},
-			},
-		],
-	},
-	// { role: 'editMenu' }
-	{
-		label: "Edit",
-		submenu: [
-			{
-				role: "undo",
-			},
-			{
-				role: "redo",
-			},
-			{
-				type: "separator",
-			},
-			{
-				role: "cut",
-			},
-			{
-				role: "copy",
-			},
-			{
-				role: "paste",
-			},
-			...(isMac
-				? [
-					{
-						role: "pasteAndMatchStyle",
-					},
-					{
-						role: "delete",
-					},
-					{
-						role: "selectAll",
-					},
-					{
-						type: "separator",
-					},
-					{
-						label: "Speech",
-						submenu: [
-							{
-								role: "startSpeaking",
-							},
-							{
-								role: "stopSpeaking",
-							},
-						],
-					},
-				]
-				: [
-					{
-						role: "delete",
-					},
-					{
-						type: "separator",
-					},
-					{
-						role: "selectAll",
-					},
-				]),
-		],
-	},
-	// { role: 'viewMenu' }
-	{
-		label: "View",
-		submenu: [
-			{
-				role: "reload",
-			},
-			{
-				role: "forceReload",
-			},
-			{
-				role: "toggleDevTools",
-			},
-			{
-				type: "separator",
-			},
-			{
-				role: "resetZoom",
-			},
-			{
-				role: "zoomIn",
-			},
-			{
-				role: "zoomOut",
-			},
-			{
-				type: "separator",
-			},
-			{
-				role: "togglefullscreen",
-			},
-		],
-	},
-	// { role: 'windowMenu' }
-	{
-		label: "Window",
-		submenu: [
-			{
-				role: "minimize",
-			},
-			{
-				role: "zoom",
-			},
-			...(isMac
-				? [
-					{
-						type: "separator",
-					},
-					{
-						role: "front",
-					},
-					{
-						type: "separator",
-					},
-					{
-						role: "window",
-					},
-				]
-				: [
-					{
-						role: "close",
-					},
-				]),
-		],
-	},
-	{
-		role: "help",
-		submenu: [
-			{
-				label: "Documentation",
-				click: async () => {
-					const { shell } = require("electron");
-					await shell.openExternal(
-						"https://github.com/ersanuensal/Advanced-Programming/blob/main/README.md"
-					);
-				},
-			},
-		],
-	},
-];
 
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);

@@ -5,7 +5,7 @@ function init() {
 	var $ = go.GraphObject.make;
 	var myModel;
 	//  const today = new Date();
-	today2 = getTodayTime().split("T")[0];
+	dateOfToday = getTodayTime().split("T")[0];
 
 	nodeList = [];
 	linkList = [];
@@ -363,18 +363,18 @@ function init() {
 
 					d.nodes.each(function (node) {
 						if (
-							node.data.Shutdown <= today2 &&
+							node.data.Shutdown <= dateOfToday &&
 							node.data.Shutdown >= "0000-00-00"
 						) {
 							myDiagram.model.setDataProperty(node.data, "color", "red");
 						} else if (
-							(node.data.Release <= today2 && node.data.Shutdown > today2) ||
-							(node.data.Release <= today2 &&
+							(node.data.Release <= dateOfToday && node.data.Shutdown > dateOfToday) ||
+							(node.data.Release <= dateOfToday &&
 								node.data.Shutdown === "" &&
 								node.data.Release != "")
 						) {
 							myDiagram.model.setDataProperty(node.data, "color", "green");
-						} else if (node.data.Release > today2) {
+						} else if (node.data.Release > dateOfToday) {
 							myDiagram.model.setDataProperty(node.data, "color", "orange");
 						} else {
 							myDiagram.model.setDataProperty(node.data, "color", "blue");
