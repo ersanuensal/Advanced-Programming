@@ -4,21 +4,26 @@ function init() {
 	// short form for defining templates
 	var $ = go.GraphObject.make;
 	var myModel;
-	//  const today = new Date();
+
 	dateOfToday = getTodayTime().split("T")[0];
 
+	// initial lists that are uses for data mapping
 	nodeList = [];
 	linkList = [];
 	downloadedData = [];
 	downloadedLinks = [];
 	downloadedDataObj = [];
 	downloadedInstanceOfPreset = [];
+
+	
 	instanceOfPresetList = downloadedInstanceOfPreset;
 	presetList = downloadedDataObj;
 	loadcheck = false;
 	loadname = null;
-	diagramId = document.getElementById("diagramId").value;
 	reuseselected = null;
+
+	// diagram id of the current diagram
+	diagramId = document.getElementById("diagramId").value;
 
 	myDiagram = $(
 		go.Diagram,
